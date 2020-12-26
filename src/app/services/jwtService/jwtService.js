@@ -1,6 +1,7 @@
 import FuseUtils from '@fuse/utils/FuseUtils';
 import axios from 'axios';
 import jwtDecode from 'jwt-decode';
+import { API_URL } from '../config';
 /* eslint-disable camelcase */
 
 class JwtService extends FuseUtils.EventEmitter {
@@ -10,6 +11,9 @@ class JwtService extends FuseUtils.EventEmitter {
 	}
 
 	setInterceptors = () => {
+		
+		axios.defaults.baseURL = API_URL;
+
 		axios.interceptors.response.use(
 			response => {
 				return response;
@@ -47,7 +51,7 @@ class JwtService extends FuseUtils.EventEmitter {
 
 	createUser = data => {
 		return new Promise((resolve, reject) => {
-			axios.post('/api/auth/register', data).then(response => {
+			axios.post('/api/register', data).then(response => {
 				if (response.data.user) {
 					this.setSession(response.data.access_token);
 					resolve(response.data.user);
@@ -59,14 +63,9 @@ class JwtService extends FuseUtils.EventEmitter {
 	};
 
 	signInWithEmailAndPassword = (email, password) => {
+		console.log(email, 'init');
 		return new Promise((resolve, reject) => {
-			axios
-				.get('/api/auth', {
-					data: {
-						email,
-						password
-					}
-				})
+			axios.post('/api/login', { email, password })
 				.then(response => {
 					if (response.data.user) {
 						this.setSession(response.data.access_token);
@@ -80,12 +79,7 @@ class JwtService extends FuseUtils.EventEmitter {
 
 	signInWithToken = () => {
 		return new Promise((resolve, reject) => {
-			axios
-				.get('/api/auth/access-token', {
-					data: {
-						access_token: this.getAccessToken()
-					}
-				})
+			axios.get('/api/check_token', {	access_token: this.getAccessToken()})
 				.then(response => {
 					if (response.data.user) {
 						this.setSession(response.data.access_token);
@@ -103,10 +97,12 @@ class JwtService extends FuseUtils.EventEmitter {
 	};
 
 	updateUserData = user => {
-		return axios.post('/api/auth/user/update', {
-			user
-		});
+		return axios.post('/api/user', user);
 	};
+
+	updateUserAvatar = (payload) => {
+		return axios.post('/api/avatar', payload);
+	}
 
 	setSession = access_token => {
 		if (access_token) {

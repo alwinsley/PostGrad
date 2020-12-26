@@ -20,37 +20,37 @@ const authDB = {
 				displayName: 'Abbott Keitch',
 				photoURL: 'assets/images/avatars/Abbott.jpg',
 				email: 'admin',
-				settings: {
-					layout: {
-						style: 'layout1',
-						config: {
-							scroll: 'content',
-							navbar: {
-								display: true,
-								folded: true,
-								position: 'left'
-							},
-							toolbar: {
-								display: true,
-								style: 'fixed',
-								position: 'below'
-							},
-							footer: {
-								display: true,
-								style: 'fixed',
-								position: 'below'
-							},
-							mode: 'fullwidth'
-						}
-					},
-					customScrollbars: true,
-					theme: {
-						main: 'defaultDark',
-						navbar: 'defaultDark',
-						toolbar: 'defaultDark',
-						footer: 'defaultDark'
-					}
-				},
+				// settings: {
+				// 	// layout: {
+				// 	// 	style: 'layout1',
+				// 	// 	config: {
+				// 	// 		scroll: 'content',
+				// 	// 		navbar: {
+				// 	// 			display: true,
+				// 	// 			folded: true,
+				// 	// 			position: 'left'
+				// 	// 		},
+				// 	// 		toolbar: {
+				// 	// 			display: true,
+				// 	// 			style: 'fixed',
+				// 	// 			position: 'below'
+				// 	// 		},
+				// 	// 		footer: {
+				// 	// 			display: true,
+				// 	// 			style: 'fixed',
+				// 	// 			position: 'below'
+				// 	// 		},
+				// 	// 		mode: 'fullwidth'
+				// 	// 	}
+				// 	// },
+				// 	// customScrollbars: true,
+				// 	// theme: {
+				// 	// 	main: 'defaultDark',
+				// 	// 	navbar: 'defaultDark',
+				// 	// 	toolbar: 'defaultDark',
+				// 	// 	footer: 'defaultDark'
+				// 	// }
+				// },
 				shortcuts: ['calendar', 'mail', 'contacts']
 			}
 		},
@@ -63,33 +63,33 @@ const authDB = {
 				displayName: 'Arnold Matlock',
 				photoURL: 'assets/images/avatars/Arnold.jpg',
 				email: 'staff',
-				settings: {
-					layout: {
-						style: 'layout2',
-						config: {
-							mode: 'boxed',
-							scroll: 'content',
-							navbar: {
-								display: true
-							},
-							toolbar: {
-								display: true,
-								position: 'below'
-							},
-							footer: {
-								display: true,
-								style: 'fixed'
-							}
-						}
-					},
-					customScrollbars: true,
-					theme: {
-						main: 'greeny',
-						navbar: 'mainThemeDark',
-						toolbar: 'mainThemeDark',
-						footer: 'mainThemeDark'
-					}
-				},
+				// settings: {
+				// 	layout: {
+				// 		style: 'layout2',
+				// 		config: {
+				// 			mode: 'boxed',
+				// 			scroll: 'content',
+				// 			navbar: {
+				// 				display: true
+				// 			},
+				// 			toolbar: {
+				// 				display: true,
+				// 				position: 'below'
+				// 			},
+				// 			footer: {
+				// 				display: true,
+				// 				style: 'fixed'
+				// 			}
+				// 		}
+				// 	},
+				// 	customScrollbars: true,
+				// 	theme: {
+				// 		main: 'greeny',
+				// 		navbar: 'mainThemeDark',
+				// 		toolbar: 'mainThemeDark',
+				// 		footer: 'mainThemeDark'
+				// 	}
+				// },
 				shortcuts: ['calendar', 'mail', 'contacts', 'todo']
 			}
 		}

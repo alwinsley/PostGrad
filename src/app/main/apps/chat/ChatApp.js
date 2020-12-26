@@ -113,6 +113,7 @@ const useStyles = makeStyles(theme => ({
 }));
 
 function ChatApp(props) {
+	console.log(props, 'chat...');
 	const dispatch = useDispatch();
 	const chat = useSelector(({ chatApp }) => chatApp.chat);
 	const mobileChatsSidebarOpen = useSelector(({ chatApp }) => chatApp.sidebars.mobileChatsSidebarOpen);

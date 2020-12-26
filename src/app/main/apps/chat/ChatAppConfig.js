@@ -1,4 +1,5 @@
 import React from 'react';
+import { authRoles } from 'app/auth';
 
 const ChatAppConfig = {
 	settings: {
@@ -6,6 +7,7 @@ const ChatAppConfig = {
 			config: {}
 		}
 	},
+	auth: authRoles.user,
 	routes: [
 		{
 			path: '/apps/chat',

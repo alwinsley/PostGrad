@@ -6,6 +6,8 @@ import clsx from 'clsx';
 import React from 'react';
 import { useSelector } from 'react-redux';
 
+import { asset_path } from '../../helpers/resource';
+
 const useStyles = makeStyles(theme => ({
 	root: {
 		'&.user': {
@@ -50,19 +52,15 @@ function UserNavbarHeader(props) {
 			className="user relative flex flex-col items-center justify-center pt-24 pb-64 mb-32 z-0 shadow-0"
 		>
 			<Typography className="username text-16 whitespace-nowrap" color="inherit">
-				{user.data.displayName}
+				{user.name}
 			</Typography>
 			<Typography className="email text-13 mt-8 opacity-50 whitespace-nowrap" color="inherit">
-				{user.data.email}
+				{user.email}
 			</Typography>
 			<Avatar
 				className={clsx(classes.avatar, 'avatar')}
 				alt="user photo"
-				src={
-					user.data.photoURL && user.data.photoURL !== ''
-						? user.data.photoURL
-						: 'assets/images/avatars/profile.jpg'
-				}
+				src={ user.avatar && user.avatar !== ''	? asset_path(user.avatar) : 'assets/images/avatars/profile.jpg'	}
 			/>
 		</AppBar>
 	);

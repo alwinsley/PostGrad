@@ -1,29 +1,54 @@
+import React, {useEffect, useState} from 'react';
+import { useSelector } from 'react-redux';
+import clsx from 'clsx';
+
 import FuseSearch from '@fuse/core/FuseSearch';
 import FuseShortcuts from '@fuse/core/FuseShortcuts';
-import AppBar from '@material-ui/core/AppBar';
-import Hidden from '@material-ui/core/Hidden';
+
+import {
+	AppBar,
+	Hidden,
+	Toolbar,
+	Badge,
+	Icon
+} from '@material-ui/core';
 import { makeStyles, ThemeProvider } from '@material-ui/core/styles';
-import Toolbar from '@material-ui/core/Toolbar';
-import ChatPanelToggleButton from 'app/fuse-layouts/shared-components/chatPanel/ChatPanelToggleButton';
 import NavbarMobileToggleButton from 'app/fuse-layouts/shared-components/NavbarMobileToggleButton';
-import QuickPanelToggleButton from 'app/fuse-layouts/shared-components/quickPanel/QuickPanelToggleButton';
 import UserMenu from 'app/fuse-layouts/shared-components/UserMenu';
-import clsx from 'clsx';
-import React from 'react';
-import { useSelector } from 'react-redux';
+
+
 import { selectToolbarTheme } from 'app/store/fuse/settingsSlice';
 import FullScreenToggle from '../../shared-components/FullScreenToggle';
 import LanguageSwitcher from '../../shared-components/LanguageSwitcher';
+
+import { checkMessage } from '../../../services/messageService';
 
 const useStyles = makeStyles(theme => ({
 	root: {}
 }));
 
-function ToolbarLayout1(props) {
+const ToolbarLayout1 = (props) => {
+	const [timer, setTimer] = useState(null);
+	const [notification, setNotification] = useState(0);
 	const config = useSelector(({ fuse }) => fuse.settings.current.layout.config);
 	const toolbarTheme = useSelector(selectToolbarTheme);
 
 	const classes = useStyles(props);
+
+	useEffect(() => {
+		const timer = setInterval(() => checkMessageStatus(), 5000);
+		setTimer(timer);
+
+		return () => clearInterval(timer);
+	}, []);
+
+	const checkMessageStatus = () => {
+		checkMessage().then(res => {
+			setNotification(res.data.count);
+		}).catch(err => {
+			console.log(err);
+		});
+	}
 
 	return (
 		<ThemeProvider theme={toolbarTheme}>
@@ -53,11 +78,14 @@ function ToolbarLayout1(props) {
 
 						<FuseSearch />
 
-						<Hidden lgUp>
-							<ChatPanelToggleButton />
-						</Hidden>
+						<Badge badgeContent={notification} color="error">
+							<Icon color="action">notifications</Icon>
+						</Badge>
+						{/* <Hidden lgUp> */}
+							{/* <ChatPanelToggleButton /> */}
+						{/* </Hidden> */}
 
-						<QuickPanelToggleButton />
+						{/* <QuickPanelToggleButton /> */}
 
 						<UserMenu />
 					</div>

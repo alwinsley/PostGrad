@@ -1,4 +1,5 @@
 import React from 'react';
+import { authRoles } from 'app/auth';
 
 const ProjectDashboardAppConfig = {
 	settings: {
@@ -6,6 +7,7 @@ const ProjectDashboardAppConfig = {
 			config: {}
 		}
 	},
+	auth: authRoles.notGuest,
 	routes: [
 		{
 			path: '/apps/dashboards/project',

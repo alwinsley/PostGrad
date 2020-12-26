@@ -1,3 +1,4 @@
+import { authRoles } from 'app/auth';
 import React from 'react';
 
 const AnalyticsDashboardAppConfig = {
@@ -6,6 +7,7 @@ const AnalyticsDashboardAppConfig = {
 			config: {}
 		}
 	},
+	auth: authRoles.notGuest,
 	routes: [
 		{
 			path: '/apps/dashboards/analytics',

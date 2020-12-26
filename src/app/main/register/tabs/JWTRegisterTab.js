@@ -32,7 +32,7 @@ function JWTRegisterTab(props) {
 	}
 
 	function handleSubmit(model) {
-		dispatch(submitRegister(model));
+		dispatch(submitRegister({...model, role: props.type}));
 	}
 
 	return (
@@ -47,8 +47,8 @@ function JWTRegisterTab(props) {
 				<TextFieldFormsy
 					className="mb-16"
 					type="text"
-					name="displayName"
-					label="Display name"
+					name="name"
+					label="Name"
 					validations={{
 						minLength: 4
 					}}

@@ -1,4 +1,6 @@
 import React from 'react';
+import { Redirect } from 'react-router-dom';
+import { authRoles } from 'app/auth';
 
 const ProfilePageConfig = {
 	settings: {
@@ -6,10 +8,19 @@ const ProfilePageConfig = {
 			config: {}
 		}
 	},
+	auth: authRoles.notGuest,
 	routes: [
 		{
-			path: '/pages/profile',
+			path: '/my_profile',
+			component: React.lazy(() => import('./MyProfilePage'))
+		},
+		{
+			path: '/profile/:id?',
 			component: React.lazy(() => import('./ProfilePage'))
+		},
+		{
+			path: '/profile',
+			component: () => <Redirect to="/profile" />
 		}
 	]
 };

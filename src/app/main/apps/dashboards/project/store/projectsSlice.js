@@ -2,7 +2,7 @@ import { createEntityAdapter, createSlice, createAsyncThunk } from '@reduxjs/too
 import axios from 'axios';
 
 export const getProjects = createAsyncThunk('projectDashboardApp/projects/getProjects', async () => {
-	const response = await axios.get('/api/project-dashboard-app/projects');
+	const response = await axios.get('/api/dashboard/projects');
 	return response.data;
 });
 
