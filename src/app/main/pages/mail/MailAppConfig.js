@@ -18,9 +18,9 @@ const MailAppConfig = {
 	routes: [
 		{
 			path: [
-				'/messages/label/:labelHandle/:mailId?',
-				'/messages/filter/:filterHandle/:mailId?',
-				'/messages/:folderHandle/:mailId?'
+				// '/messages/label/:labelHandle/:mailId?',
+				// '/messages/filter/:filterHandle/:mailId?',
+				'/messages/:type/:id?'
 			],
 			component: React.lazy(() => import('./MailApp'))
 		},

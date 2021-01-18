@@ -19,6 +19,7 @@ import PhotosTab from './mytabs/PhotosTab';
 import VideosTab from './mytabs/VideosTab';
 import SpecialTab from './mytabs/SpecialTab';
 import InfoTab from './mytabs/InfoTab';
+import TranscriptTab from './mytabs/TranscriptTab';
 
 import { updateUserAvatar } from '../../../auth/store/userSlice';
 import { uploadResources, updateResource, deleteResource, getMyProfile, postProfile } from '../../../services/profileService';
@@ -86,6 +87,12 @@ const MyProfilePage = () => {
 	}
 
 	const handleRSAdd = (files, type) => {
+		if(type === 'LINK'){
+			let _links = buildResource(files, 'VIDEO', profile.id);
+			setResources([..._links, ...resources]);
+			return;
+		}
+
 		let formdata = new FormData();
 
 		_.forEach(files, (file, key) => {
@@ -224,8 +231,9 @@ const MyProfilePage = () => {
 					<Tab classes={{	root: 'h-64' }}	label="About Me"/>
 					<Tab classes={{	root: 'h-64' }}	label="Photos"/>
 					<Tab classes={{	root: 'h-64' }}	label="Videos"/>
-					<Tab classes={{	root: 'h-64' }}	label="Highlights"/>
-					<Tab classes={{	root: 'h-64' }}	label="Workouts"/>
+					<Tab classes={{	root: 'h-64' }}	label="Transcript & Eligibility"/>
+					{/* <Tab classes={{	root: 'h-64' }}	label="Highlights"/> */}
+					{/* <Tab classes={{	root: 'h-64' }}	label="Workouts"/> */}
 				</Tabs>
 			}
 			content={
@@ -234,8 +242,9 @@ const MyProfilePage = () => {
 					{selectedTab === 1 && <AboutTab profile={profile} errors={errors} handleFieldChange={handleFieldChange}/>}
 					{selectedTab === 2 && <PhotosTab oldResources={oldResources} resources={resources} onAddRS={handleRSAdd} onDeleteRS={handleRSDelete} onEditRS={handleRSEdit}/>}
 					{selectedTab === 3 && <VideosTab oldResources={oldResources} resources={resources} onAddRS={handleRSAdd} onDeleteRS={handleRSDelete} onEditRS={handleRSEdit}/>}
-					{selectedTab === 4 && <SpecialTab oldResources={oldResources} resources={resources} onAddRS={handleRSAdd} onDeleteRS={handleRSDelete} onEditRS={handleRSEdit} tabType="HIGHLIGHT"/>}
-					{selectedTab === 5 && <SpecialTab oldResources={oldResources} resources={resources} onAddRS={handleRSAdd} onDeleteRS={handleRSDelete} onEditRS={handleRSEdit} tabType="WORKOUT"/>}
+					{selectedTab === 4 && <TranscriptTab profile={profile}/>}
+					{/* {selectedTab === 4 && <SpecialTab oldResources={oldResources} resources={resources} onAddRS={handleRSAdd} onDeleteRS={handleRSDelete} onEditRS={handleRSEdit} tabType="HIGHLIGHT"/>} */}
+					{/* {selectedTab === 5 && <SpecialTab oldResources={oldResources} resources={resources} onAddRS={handleRSAdd} onDeleteRS={handleRSDelete} onEditRS={handleRSEdit} tabType="WORKOUT"/>} */}
 				</div>
 			}
 		/>

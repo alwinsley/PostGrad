@@ -104,6 +104,10 @@ class JwtService extends FuseUtils.EventEmitter {
 		return axios.post('/api/avatar', payload);
 	}
 
+	resetUserPassword = (payload) => {
+		return axios.post('/api/reset_password', payload);
+	}
+
 	setSession = access_token => {
 		if (access_token) {
 			localStorage.setItem('jwt_access_token', access_token);

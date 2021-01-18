@@ -1,8 +1,8 @@
-import FusePageCarded from '@fuse/core/FusePageCarded';
-import withReducer from 'app/store/withReducer';
-import React, { useEffect, useRef } from 'react';
-import { useDispatch } from 'react-redux';
+import React, { useState, useRef } from 'react';
 import { useParams } from 'react-router-dom';
+
+import FusePageCarded from '@fuse/core/FusePageCarded';
+
 import MailDetails from './mail/MailDetails';
 import MailToolbar from './mail/MailToolbar';
 import MailAppHeader from './MailAppHeader';
@@ -10,34 +10,29 @@ import MailAppSidebarContent from './MailAppSidebarContent';
 import MailAppSidebarHeader from './MailAppSidebarHeader';
 import MailList from './mails/MailList';
 import MailsToolbar from './mails/MailsToolbar';
-import reducer from './store';
-import { getFilters } from './store/filtersSlice';
-import { getFolders } from './store/foldersSlice';
-import { getLabels } from './store/labelsSlice';
 
 function MailApp(props) {
-	console.log(props, 'mail...')
-	const dispatch = useDispatch();
-
 	const pageLayout = useRef(null);
 	const routeParams = useParams();
+	const [searchText, setSearchText] = useState('');
+	const [checkstatus, setCheckstatus] = useState('none');
+	const [isDeleting, setIsDeleting] = useState(false);
 
-	useEffect(() => {
-		dispatch(getFilters());
-		dispatch(getFolders());
-		dispatch(getLabels());
-	}, [dispatch]);
+	const handleChangeStatus = (status) => {
+		setCheckstatus(status);
+		setIsDeleting(false);
+	}
 
 	return (
 		<FusePageCarded
 			classes={{
 				root: 'w-full',
-				content: 'flex flex-col',
+				content: 'flex flex-col overflow-hidden',
 				header: 'items-center min-h-72 h-72 sm:h-136 sm:min-h-136'
 			}}
-			header={<MailAppHeader pageLayout={pageLayout} />}
-			contentToolbar={routeParams.mailId ? <MailToolbar /> : <MailsToolbar />}
-			content={routeParams.mailId ? <MailDetails /> : <MailList />}
+			header={<MailAppHeader pageLayout={pageLayout} onChangeSearch={(text) => setSearchText(text)}/>}
+			contentToolbar={routeParams.id ? <MailToolbar /> : <MailsToolbar checkstatus={checkstatus} onChangeSelectAll={(status) => setCheckstatus(status)} onDelete={() => setIsDeleting(true)}/>}
+			content={routeParams.id ? <MailDetails /> : <MailList checkstatus={checkstatus} searchText={searchText} isDeleting={isDeleting} onChangeCheckStatus={handleChangeStatus}/>}
 			leftSidebarHeader={<MailAppSidebarHeader />}
 			leftSidebarContent={<MailAppSidebarContent />}
 			ref={pageLayout}
@@ -46,4 +41,4 @@ function MailApp(props) {
 	);
 }
 
-export default withReducer('mailApp', reducer)(MailApp);
+export default MailApp;

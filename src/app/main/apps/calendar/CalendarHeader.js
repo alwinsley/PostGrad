@@ -143,7 +143,7 @@ class CalendarHeader extends Toolbar {
 									<Icon className="text-32 mx-12">today</Icon>
 								</FuseAnimate>
 								<FuseAnimate animation="transition.slideLeftIn" delay={300}>
-									<Typography variant="h6">Calendar</Typography>
+									<Typography variant="h6">Schedules</Typography>
 								</FuseAnimate>
 							</div>
 							<div className="flex items-center">

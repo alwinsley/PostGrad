@@ -3,115 +3,123 @@ import { useForm, useDeepCompareEffect } from '@fuse/hooks';
 import {
 	Grid,
 	TextField,
+	Card,
+	AppBar,
+	Toolbar,
+	Typography,
+	CardContent
 } from '@material-ui/core';
-
+import FuseAnimateGroup from '@fuse/core/FuseAnimateGroup';
 
 const InfoTab = ({profile}) => {
 	console.log(profile);
 	
 	return (
-		<div className="md:flex max-w-2xl">
-			<Grid container spacing={3}>
-				<Grid item sm={12} md={6}>
-					<TextField
-						className="mt-8 mb-16"
-						disabled
-						label="Name"
-						autoFocus
-						id="name"
-						name="name"
-						value={profile.name}
-						variant="outlined"
-						fullWidth
-					/>
-				</Grid>
-				<Grid item sm={12} md={6}>
-					<TextField
-						className="mt-8 mb-16"
-						disabled
-						label="Email"
-						id="email"
-						name="email"
-						value={profile.email}
-						variant="outlined"
-						fullWidth
-					/>
-				</Grid>
-				<Grid item sm={12} md={6}>
-					<TextField
-						className="mt-8 mb-16"
-						disabled
-						label="Phone Number"
-						id="phone"
-						name="phone"
-						value={profile.phone}
-						variant="outlined"
-						fullWidth
-					/>
-				</Grid>
-				<Grid item sm={12} md={6}>
-					<TextField
-						className="mt-8 mb-16"
-						disabled
-						label="City"
-						id="city"
-						name="city"
-						value={profile.city}
-						variant="outlined"
-						fullWidth
-					/>
-				</Grid>
-				<Grid item sm={12} md={6}>
-					<TextField
-						className="mt-8 mb-16"
-						disabled
-						label="State"
-						id="state"
-						name="state"
-						value={profile.state}
-						variant="outlined"
-						fullWidth
-					/>
-				</Grid>
-				<Grid item sm={12} md={6}>
-					<TextField
-						className="mt-8 mb-16"
-						disabled
-						label="Zip"
-						id="zipcode"
-						name="zipcode"
-						value={profile.zipcode}
-						variant="outlined"
-						fullWidth
-					/>
-				</Grid>
-				<Grid item xs={12}>
-					<TextField
-						className="mt-8 mb-16"
-						disabled
-						label="Twitter"
-						id="twitter"
-						name="twitter"
-						value={profile.twitter}
-						variant="outlined"
-						fullWidth
-					/>
-				</Grid>
-				<Grid item xs={12}>
-					<TextField
-						className="mt-8 mb-16"
-						disabled
-						label="Description"
-						multiline
-          				rows={4}
-						id="description"
-						name="description"
-						value={profile.description}
-						variant="outlined"
-						fullWidth
-					/>
-				</Grid>
-			</Grid>
+		<div className="w-full h-full">
+			<FuseAnimateGroup
+					enter={{
+						animation: 'transition.slideUpBigIn'
+					}}
+				>
+					<Grid container spacing={3}>
+						<Grid item sm={12} md={6}>
+							<Card className="w-full mb-16 rounded-8 shadow">
+								<AppBar position="static" elevation={0}>
+									<Toolbar className="px-8">
+										<Typography variant="subtitle1" color="inherit" className="flex-1 px-12">
+											General Information
+										</Typography>
+									</Toolbar>
+								</AppBar>
+
+								<CardContent>
+									<div className="mb-24">
+										<Typography className="font-bold mb-4 text-15">Name</Typography>
+										<Typography>{profile.name}</Typography>
+									</div>
+									<div className="mb-24">
+										<Typography className="font-bold mb-4 text-15">Email</Typography>
+										<Typography>{profile.email}</Typography>
+									</div>
+									<div className="mb-24">
+										<Typography className="font-bold mb-4 text-15">Phone Number</Typography>
+										<Typography>{profile.phone || '---'}</Typography>
+									</div>
+									<div className="mb-24">
+										<Typography className="font-bold mb-4 text-15">City</Typography>
+										<Typography>{profile.city || '---'}</Typography>
+									</div>
+									<div className="mb-24">
+										<Typography className="font-bold mb-4 text-15">State</Typography>
+										<Typography>{profile.state || '---'}</Typography>
+									</div>
+									<div className="mb-24">
+										<Typography className="font-bold mb-4 text-15">Zip Code</Typography>
+										<Typography>{profile.zipcode || '---'}</Typography>
+									</div>
+									<div className="mb-24">
+										<Typography className="font-bold mb-4 text-15">Twitter</Typography>
+										<Typography>{profile.twitter || '---'}</Typography>
+									</div>
+
+									<div className="mb-24">
+										<Typography className="font-bold mb-4 text-15">Description</Typography>
+										<Typography>{profile.description || '---'}</Typography>
+									</div>
+								</CardContent>
+							</Card>
+						</Grid>
+
+						<Grid item sm={12} md={6}>
+							<Card className="w-full mb-16 rounded-8 shadow">
+								<AppBar position="static" elevation={0}>
+									<Toolbar className="px-8">
+										<Typography variant="subtitle1" color="inherit" className="flex-1 px-12">
+											About Me
+										</Typography>
+									</Toolbar>
+								</AppBar>
+
+								<CardContent>
+									<div className="mb-24">
+										<Typography className="font-bold mb-4 text-15">Current School</Typography>
+										<Typography>{profile.current_school}</Typography>
+									</div>
+									<div className="mb-24">
+										<Typography className="font-bold mb-4 text-15">Year</Typography>
+										<Typography>{profile.year}</Typography>
+									</div>
+									<div className="mb-24">
+										<Typography className="font-bold mb-4 text-15">Position</Typography>
+										<Typography>{profile.position || '---'}</Typography>
+									</div>
+									<div className="mb-24">
+										<Typography className="font-bold mb-4 text-15">Height</Typography>
+										<Typography>{profile.height || '---'}</Typography>
+									</div>
+									<div className="mb-24">
+										<Typography className="font-bold mb-4 text-15">Weight</Typography>
+										<Typography>{profile.weight || '---'}</Typography>
+									</div>
+									<div className="mb-24">
+										<Typography className="font-bold mb-4 text-15">HS/College</Typography>
+										<Typography>{profile.hs_college || '---'}</Typography>
+									</div>
+									<div className="mb-24">
+										<Typography className="font-bold mb-4 text-15">ACT</Typography>
+										<Typography>{profile.act || '---'}</Typography>
+									</div>
+
+									<div className="mb-24">
+										<Typography className="font-bold mb-4 text-15">SAT</Typography>
+										<Typography>{profile.sat || '---'}</Typography>
+									</div>
+								</CardContent>
+							</Card>
+						</Grid>
+					</Grid>
+					
+				</FuseAnimateGroup>
 		</div>
 	);
 }

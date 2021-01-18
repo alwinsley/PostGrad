@@ -1,7 +1,11 @@
+import React, { useEffect, useState } from 'react';
+
 import FuseAnimate from '@fuse/core/FuseAnimate';
+import FuseAnimateGroup from '@fuse/core/FuseAnimateGroup';
 import Typography from '@material-ui/core/Typography';
 import withReducer from 'app/store/withReducer';
-import React, { useEffect } from 'react';
+import { makeStyles } from '@material-ui/core/styles';
+
 import { useDispatch, useSelector } from 'react-redux';
 import _ from '@lodash';
 import reducer from './store';
@@ -16,23 +20,82 @@ import Widget7 from './widgets/Widget7';
 import Widget8 from './widgets/Widget8';
 import Widget9 from './widgets/Widget9';
 
-function AnalyticsDashboardApp() {
-	const dispatch = useDispatch();
-	const widgets = useSelector(selectWidgetsEntities);
+import PlayerCard from 'app/components/cards/PlayerCard';
+import TeamCard from 'app/components/cards/TeamCard';
+import MessageDlg from 'app/components/MessageDlg';
+
+import { getAnalytics } from 'app/services/dashboard_api';
+
+const useStyles = makeStyles(theme => ({
+	layoutHeader: {
+		backgroundColor: '#192d3e',
+		padding: '12px 16px',
+		color: 'white'
+	}
+}));
+
+function AnalyticsDashboardApp(props) {
+	// const dispatch = useDispatch();
+	// const widgets = useSelector(selectWidgetsEntities);
+	const classes = useStyles();
+	const [recruits, setRecruits] = useState([]);
+	const [teams, setTeams] = useState([]);
+	const [selectedUser, setSelectedUser] = useState(null);
 
 	useEffect(() => {
-		dispatch(getWidgets());
-	}, [dispatch]);
+		// dispatch(getWidgets());
 
-	if (_.isEmpty(widgets)) {
-		return null;
+		getAnalytics().then(res => {
+			setRecruits(res.data.recruits);
+			setTeams(res.data.teams);
+		});
+	}, []);
+
+	const handleAction = (user, action) => {
+		if(action === 'message') setSelectedUser(user);
+		else if(action === 'detail') gotoUserDetail(user.id);
 	}
+
+	const gotoUserDetail = (userId) => {
+		const { history } = props;
+		history.push(`/profile/${userId}`);
+	}
+
+	// if (_.isEmpty(widgets)) {
+	// 	return null;
+	// }
 
 	return (
 		<div className="w-full">
-			<Widget1 data={widgets.widget1} />
+			<Typography variant="h6" className={classes.layoutHeader}>Top Ten Recruits </Typography>
+			<FuseAnimateGroup
+				enter={{animation: 'transition.slideUpBigIn'}}
+				className="flex flex-wrap p-24"
+			>
+				{recruits.map((user, index) => 
+					<div className="w-full pb-24 sm:w-1/2 md:w-1/3 lg:w-1/5 sm:p-16" key={index}>
+						<PlayerCard user={user}	onTriggeredAction={(action) => handleAction(user, action)}/>
+					</div>
+				)}	
+			</FuseAnimateGroup>
 
-			<FuseAnimate animation="transition.slideUpIn" delay={200}>
+			<Typography variant="h6" className={classes.layoutHeader}>Top Campaigns </Typography>
+			<FuseAnimateGroup
+				enter={{animation: 'transition.slideUpBigIn'}}
+				className="flex flex-wrap p-24"
+			>
+				{teams.map((team, index) => 
+					<div className="w-full pb-24 sm:w-1/2 md:w-1/3 lg:w-1/5 sm:p-16" key={index}>
+						<TeamCard team={team}/>
+					</div>
+				)}	
+			</FuseAnimateGroup>
+
+			{!!selectedUser && <MessageDlg open={!!selectedUser} title="Send Message" to={selectedUser} onClose={() => setSelectedUser(null)} /> }
+
+			{/* <Widget1 data={widgets.widget1} /> */}
+
+			{/* <FuseAnimate animation="transition.slideUpIn" delay={200}>
 				<div className="flex flex-col md:flex-row sm:p-8 container">
 					<div className="flex flex-1 flex-col min-w-0">
 						<FuseAnimate delay={600}>
@@ -109,7 +172,7 @@ function AnalyticsDashboardApp() {
 						</div>
 					</div>
 				</div>
-			</FuseAnimate>
+			</FuseAnimate> */}
 		</div>
 	);
 }

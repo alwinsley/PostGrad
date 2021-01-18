@@ -1,5 +1,5 @@
 const locale = {
-	APP_TITLE: 'بريد',
+	APP_TITLE: 'صندوق الرسائل',
 	COMPOSE: 'بريد جديد',
 	FOLDERS: 'المجلدات',
 	FILTERS: 'مرشحات',

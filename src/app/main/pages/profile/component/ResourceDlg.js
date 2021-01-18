@@ -39,7 +39,7 @@ const ResourceDlg = ({resource, open, onClose, onSave}) => {
 
     return (
         <Dialog open={open} onClose={onClose} aria-labelledby="form-dialog-title" fullWidth maxWidth="sm">
-            <DialogTitle id="form-dialog-title">Edit Attribute</DialogTitle>
+            <DialogTitle id="form-dialog-title" style={{backgroundColor: '#192d3e', color: 'white'}}>Edit Attribute</DialogTitle>
             <DialogContent>
                 <TextField
                     autoFocus
@@ -75,8 +75,8 @@ const ResourceDlg = ({resource, open, onClose, onSave}) => {
                 />
             </DialogContent>
             <DialogActions>
-                <Button onClick={handleSave} color="primary">Save</Button>
-                <Button onClick={onClose} color="primary">Cancel</Button>
+                <Button variant="contained" onClick={handleSave} color="primary">Save</Button>
+                <Button variant="outlined" onClick={onClose} color="primary">Cancel</Button>
             </DialogActions>
         </Dialog>
     )

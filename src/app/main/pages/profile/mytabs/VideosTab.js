@@ -5,10 +5,13 @@ import FuseAnimateGroup from '@fuse/core/FuseAnimateGroup';
 import { 
 	GridList,
 	GridListTile,
+	Grid,
 	Icon,
 } from '@material-ui/core';
 import CardTopBar from '../component/CardTopBar';
 import ResourceDlg from '../component/ResourceDlg';
+import LinkUploader from 'app/components/LinkUploader';
+import VideoPlayer from 'app/components/VideoPlayer';
 
 import { asset_path } from '../../../../helpers/resource';
 
@@ -16,8 +19,7 @@ const VideosTab = ({oldResources, resources, onAddRS, onDeleteRS, onEditRS}) => 
 	const [isModal, setIsModal] = useState(false);
 	const [selected, setSelected] = useState(null);
 
-	function handleUploadChange(e) {
-		const { files } = e.target;
+	const handleUploadChange = (files) => {
 		onAddRS(files, "VIDEO");
 	}
 
@@ -44,19 +46,17 @@ const VideosTab = ({oldResources, resources, onAddRS, onDeleteRS, onEditRS}) => 
 						animation: 'transition.slideUpBigIn'
 					}}
 				>
-					<label	htmlFor="video-file" className="flex items-center justify-center relative w-128 h-128 rounded-8 mx-8 mb-16 overflow-hidden cursor-pointer shadow hover:shadow-lg">
-						<input accept="video/*"	className="hidden" id="video-file"	type="file" multiple onChange={handleUploadChange}/>
-						<Icon fontSize="large" color="action">
-							cloud_upload
-						</Icon>
-					</label>
+					<Grid sm={12} md={6}>
+						<LinkUploader accept="video/*" multiple onChangeFile={handleUploadChange} onChangeLink={(link) => onAddRS(link, 'LINK')}/>
+					</Grid>
+					<div className="mb-24"></div>
 
 					<GridList className="" spacing={8} cols={0}>
 						{!!resources.length && resources.map((rs, index) => {
 							if(rs.type !== 'VIDEO') return null;
 							return (
 								<GridListTile key={index} classes={{ root: 'w-full sm:w-1/2 md:w-1/4', tile: 'rounded-8 shadow'}}>
-									<video src={asset_path(rs.url)} controls style={{height: '100%', width: '100%'}}></video>
+									<VideoPlayer url={asset_path(rs.url)} style={{height: '100%', width: '100%'}}/>
 									<CardTopBar title={rs.description} onEdit={() => handleOpenModal(index, rs)} onDelete={() => onDeleteRS(null, index)}/>
 								</GridListTile>
 							)
@@ -65,7 +65,7 @@ const VideosTab = ({oldResources, resources, onAddRS, onDeleteRS, onEditRS}) => 
 							if(rs.type != 'VIDEO') return null;
 							return	(
 								<GridListTile key={rs.id} classes={{root: 'w-full sm:w-1/2 md:w-1/4', tile: 'rounded-8 shadow'}}>
-									<video src={asset_path(rs.url)} controls style={{height: '100%', width: '100%'}}></video>
+									<VideoPlayer url={asset_path(rs.url)} style={{height: '100%', width: '100%'}}/>
 									<CardTopBar title={rs.description} onEdit={() => handleOpenModal(index, rs)} onDelete={() => onDeleteRS(rs.id, index)}/>
 								</GridListTile>
 							)

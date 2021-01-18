@@ -1,27 +1,18 @@
-import Checkbox from '@material-ui/core/Checkbox';
-import Icon from '@material-ui/core/Icon';
-import IconButton from '@material-ui/core/IconButton';
-import Menu from '@material-ui/core/Menu';
-import MenuItem from '@material-ui/core/MenuItem';
 import React, { useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { selectFolders } from '../store/foldersSlice';
-import { selectLabels } from '../store/labelsSlice';
-import {
-	toggleLabelOnSelectedMails,
-	setFolderOnSelectedMails,
-	selectMailsByParameter,
-	deselectAllMails,
-	selectAllMails,
-	selectMails
-} from '../store/mailsSlice';
 
-function MailToolbar(props) {
+import {
+	Checkbox,
+	Icon,
+	IconButton,
+	Menu,
+	MenuItem
+} from '@material-ui/core';
+
+import { useDispatch, useSelector } from 'react-redux';
+
+
+function MailToolbar({checkstatus, onChangeSelectAll, onDelete, ...props}) {
 	const dispatch = useDispatch();
-	const selectedMailIds = useSelector(({ mailApp }) => mailApp.mails.selectedMailIds);
-	const mails = useSelector(selectMails);
-	const labels = useSelector(selectLabels);
-	const folders = useSelector(selectFolders);
 
 	const [menu, setMenu] = useState({
 		selectMenu: null,
@@ -43,19 +34,20 @@ function MailToolbar(props) {
 		});
 	}
 
-	function handleCheckChange(event) {
-		return event.target.checked ? dispatch(selectAllMails()) : dispatch(deselectAllMails());
+	const handleCheckChange = () => {
+		let _status = checkstatus === 'all' ? 'none' : 'all'; 
+		onChangeSelectAll(_status);
 	}
 
 	return (
 		<div className="flex flex-1 items-center sm:px-8">
 			<Checkbox
 				onChange={handleCheckChange}
-				checked={selectedMailIds.length === Object.keys(mails).length && selectedMailIds.length > 0}
-				indeterminate={selectedMailIds.length !== Object.keys(mails).length && selectedMailIds.length > 0}
+				checked={checkstatus === 'all'}
+				indeterminate={checkstatus === 'some'}
 			/>
 
-			<IconButton
+			{/* <IconButton
 				className=""
 				size="small"
 				aria-label="More"
@@ -104,49 +96,17 @@ function MailToolbar(props) {
 				>
 					Unread
 				</MenuItem>
-				<MenuItem
-					onClick={ev => {
-						dispatch(selectMailsByParameter(['starred', true]));
-						handleMenuClose(ev, 'select');
-					}}
-				>
-					Starred
-				</MenuItem>
-				<MenuItem
-					onClick={ev => {
-						dispatch(selectMailsByParameter(['starred', false]));
-						handleMenuClose(ev, 'select');
-					}}
-				>
-					Unstarred
-				</MenuItem>
-				<MenuItem
-					onClick={ev => {
-						dispatch(selectMailsByParameter(['important', true]));
-						handleMenuClose(ev, 'select');
-					}}
-				>
-					Important
-				</MenuItem>
-				<MenuItem
-					onClick={ev => {
-						dispatch(selectMailsByParameter(['important', false]));
-						handleMenuClose(ev, 'select');
-					}}
-				>
-					Unimportant
-				</MenuItem>
-			</Menu>
+			</Menu> */}
 
-			{selectedMailIds.length > 0 && (
+			{(checkstatus === 'all' || checkstatus === 'some') && (
 				<>
 					<div className="border-r-1 h-48 w-1 mx-12 my-0" />
 
-					<IconButton onClick={ev => dispatch(setFolderOnSelectedMails(4))} aria-label="Delete">
+					<IconButton onClick={onDelete} aria-label="Delete">
 						<Icon>delete</Icon>
 					</IconButton>
 
-					<IconButton
+					{/* <IconButton
 						aria-label="More"
 						aria-owns={menu.folders ? 'folders-menu' : null}
 						aria-haspopup="true"
@@ -202,7 +162,7 @@ function MailToolbar(props) {
 									{label.title}
 								</MenuItem>
 							))}
-					</Menu>
+					</Menu> */}
 				</>
 			)}
 		</div>

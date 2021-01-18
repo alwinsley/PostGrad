@@ -40,8 +40,8 @@ const navigationConfig = [
 			},
 			{
 				id: 'calendar',
-				title: 'Calendar',
-				translate: 'CALENDAR',
+				title: 'Schedules',
+				translate: 'Schedules',
 				type: 'item',
 				icon: 'today',
 				url: '/apps/calendar'
@@ -50,8 +50,8 @@ const navigationConfig = [
 		]
 	},
 	{
-		id: 'user-interface',
-		title: 'Pages',
+		id: 'users',
+		title: 'Users',
 		type: 'group',
 		icon: 'web',
 		children: [
@@ -60,7 +60,7 @@ const navigationConfig = [
 				title: 'Coaches',
 				// translate: 'COACHES',
 				type: 'item',
-				icon: 'shopping_cart',
+				icon: 'supervisor_account',
 				url: '/coaches',
 				exact: true
 			},
@@ -69,22 +69,9 @@ const navigationConfig = [
 				title: 'Palyers',
 				// translate: 'PLAYERS',
 				type: 'item',
-				icon: 'shopping_cart',
+				icon: 'supervisor_account',
 				url: '/players',
 				exact: true
-			},
-			{
-				id: 'mail',
-				title: 'Message',
-				// translate: 'MAIL',
-				type: 'item',
-				icon: 'email',
-				url: '/messages',
-				badge: {
-					title: 25,
-					bg: '#F44336',
-					fg: '#FFFFFF'
-				}
 			},
 			// {
 			// 	id: 'profile',
@@ -100,6 +87,73 @@ const navigationConfig = [
 			// 	icon: 'person',
 			// 	url: '/my_profile'
 			// },
+		]
+	},
+	{
+		id: 'service',
+		title: 'Services',
+		type: 'group',
+		icon: 'web',
+		children: [
+			{
+				id: 'mail',
+				title: 'Message',
+				translate: 'Message',
+				type: 'item',
+				icon: 'email',
+				url: '/messages',
+				// badge: {
+				// 	title: 25,
+				// 	bg: '#F44336',
+				// 	fg: '#FFFFFF'
+				// }
+			},
+			{
+				id: 'membership',
+				title: 'Membership',
+				translate: 'Membership',
+				type: 'item',
+				icon: 'email',
+				url: '/membership',
+				exact: true,
+				auth: authRoles.onlyCoach,
+			},
+		]
+	},
+	{
+		id: 'management',
+		title: 'Management',
+		type: 'group',
+		icon: 'web',
+		auth: authRoles.onlyAdmin,
+		children: [
+			{
+				id: 'teams',
+				title: 'Teams',
+				translate: 'Teams',
+				type: 'item',
+				icon: 'supervisor_account',
+				url: '/teams',
+				exact: true
+			},
+			// {
+			// 	id: 'games',
+			// 	title: 'Games',
+			// 	translate: 'Games',
+			// 	type: 'item',
+			// 	icon: 'supervisor_account',
+			// 	url: '/games',
+			// 	exact: true
+			// },
+			{
+				id: 'SponsorshipAds',
+				title: 'Sponsorship ads',
+				translate: 'Sponsorship ads',
+				type: 'item',
+				icon: 'broken_image',
+				url: '/sponsorship-ads',
+				exact: true
+			}
 		]
 	},
 ];

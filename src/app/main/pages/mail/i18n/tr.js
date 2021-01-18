@@ -1,5 +1,5 @@
 const locale = {
-	APP_TITLE: 'Posta',
+	APP_TITLE: 'MesajKutusu',
 	COMPOSE: 'YENİ E-POSTA',
 	FOLDERS: 'KLASÖRLER',
 	FILTERS: 'FİLTRELER',

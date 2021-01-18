@@ -4,10 +4,12 @@ import FuseAnimateGroup from '@fuse/core/FuseAnimateGroup';
 import { 
 	GridList,
 	GridListTile,
+	Grid,
 	Icon,
 } from '@material-ui/core';
 import CardTopBar from '../component/CardTopBar';
 import ResourceDlg from '../component/ResourceDlg';
+import ClickUploader from 'app/components/ClickUploader';
 
 import { asset_path } from '../../../../helpers/resource';
 
@@ -15,8 +17,7 @@ const PhotosTab = ({oldResources, resources, onAddRS, onDeleteRS, onEditRS}) => 
 	const [isModal, setIsModal] = useState(false);
 	const [selected, setSelected] = useState(null);
 	
-	function handleUploadChange(e) {
-		const { files } = e.target;
+	const handleUploadChange = (files) => {
 		onAddRS(files, "IMAGE");
 	}
 
@@ -43,13 +44,10 @@ const PhotosTab = ({oldResources, resources, onAddRS, onDeleteRS, onEditRS}) => 
 						animation: 'transition.slideUpBigIn'
 					}}
 				>
-					<label	htmlFor="image-file" className="flex items-center justify-center relative w-128 h-128 rounded-8 mx-8 mb-16 overflow-hidden cursor-pointer shadow hover:shadow-lg">
-						<input accept="image/*"	className="hidden" id="image-file"	type="file" multiple onChange={handleUploadChange}/>
-						<Icon fontSize="large" color="action">
-							cloud_upload
-						</Icon>
-					</label>
-
+					<Grid sm={12} md={6}>
+						<ClickUploader accept="image/*" multiple onChange={handleUploadChange}/>
+					</Grid>
+					<div className="mb-24"></div>
 					<GridList className="" spacing={8} cols={0}>
 						{!!resources.length && resources.map((rs, index) => {
 							if(rs.type !== 'IMAGE') return null;

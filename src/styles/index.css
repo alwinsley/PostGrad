@@ -109,6 +109,26 @@ input:-webkit-autofill {
 :focus {
     outline-color: transparent;
 }
+.text-overflow-hidden {
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+.text-overflow-fade {
+    overflow: hidden;
+    position: relative;
+    height: 4em; /* exactly three lines */
+}
+.text-overflow-fade:after {
+    content: "";
+    text-align: right;
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    width: 30%;
+    height: 1.2em;
+    background: linear-gradient(to right, rgba(255, 255, 255, 0), rgba(255, 255, 255, 1) 50%);
+}
 
 @import 'print.css';
 
@@ -117,3 +137,5 @@ input:-webkit-autofill {
 @import 'prism.css';
 
 @import 'tailwind.css';
+
+@import 'spinner.css';

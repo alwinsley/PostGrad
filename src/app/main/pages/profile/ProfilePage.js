@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useSelector } from 'react-redux';
 
 import FuseAnimate from '@fuse/core/FuseAnimate';
 import FusePageSimple from '@fuse/core/FusePageSimple';
@@ -14,11 +15,13 @@ import PhotosTab from './tabs/PhotosTab';
 import VideosTab from './tabs/VideosTab';
 import SpecialTab from './tabs/SpecialTab';
 import InfoTab from './tabs/InfoTab';
+import TranscriptTab from './tabs/TranscriptTab';
 
-import MessageDlg from './component/MessageDlg';
+import MessageDlg from 'app/components/MessageDlg';
 
 import { getProfile } from '../../../services/profileService';
 import { asset_path } from '../../../helpers/resource';
+import { checkAccess } from 'app/auth/authAcess';
 
 const useStyles = makeStyles(theme => ({
 	layoutHeader: {
@@ -52,6 +55,7 @@ const defaultData = {
 
 function ProfilePage(props) {
 	const classes = useStyles();
+	const me = useSelector(({ auth }) => auth.user);
 	const [profile, setProfile] = useState(defaultData);
 	const [resources, setResources] = useState([]);
 	const [selectedTab, setSelectedTab] = useState(0);
@@ -71,18 +75,6 @@ function ProfilePage(props) {
 
 	function handleTabChange(event, value) {
 		setSelectedTab(value);
-	}
-
-	const openMessageModal = () => {
-		setMessageModal(true);
-	}
-
-	const closeMessageModal = () => {
-		setMessageModal(false);
-	}
-
-    const sendMessage = (message) => {
-		console.log(message);
 	}
 
 	return (
@@ -120,7 +112,7 @@ function ProfilePage(props) {
 									variant="contained"
 									color="secondary"
 									// disabled={!canBeSubmitted()}
-									onClick={openMessageModal}
+									onClick={() => setMessageModal(true)}
 								>
 									Send Message
 								</Button>
@@ -140,34 +132,29 @@ function ProfilePage(props) {
 							root: 'h-64 w-full'
 						}}
 					>
-						<Tab classes={{	root: 'h-64' }}	label="Personal Info"/>
-						<Tab classes={{	root: 'h-64' }}	label="About Me"/>
+						<Tab classes={{	root: 'h-64' }}	label="Information"/>
+						{/* <Tab classes={{	root: 'h-64' }}	label="About Me"/> */}
 						<Tab classes={{	root: 'h-64' }}	label="Photos"/>
 						<Tab classes={{	root: 'h-64' }}	label="Videos"/>
-						<Tab classes={{	root: 'h-64' }}	label="Highlights"/>
-						<Tab classes={{	root: 'h-64' }}	label="Workouts"/>
+						{checkAccess(me, 'TRANSCRIPT') && <Tab classes={{	root: 'h-64' }}	label="Transcript & Eligibility"/>}
+						{/* <Tab classes={{	root: 'h-64' }}	label="Highlights"/> */}
+						{/* <Tab classes={{	root: 'h-64' }}	label="Workouts"/> */}
 					</Tabs>
 				}
 				content={
 					<div className="p-16 sm:p-24">
 						{selectedTab === 0 && <InfoTab profile={profile}/>}
-						{selectedTab === 1 && <AboutTab profile={profile}/>}
-						{selectedTab === 2 && <PhotosTab resources={resources}/>}
-						{selectedTab === 3 && <VideosTab resources={resources}/>}
-						{selectedTab === 4 && <SpecialTab resources={resources} tabType="HIGHLIGHT"/>}
-						{selectedTab === 5 && <SpecialTab resources={resources} tabType="WORKOUT"/>}
+						{/* {selectedTab === 1 && <AboutTab profile={profile}/>} */}
+						{selectedTab === 1 && <PhotosTab resources={resources}/>}
+						{selectedTab === 2 && <VideosTab resources={resources}/>}
+						{selectedTab === 3 && <TranscriptTab profile={profile}/>}
+						{/* {selectedTab === 4 && <SpecialTab resources={resources} tabType="HIGHLIGHT"/>} */}
+						{/* {selectedTab === 5 && <SpecialTab resources={resources} tabType="WORKOUT"/>} */}
 					</div>
 				}
 			/>
 
-			{messageModal && 
-				<MessageDlg
-					open={messageModal}
-					to={profile}
-					onClose={closeMessageModal}
-					onSend={sendMessage}
-				/>
-			}
+			{messageModal && <MessageDlg open={messageModal} title="Send Message" to={profile} onClose={() => setMessageModal(false)}/> }
 		</>
 	);
 }

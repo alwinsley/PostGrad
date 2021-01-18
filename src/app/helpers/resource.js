@@ -18,5 +18,10 @@ export const buildResource = (files, type, user_id) => {
 }
 
 export const asset_path = (path) => {
+    if(!path) return '';
+
+    var regexp = /^(?:http(s)?:\/\/)?[\w.-]+(?:\.[\w\.-]+)+[\w\-\._~:/?#[\]@!\$&'\(\)\*\+,;=.]+$/
+    
+    if(regexp.test(path)) return path;
     return API_URL + path;
 }

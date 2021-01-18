@@ -1,20 +1,37 @@
-import Hidden from '@material-ui/core/Hidden';
-import Icon from '@material-ui/core/Icon';
-import IconButton from '@material-ui/core/IconButton';
-import Input from '@material-ui/core/Input';
-import Paper from '@material-ui/core/Paper';
-import { ThemeProvider } from '@material-ui/core/styles';
-import React from 'react';
+import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
-import { selectMainTheme } from 'app/store/fuse/settingsSlice';
-import { setMailsSearchText } from './store/mailsSlice';
 
-function MailAppHeader(props) {
-	const dispatch = useDispatch();
-	const searchText = useSelector(({ mailApp }) => mailApp.mails.searchText);
+import {
+	Hidden,
+	Icon,
+	IconButton,
+	Input,
+	Paper
+} from '@material-ui/core';
+
+import { ThemeProvider } from '@material-ui/core/styles';
+import { selectMainTheme } from 'app/store/fuse/settingsSlice';
+
+const MailAppHeader = ({ onChangeSearch, ...props}) => {
 	const mainTheme = useSelector(selectMainTheme);
 	const { t } = useTranslation('mailApp');
+
+	const [searchText, setSearchText] = useState('');
+
+	const handleChangeSearch = (e) => {
+		const { value } = e.target;
+		setSearchText(value);
+
+		if(!value) onChangeSearch('');
+	}
+
+	const handleSearch = (e) => {
+		const { keyCode } = e;
+		if(keyCode !== 13) return;
+		
+		onChangeSearch(searchText);
+	}
 
 	return (
 		<ThemeProvider theme={mainTheme}>
@@ -40,7 +57,8 @@ function MailAppHeader(props) {
 						inputProps={{
 							'aria-label': 'Search'
 						}}
-						onChange={ev => dispatch(setMailsSearchText(ev))}
+						onChange={handleChangeSearch}
+						onKeyDown={handleSearch}
 					/>
 				</Paper>
 			</div>

@@ -5,7 +5,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import withReducer from 'app/store/withReducer';
 import clsx from 'clsx';
 import moment from 'moment';
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { Calendar, momentLocalizer, Views } from 'react-big-calendar';
 import withDragAndDrop from 'react-big-calendar/lib/addons/dragAndDrop';
 import 'react-big-calendar/lib/addons/dragAndDrop/styles.css';
@@ -13,16 +13,12 @@ import 'react-big-calendar/lib/css/react-big-calendar.css';
 import * as ReactDOM from 'react-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import CalendarHeader from './CalendarHeader';
-import EventDialog from './EventDialog';
 import reducer from './store';
-import {
-	dateFormat,
-	selectEvents,
-	openNewEventDialog,
-	openEditEventDialog,
-	updateEvent,
-	getEvents
-} from './store/eventsSlice';
+import {updateEvent} from './store/eventsSlice';
+
+import ScheduleDlg from 'app/components/ScheduleDlg';
+
+import { postSchedule, updateSchedule, deleteSchedule, getSchedules } from 'app/services/schedule_api';
 
 const localizer = momentLocalizer(moment);
 
@@ -184,20 +180,26 @@ const useStyles = makeStyles(theme => ({
 
 function CalendarApp(props) {
 	const dispatch = useDispatch();
-	const events = useSelector(selectEvents).map(event => ({
-		...event,
-		start: moment(event.start, dateFormat).toDate(),
-		end: moment(event.end, dateFormat).toDate()
-	}));
-
+	const me = useSelector(({ auth }) => auth.user);
 	const classes = useStyles(props);
 	const headerEl = useRef(null);
+	const [events, setEvents] = useState([]);
+	const [loading, setLoadeding] = useState(true);
+
+	const [selectedEvent, setSelectedEvent] = useState(null);
+	const [openDlg, setOpenDlg] = useState(false);
+	
+	useEffect(() => {
+		setLoadeding(false);
+	}, []);
+
 
 	useEffect(() => {
-		dispatch(getEvents());
-	}, [dispatch]);
+		loadSchedules();
+	}, []);
 
 	function moveEvent({ event, start, end }) {
+		return;
 		dispatch(
 			updateEvent({
 				...event,
@@ -208,6 +210,7 @@ function CalendarApp(props) {
 	}
 
 	function resizeEvent({ event, start, end }) {
+		return;
 		delete event.type;
 		dispatch(
 			updateEvent({
@@ -216,6 +219,69 @@ function CalendarApp(props) {
 				end
 			})
 		);
+	}
+
+	const loadSchedules = () => {
+		setLoadeding(true);
+
+		getSchedules().then(res => {
+			setEvents(res.data.schedules);
+			setLoadeding(false);
+		}).catch(err => {
+			console.log(err);
+			setLoadeding(false);
+		})
+	}
+
+	const handleAddNewEvent = (data) => {
+		if(data){
+			console.log(data);
+			setSelectedEvent({
+				title: '',
+				allDay: true,
+				start_date: moment(data.start).format('YYYY-MM-DD hh:mm:ss'),
+				end_date: moment(data.end).format('YYYY-MM-DD hh:mm:ss'),
+				desc: ''
+			});
+		}else{
+			setSelectedEvent(null);
+		}
+		
+		setOpenDlg(true);
+	}
+
+	const handleEditEvent = (event) => {
+		setSelectedEvent(event);
+		setOpenDlg(true);
+	}
+
+	const handleSubmitEvent = (type, event) => {
+		if(type === 'DELETE'){
+			deleteSchedule(event.id).then(res => {
+				loadSchedules();
+				setOpenDlg(false);
+			}).catch(err => {
+				console.log(err);
+			})
+			return;
+		}
+
+		const payload = {
+			title: event.title,
+			allDay: event.allDay,
+			start_date: event.start_date,
+			end_date: event.end_date,
+			desc: event.desc
+		};
+
+		const ScheduleAPI = type === 'ADD' ? postSchedule(payload) : updateSchedule(event.id, payload);
+
+		ScheduleAPI.then(res => {
+			loadSchedules();
+			setOpenDlg(false);
+		}).catch(err => {
+			console.log(err);
+		})
 	}
 
 	return (
@@ -231,8 +297,8 @@ function CalendarApp(props) {
 				onEventResize={resizeEvent}
 				defaultView={Views.MONTH}
 				defaultDate={new Date(2020, 3, 1)}
-				startAccessor="start"
-				endAccessor="end"
+				startAccessor="start_date"
+				endAccessor="end_date"
 				views={allViews}
 				step={60}
 				showMultiDayTimes
@@ -244,29 +310,24 @@ function CalendarApp(props) {
 					}
 				}}
 				// onNavigate={handleNavigate}
-				onSelectEvent={event => {
-					dispatch(openEditEventDialog(event));
-				}}
-				onSelectSlot={slotInfo => dispatch(openNewEventDialog(slotInfo))}
+				onSelectEvent={handleEditEvent}
+				onSelectSlot={handleAddNewEvent}
 			/>
-			<FuseAnimate animation="transition.expandIn" delay={500}>
-				<Fab
-					color="secondary"
-					aria-label="add"
-					className={classes.addButton}
-					onClick={() =>
-						dispatch(
-							openNewEventDialog({
-								start: new Date(),
-								end: new Date()
-							})
-						)
-					}
-				>
-					<Icon>add</Icon>
-				</Fab>
-			</FuseAnimate>
-			<EventDialog />
+
+			{me.role === 'ADMIN' && 
+				<FuseAnimate animation="transition.expandIn" delay={500}>
+					<Fab
+						color="secondary"
+						aria-label="add"
+						className={classes.addButton}
+						onClick={handleAddNewEvent}
+					>
+						<Icon>add</Icon>
+					</Fab>
+				</FuseAnimate>
+			}
+
+			<ScheduleDlg event={selectedEvent} editable={me.role === 'ADMIN'} open={openDlg} onClose={() => setOpenDlg(false)} onChange={handleSubmitEvent}/>
 		</div>
 	);
 }

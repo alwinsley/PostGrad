@@ -1,6 +1,10 @@
 import FuseUtils from '@fuse/utils';
 import appsConfigs from 'app/main/apps/appsConfigs';
+import TeamPageConfig from 'app/main/teams/TeamPageConfig';
 import UserPageConfig from 'app/main/users/UserPageConfig';
+import MembershipConfig from 'app/main/memberships/MembershipConfig';
+import SponsorshipConfig from 'app/main/sponsorships/SponsorShipConfig';
+
 import authRoleExamplesConfigs from 'app/main/auth/authRoleExamplesConfigs';
 import LoginConfig from 'app/main/login/LoginConfig';
 import LogoutConfig from 'app/main/logout/LogoutConfig';
@@ -14,7 +18,11 @@ const routeConfigs = [
 	...appsConfigs,
 	...pagesConfigs,
 	...authRoleExamplesConfigs,
+	TeamPageConfig,
 	UserPageConfig,
+	MembershipConfig,
+	SponsorshipConfig,
+	
 	LogoutConfig,
 	LoginConfig,
 	RegisterConfig,

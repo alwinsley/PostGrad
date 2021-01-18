@@ -29,7 +29,7 @@ function MailAppSidebarHeader(props) {
 				</FuseAnimate>
 			</div>
 
-			<FuseAnimate animation="transition.slideUpIn" delay={300}>
+			{/* <FuseAnimate animation="transition.slideUpIn" delay={300}>
 				<TextField
 					id="account-selection"
 					select
@@ -45,7 +45,7 @@ function MailAppSidebarHeader(props) {
 						</MenuItem>
 					))}
 				</TextField>
-			</FuseAnimate>
+			</FuseAnimate> */}
 		</div>
 	);
 }

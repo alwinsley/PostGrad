@@ -9,11 +9,11 @@ const UserPageConfig = {
 	routes: [
 		{
 			path: '/coaches',
-			component: React.lazy(() => import('./coaches'))
+			component: React.lazy(() => import('./CoachList'))
 		},
 		{
 			path: '/players',
-			component: React.lazy(() => import('./players'))
+			component: React.lazy(() => import('./PlayerList'))
 		}
 	]
 };

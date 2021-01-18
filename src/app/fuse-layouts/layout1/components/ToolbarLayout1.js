@@ -1,5 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import { useSelector } from 'react-redux';
+import { Link } from 'react-router-dom';
 import clsx from 'clsx';
 
 import FuseSearch from '@fuse/core/FuseSearch';
@@ -10,7 +11,8 @@ import {
 	Hidden,
 	Toolbar,
 	Badge,
-	Icon
+	Icon,
+	IconButton
 } from '@material-ui/core';
 import { makeStyles, ThemeProvider } from '@material-ui/core/styles';
 import NavbarMobileToggleButton from 'app/fuse-layouts/shared-components/NavbarMobileToggleButton';
@@ -28,7 +30,6 @@ const useStyles = makeStyles(theme => ({
 }));
 
 const ToolbarLayout1 = (props) => {
-	const [timer, setTimer] = useState(null);
 	const [notification, setNotification] = useState(0);
 	const config = useSelector(({ fuse }) => fuse.settings.current.layout.config);
 	const toolbarTheme = useSelector(selectToolbarTheme);
@@ -37,8 +38,6 @@ const ToolbarLayout1 = (props) => {
 
 	useEffect(() => {
 		const timer = setInterval(() => checkMessageStatus(), 5000);
-		setTimer(timer);
-
 		return () => clearInterval(timer);
 	}, []);
 
@@ -48,6 +47,13 @@ const ToolbarLayout1 = (props) => {
 		}).catch(err => {
 			console.log(err);
 		});
+	}
+
+	const handleGoToNotification = () => {
+		// if(!notification) return;
+
+		console.log(props);
+		// const { history }
 	}
 
 	return (
@@ -78,9 +84,13 @@ const ToolbarLayout1 = (props) => {
 
 						<FuseSearch />
 
-						<Badge badgeContent={notification} color="error">
-							<Icon color="action">notifications</Icon>
-						</Badge>
+						
+						<IconButton component={Link} to="/messages">
+							<Badge badgeContent={notification} color="error">
+								<Icon color="action">notifications</Icon>
+							</Badge>
+						</IconButton>
+						
 						{/* <Hidden lgUp> */}
 							{/* <ChatPanelToggleButton /> */}
 						{/* </Hidden> */}

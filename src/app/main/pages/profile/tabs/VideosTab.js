@@ -5,6 +5,7 @@ import GridList from '@material-ui/core/GridList';
 import GridListTile from '@material-ui/core/GridListTile';
 
 import CardTopBar from '../component/CardTopBar';
+import VideoPlayer from 'app/components/VideoPlayer';
 import { asset_path } from '../../../../helpers/resource';
 
 const VideosTab = ({resources}) => {
@@ -22,7 +23,7 @@ const VideosTab = ({resources}) => {
 							if(rs.type !== 'VIDEO') return null;
 							return (
 								<GridListTile key={index} classes={{ root: 'w-full sm:w-1/2 md:w-1/4', tile: 'rounded-8 shadow'}}>
-									<video src={asset_path(rs.url)} controls style={{height: '100%', width: '100%'}}></video>
+									<VideoPlayer url={asset_path(rs.url)} style={{height: '100%', width: '100%'}}/>
 									<CardTopBar title={rs.description} disabled/>
 								</GridListTile>
 							)

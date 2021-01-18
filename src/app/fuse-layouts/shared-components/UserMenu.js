@@ -81,17 +81,26 @@ function UserMenu(props) {
 					</>
 				) : (
 					<>
-						<MenuItem component={Link} to="/my_profile" onClick={userMenuClose} role="button">
-							<ListItemIcon className="min-w-40">
-								<Icon>account_circle</Icon>
-							</ListItemIcon>
-							<ListItemText primary="My Profile" />
-						</MenuItem>
+						{user.role !== "ADMIN" && 
+							<MenuItem component={Link} to="/my_profile" onClick={userMenuClose} role="button">
+								<ListItemIcon className="min-w-40">
+									<Icon>account_circle</Icon>
+								</ListItemIcon>
+								<ListItemText primary="My Profile" />
+							</MenuItem>
+						}
+						
 						<MenuItem component={Link} to="/messages" onClick={userMenuClose} role="button">
 							<ListItemIcon className="min-w-40">
 								<Icon>mail</Icon>
 							</ListItemIcon>
 							<ListItemText primary="Messages" />
+						</MenuItem>
+						<MenuItem component={Link} to="/security" onClick={userMenuClose} role="button">
+							<ListItemIcon className="min-w-40">
+								<Icon>settings</Icon>
+							</ListItemIcon>
+							<ListItemText primary="Security" />
 						</MenuItem>
 						<MenuItem
 							onClick={() => {
