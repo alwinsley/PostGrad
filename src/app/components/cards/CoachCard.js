@@ -76,7 +76,7 @@ const CoachCard = ({user, control, onTriggeredAction, onChangeRecruit, ...props}
             <CardContent>
                 <div className="flex justify-center py-20 relative">
                     <Avatar aria-label="recipe" className={classes.avatar} src={asset_path(user.avatar)}>{user.name.slice(0, 1)}</Avatar>
-                    {!!user.is_member && <div className={classes.member}>MEMBER</div>}
+                    {!!user.member && <div className={classes.member}>MEMBER</div>}
                     {control && 
                         <div className={classes.actions}>
                             <RedIconBtn onClick={() => onTriggeredAction('delete')}><Icon>delete</Icon></RedIconBtn>

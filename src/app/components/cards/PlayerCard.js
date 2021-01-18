@@ -76,16 +76,15 @@ const PlayerCard = ({user, control, onTriggeredAction, onChangeRecruit, ...props
                 <div className="flex justify-center py-20 relative">
                     <Avatar aria-label="recipe" className={classes.avatar} src={asset_path(user.avatar)}>{user.name.slice(0, 1)}</Avatar>
                     <div className={classes.topten}>
-                        {control ? 
+                        {control && 
                             <FormControlLabel
                                 value="end"
                                 control={<Switch color="secondary" checked={user.is_top === 1} onChange={() => onTriggeredAction('recruit')}/>}
                                 label="RECRUIT"
                                 labelPlacement="end"
                             />
-                            :
-                            <Icon className={classes.topicon}>how_to_reg</Icon>
                         }
+                        {!control && user.is_top === 1 && <Icon className={classes.topicon}>how_to_reg</Icon>}
                     </div>
 
                     {control && 
