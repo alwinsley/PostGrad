@@ -2,7 +2,10 @@ import React from 'react';
 import {
 	Grid,
 	TextField,
+	MenuItem
 } from '@material-ui/core';
+
+import { states } from 'app/helpers/resource';
 
 
 const InfoTab = ({profile, errors, handleFieldChange}) => {
@@ -75,11 +78,21 @@ const InfoTab = ({profile, errors, handleFieldChange}) => {
 						label="State"
 						id="state"
 						name="state"
-						value={profile.state}
+						select
+						value={profile.state || ''}
 						onChange={handleFieldChange}
 						variant="outlined"
 						fullWidth
-					/>
+					>
+						<MenuItem key='empty' value=''>
+							select...
+						</MenuItem>
+						{states.map((s) => (
+							<MenuItem key={s.value} value={s.label}>
+								{s.label}
+							</MenuItem>
+						))}
+					</TextField>
 				</Grid>
 				<Grid item sm={12} md={6}>
 					<TextField

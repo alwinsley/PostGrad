@@ -19,8 +19,10 @@ import PhotosTab from './mytabs/PhotosTab';
 import VideosTab from './mytabs/VideosTab';
 import SpecialTab from './mytabs/SpecialTab';
 import InfoTab from './mytabs/InfoTab';
+import ScheduleTab from './mytabs/ScheduleTab';
 import TranscriptTab from './mytabs/TranscriptTab';
 
+import { showMessage } from 'app/store/fuse/messageSlice';
 import { updateUserAvatar } from '../../../auth/store/userSlice';
 import { uploadResources, updateResource, deleteResource, getMyProfile, postProfile } from '../../../services/profileService';
 import { buildResource, asset_path } from '../../../helpers/resource';
@@ -60,7 +62,6 @@ const MyProfilePage = () => {
 	const dispatch = useDispatch();
 	const user = useSelector(({ auth }) => auth.user);
 	const [profile, setProfile] = useState(defaultData);
-	const [oldResources, setOldResources] = useState([]);
 	const [resources, setResources] = useState([]);
 	const [errors, setErrors] = useState({});
 	const [selectedTab, setSelectedTab] = useState(0);
@@ -70,7 +71,7 @@ const MyProfilePage = () => {
 			let _profile = res.data.profile;
 			delete _profile.avatar;
 			setProfile(_profile);
-			setOldResources(res.data.resources);
+			setResources(res.data.resources);
 		}).catch(err => {
 			console.log(err);
 		});
@@ -81,28 +82,29 @@ const MyProfilePage = () => {
 	}
 
 	const handleFieldChange = (e) => {
-		const {id, value} = e.target;
-
-		setProfile({...profile, [id]: value});
+		const {id, name, value} = e.target;
+		const key = id || name;
+		setProfile({...profile, [key]: value});
 	}
 
 	const handleRSAdd = (files, type) => {
+		let formdata = new FormData();
+		formdata.append('user_id', profile.id);
 		if(type === 'LINK'){
-			let _links = buildResource(files, 'VIDEO', profile.id);
-			setResources([..._links, ...resources]);
-			return;
+			formdata.append('type', 'VIDEO');
+			formdata.append('link', files[0]);
+		}else{
+			formdata.append('type', type);
+			_.forEach(files, (file, key) => {
+				formdata.append('file', file);
+			})
 		}
 
-		let formdata = new FormData();
-
-		_.forEach(files, (file, key) => {
-			formdata.append('file', file);
-		})
-
 		uploadResources(formdata).then(res => {
-			let _files = buildResource(res.data.filepath, type, profile.id);
-			setResources([..._files, ...resources]);
+			setResources([...res.data.resources, ...resources]);
+			dispatch(showMessage({variant: 'success', message: 'resources uploaded successfully' }));
 		}).catch(err => {
+			dispatch(showMessage({variant: 'error', message: 'resources uploading failed' }));
 			console.log(err);
 		})
 	}
@@ -114,46 +116,34 @@ const MyProfilePage = () => {
 			workout: data.workout
 		};
 
-		if(data.id){
-			updateResource(data.id, _data).then(res => {
-				let _resources = [...oldResources];
-				_resources[data.index] = res.data.resource;
-				setOldResources(_resources);
-			}).catch(err => {
-				console.log(err);
-			});
-		}else{
+		updateResource(data.id, _data).then(res => {
 			let _resources = [...resources];
-			_resources[data.index] = {..._resources[data.index], ..._data};
+			_resources[data.index] = res.data.resource;
 			setResources(_resources);
-		}
+		}).catch(err => {
+			console.log(err);
+		});
 	}
 
 	const handleRSDelete = (id, index) => {
-		if(id){
-			deleteResource(id).then(res => {
-				let _resources = [...oldResources];
-				_resources.splice(index, 1);
-				setOldResources(_resources);
-			}).catch(err => {
-				alert('error occuorred');
-			})
-		}else{
+		deleteResource(id).then(res => {
 			let _resources = [...resources];
 			_resources.splice(index, 1);
 			setResources(_resources);
-		}
+		}).catch(err => {
+			alert('error occuorred');
+		})
 	}
 
 	const handleSubmit = () => {
-		postProfile({profile, resources}).then(res => {
+		postProfile(profile).then(res => {
 			let _profile = res.data.profile;
 			delete _profile.avatar;
 			setProfile(_profile);
-			setOldResources(res.data.resources);
-			setResources([]);
+			dispatch(showMessage({variant: 'success', message: 'Profile updated successfully' }));
 		}).catch(err => {
 			console.log(err)
+			dispatch(showMessage({variant: 'error', message: 'Invalid data' }));
 		});
 	}
 
@@ -231,8 +221,8 @@ const MyProfilePage = () => {
 					<Tab classes={{	root: 'h-64' }}	label="About Me"/>
 					<Tab classes={{	root: 'h-64' }}	label="Photos"/>
 					<Tab classes={{	root: 'h-64' }}	label="Videos"/>
+					<Tab classes={{	root: 'h-64' }}	label="Schedules"/>
 					<Tab classes={{	root: 'h-64' }}	label="Transcript & Eligibility"/>
-					{/* <Tab classes={{	root: 'h-64' }}	label="Highlights"/> */}
 					{/* <Tab classes={{	root: 'h-64' }}	label="Workouts"/> */}
 				</Tabs>
 			}
@@ -240,11 +230,12 @@ const MyProfilePage = () => {
 				<div className="p-16 sm:p-24">
 					{selectedTab === 0 && <InfoTab profile={profile} errors={errors} handleFieldChange={handleFieldChange}/>}
 					{selectedTab === 1 && <AboutTab profile={profile} errors={errors} handleFieldChange={handleFieldChange}/>}
-					{selectedTab === 2 && <PhotosTab oldResources={oldResources} resources={resources} onAddRS={handleRSAdd} onDeleteRS={handleRSDelete} onEditRS={handleRSEdit}/>}
-					{selectedTab === 3 && <VideosTab oldResources={oldResources} resources={resources} onAddRS={handleRSAdd} onDeleteRS={handleRSDelete} onEditRS={handleRSEdit}/>}
-					{selectedTab === 4 && <TranscriptTab profile={profile}/>}
-					{/* {selectedTab === 4 && <SpecialTab oldResources={oldResources} resources={resources} onAddRS={handleRSAdd} onDeleteRS={handleRSDelete} onEditRS={handleRSEdit} tabType="HIGHLIGHT"/>} */}
-					{/* {selectedTab === 5 && <SpecialTab oldResources={oldResources} resources={resources} onAddRS={handleRSAdd} onDeleteRS={handleRSDelete} onEditRS={handleRSEdit} tabType="WORKOUT"/>} */}
+					{selectedTab === 2 && <PhotosTab resources={resources} onAddRS={handleRSAdd} onDeleteRS={handleRSDelete} onEditRS={handleRSEdit}/>}
+					{selectedTab === 3 && <VideosTab resources={resources} onAddRS={handleRSAdd} onDeleteRS={handleRSDelete} onEditRS={handleRSEdit}/>}
+					{selectedTab === 4 && <ScheduleTab profile={profile}/>}
+					{selectedTab === 5 && <TranscriptTab profile={profile}/>}
+					{/* {selectedTab === 4 && <SpecialTab resources={resources} onAddRS={handleRSAdd} onDeleteRS={handleRSDelete} onEditRS={handleRSEdit} tabType="HIGHLIGHT"/>} */}
+					{/* {selectedTab === 5 && <SpecialTab resources={resources} onAddRS={handleRSAdd} onDeleteRS={handleRSDelete} onEditRS={handleRSEdit} tabType="WORKOUT"/>} */}
 				</div>
 			}
 		/>

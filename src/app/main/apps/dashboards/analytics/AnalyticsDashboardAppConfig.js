@@ -10,7 +10,7 @@ const AnalyticsDashboardAppConfig = {
 	auth: authRoles.notGuest,
 	routes: [
 		{
-			path: '/apps/dashboards/analytics',
+			path: '/apps/dashboards/home',
 			component: React.lazy(() => import('./AnalyticsDashboardApp'))
 		}
 	]

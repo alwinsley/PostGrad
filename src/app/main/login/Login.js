@@ -60,10 +60,10 @@ function Login() {
 						<CardContent className="flex flex-col items-center justify-center w-full py-96 max-w-320">
 							<FuseAnimate delay={300}>
 								<div className="flex items-center mb-12">
-									<img className="logo-icon w-48" src="assets/images/logos/fuse.svg" alt="logo" />
+									<img className="logo-icon" width="128" src="logo.png" alt="logo" />
 								</div>
 							</FuseAnimate>
-							<Typography className="text-24 font-800 logo-text mb-32" color="inherit">Welcome to PostGrad</Typography>
+							{/* <Typography className="text-24 font-800 logo-text mb-32" color="inherit">Welcome to PostGrad</Typography> */}
 
 							<JWTLoginTab />
 

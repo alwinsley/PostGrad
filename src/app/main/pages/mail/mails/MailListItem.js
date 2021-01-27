@@ -21,9 +21,18 @@ const pathToRegexp = require('path-to-regexp');
 const useStyles = makeStyles(theme => ({
 	mailItem: {
 		borderBottom: `1px solid  ${theme.palette.divider}`,
-
+		backgroundColor: 'white',
 		'&.unread': {
-			background: 'rgba(0,0,0,0.03)'
+			backgroundColor: 'rgba(0,0,0,0.03)',
+			'&::after': {
+				content: '""',
+				position: 'absolute',
+				left: 0,
+				display: 'block',
+				height: '100%',
+				width: 4,
+				backgroundColor: '#1ca5ff'
+			}
 		},
 		'&.selected': {
 			'&::after': {
@@ -68,7 +77,7 @@ const MailListItem = ({mail, checked, onSelect, onReply, replyable, ...props}) =
 			className={clsx(
 				classes.mailItem,
 				checked && 'selected',
-				!mail.read && 'unread',
+				routeParams.type === 'inbox' && !mail.status && 'unread',
 				'py-16 px-0 md:px-8'
 			)}
 		>

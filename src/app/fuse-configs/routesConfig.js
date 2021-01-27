@@ -1,6 +1,8 @@
 import FuseUtils from '@fuse/utils';
 import appsConfigs from 'app/main/apps/appsConfigs';
 import TeamPageConfig from 'app/main/teams/TeamPageConfig';
+import GamePageConfig from 'app/main/games/GamePageConfig';
+import SchedulePageConfig from 'app/main/schedules/SchedulePageConfig';
 import UserPageConfig from 'app/main/users/UserPageConfig';
 import MembershipConfig from 'app/main/memberships/MembershipConfig';
 import SponsorshipConfig from 'app/main/sponsorships/SponsorShipConfig';
@@ -19,6 +21,8 @@ const routeConfigs = [
 	...pagesConfigs,
 	...authRoleExamplesConfigs,
 	TeamPageConfig,
+	GamePageConfig,
+	SchedulePageConfig,
 	UserPageConfig,
 	MembershipConfig,
 	SponsorshipConfig,
@@ -37,7 +41,7 @@ const routes = [
 	{
 		path: '/',
 		exact: true,
-		component: () => <Redirect to="/apps/dashboards/analytics" />
+		component: () => <Redirect to="/apps/dashboards/home" />
 	},
 	{
 		component: () => <Redirect to="/pages/errors/error-404" />

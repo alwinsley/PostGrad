@@ -17,15 +17,16 @@ import Typography from '@material-ui/core/Typography';
 import { DateTimePicker } from '@material-ui/pickers';
 import moment from 'moment';
 
+import { postSchedule } from 'app/services/schedule_api';
+
 const defaultFormState = {
-	title: '',
-	allDay: true,
-	start_date: moment(new Date(), 'MM/DD/YYYY'),
-	end_date: moment(new Date(), 'MM/DD/YYYY'),
+    title: '',
+    location: '',
+	date: moment(new Date(), 'MM/DD/YYYY'),
 	desc: ''
 };
 
-const ScheduleDlg = ({event, editable, open, onClose, onChange}) => {
+const ScheduleDlg = ({event, editable, open, user, onClose, onChanged}) => {
     const [schedule, setSchedule] = useState(defaultFormState);
     const [isNew, setIsNew] = useState(true);
 
@@ -44,12 +45,18 @@ const ScheduleDlg = ({event, editable, open, onClose, onChange}) => {
     }
 
     const handleChangeDate = (id, value) => {
-        console.log(moment(value, 'YYYY-MM-DD hh:mm:ss'));
         setSchedule({...schedule,[id]: value})
     }
 
     const onSubmit = (type) => {
-        onChange(type, schedule);
+        postSchedule({
+            ...schedule,
+            user_id: user || 0
+        }).then(res => {
+            onChanged(res.data.schedule);
+        }).catch(err => {
+            console.log(err);
+        });
     }
 
     const canBeSubmitted = () => {
@@ -70,7 +77,7 @@ const ScheduleDlg = ({event, editable, open, onClose, onChange}) => {
 			<AppBar position="static">
 				<Toolbar className="flex w-full">
 					<Typography variant="subtitle1" color="inherit">
-						{!event ? 'New Event' : 'Edit Event'}
+						{!event ? 'New Schedule' : 'Edit Schedule'}
 					</Typography>
 				</Toolbar>
 			</AppBar>
@@ -95,23 +102,41 @@ const ScheduleDlg = ({event, editable, open, onClose, onChange}) => {
                     }}
                 />
 
-                <FormControlLabel
+                <TextField
+                    id="location"
+                    label="location"
+                    className="mt-8 mb-16"
+                    InputLabelProps={{
+                        shrink: true
+                    }}
+                    name="location"
+                    value={schedule.location}
+                    onChange={handleChangeField}
+                    variant="outlined"
+                    autoFocus
+                    required
+                    fullWidth
+                    InputProps={{
+                        readOnly: !editable,
+                    }}
+                />
+
+                {/* <FormControlLabel
                     className="mt-8 mb-16"
                     label="All Day"
                     control={<Switch checked={schedule.allDay} id="allDay" name="allDay" onChange={handleChangeField} />}
-                />
+                /> */}
 
                 <DateTimePicker
-                    label="Start"
+                    label="Date"
                     inputVariant="outlined"
-                    value={schedule.start_date}
-                    onChange={date => handleChangeDate('start_date', date)}
+                    value={schedule.date}
+                    onChange={date => handleChangeDate('date', date)}
                     className="mt-8 mb-16 w-full"
-                    maxDate={schedule.end_date}
                     readOnly={!editable}
                 />
 
-                <DateTimePicker
+                {/* <DateTimePicker
                     label="End"
                     inputVariant="outlined"
                     value={schedule.end_date}
@@ -119,7 +144,7 @@ const ScheduleDlg = ({event, editable, open, onClose, onChange}) => {
                     className="mt-8 mb-16 w-full"
                     minDate={schedule.start_date}
                     readOnly={!editable}
-                />
+                /> */}
 
                 <TextField
                     className="mt-8 mb-16"

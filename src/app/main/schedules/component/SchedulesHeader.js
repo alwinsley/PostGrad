@@ -21,7 +21,7 @@ const useStyles = makeStyles((theme) => ({
 	}
 }));
 
-function TeamsHeader({title, onChangeSearch, onCreateTeam, ...props}) {
+function SchedulesHeader({title, onChangeSearch, onCreateSchedule, ...props}) {
 	const mainTheme = useSelector(selectMainTheme);
 	const classes = useStyles();
 	const me = useSelector(({ auth }) => auth.user);
@@ -84,7 +84,7 @@ function TeamsHeader({title, onChangeSearch, onCreateTeam, ...props}) {
 					color="secondary"
 					aria-label="add"
 					className={classes.addButton}
-					onClick={onCreateTeam}
+					onClick={onCreateSchedule}
 				>
 					<Icon>add</Icon>
 				</Fab>
@@ -95,4 +95,4 @@ function TeamsHeader({title, onChangeSearch, onCreateTeam, ...props}) {
 	);
 }
 
-export default TeamsHeader;
+export default SchedulesHeader;

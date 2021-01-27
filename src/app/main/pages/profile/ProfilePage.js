@@ -15,13 +15,13 @@ import PhotosTab from './tabs/PhotosTab';
 import VideosTab from './tabs/VideosTab';
 import SpecialTab from './tabs/SpecialTab';
 import InfoTab from './tabs/InfoTab';
+import ScheduleTab from './tabs/ScheduleTab';
 import TranscriptTab from './tabs/TranscriptTab';
 
 import MessageDlg from 'app/components/MessageDlg';
 
 import { getProfile } from '../../../services/profileService';
 import { asset_path } from '../../../helpers/resource';
-import { checkAccess } from 'app/auth/authAcess';
 
 const useStyles = makeStyles(theme => ({
 	layoutHeader: {
@@ -77,6 +77,13 @@ function ProfilePage(props) {
 		setSelectedTab(value);
 	}
 
+	const handleGoback = () => {
+		console.log(props);
+		if(profile.role === 'PLAYER') props.history.push('/players');
+		else props.history.push('/coaches');
+
+	}
+
 	return (
 		<>
 			<FusePageSimple
@@ -107,15 +114,24 @@ function ProfilePage(props) {
 
 						<div className="flex items-center justify-end">
 							<FuseAnimate animation="transition.slideRightIn" delay={300}>
-								<Button
-									className="whitespace-nowrap normal-case"
-									variant="contained"
-									color="secondary"
-									// disabled={!canBeSubmitted()}
-									onClick={() => setMessageModal(true)}
-								>
-									Send Message
-								</Button>
+								<div>
+									<Button
+										className="whitespace-nowrap normal-case"
+										variant="outlined"
+										color="secondary"
+										// disabled={!canBeSubmitted()}
+										onClick={() => setMessageModal(true)}
+									>
+										Send Message
+									</Button>&nbsp;&nbsp;
+									<Button
+										className="whitespace-nowrap normal-case"
+										variant="contained"
+										onClick={handleGoback}
+									>
+										Back
+									</Button>
+								</div>
 							</FuseAnimate>
 						</div>
 					</div>
@@ -133,23 +149,19 @@ function ProfilePage(props) {
 						}}
 					>
 						<Tab classes={{	root: 'h-64' }}	label="Information"/>
-						{/* <Tab classes={{	root: 'h-64' }}	label="About Me"/> */}
 						<Tab classes={{	root: 'h-64' }}	label="Photos"/>
 						<Tab classes={{	root: 'h-64' }}	label="Videos"/>
-						{checkAccess(me, 'TRANSCRIPT') && <Tab classes={{	root: 'h-64' }}	label="Transcript & Eligibility"/>}
-						{/* <Tab classes={{	root: 'h-64' }}	label="Highlights"/> */}
-						{/* <Tab classes={{	root: 'h-64' }}	label="Workouts"/> */}
+						{me.role !== 'PLAYER' && <Tab classes={{ root: 'h-64' }} label="Schedules"/>}
+						{me.role !== 'PLAYER' && <Tab classes={{ root: 'h-64' }} label="Transcript & Eligibility"/>}
 					</Tabs>
 				}
 				content={
 					<div className="p-16 sm:p-24">
 						{selectedTab === 0 && <InfoTab profile={profile}/>}
-						{/* {selectedTab === 1 && <AboutTab profile={profile}/>} */}
 						{selectedTab === 1 && <PhotosTab resources={resources}/>}
 						{selectedTab === 2 && <VideosTab resources={resources}/>}
-						{selectedTab === 3 && <TranscriptTab profile={profile}/>}
-						{/* {selectedTab === 4 && <SpecialTab resources={resources} tabType="HIGHLIGHT"/>} */}
-						{/* {selectedTab === 5 && <SpecialTab resources={resources} tabType="WORKOUT"/>} */}
+						{selectedTab === 3 && <ScheduleTab profile={profile}/>}
+						{selectedTab === 4 && <TranscriptTab profile={profile}/>}
 					</div>
 				}
 			/>

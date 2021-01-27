@@ -97,7 +97,7 @@ const PlayerCard = ({user, control, onTriggeredAction, onChangeRecruit, ...props
                 <Typography variant="overline">( {user.role} )</Typography>
                 <div className="flex justify-evenly">
                     <Button variant="contained" color="secondary" onClick={() => onTriggeredAction('message')}>Message</Button>
-                    <Button variant="outlined" color="secondary"  onClick={() => onTriggeredAction('detail')}>Detail</Button>
+                    <Button variant="outlined" color="secondary"  onClick={() => onTriggeredAction('detail')}>View</Button>
                 </div>
                 <Divider className={classes.divider}/>
                 <div className={classes.detail}>

@@ -12,7 +12,7 @@ const useStyles = makeStyles((theme) => ({
 	addButton: {
 		position: 'absolute',
 		right: 12,
-		top: 45,
+		bottom: 30,
 		zIndex: 99
 	}
 }));

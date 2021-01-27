@@ -31,6 +31,10 @@ const useStyles = makeStyles((theme) => ({
 	selectEmpty: {
 	  marginTop: theme.spacing(2),
 	},
+	noText: {
+		color: '#cacaca',
+		margin: '10px 0'
+	}
 }));
 
 const TranscriptTab = ({profile}) => {
@@ -88,41 +92,30 @@ const TranscriptTab = ({profile}) => {
 					<ListSubheader component="div" className="flex items-center px-0">
 						<Typography>Transcript</Typography>
 					</ListSubheader>
-					{!!data.transcript && 
+					{!!data.transcript ? 
 						<div >
 							<a href={asset_path(data.transcript)} target="_brank">
 								{data.transcript.split('/').slice(-1)}
 							</a>
-							{me.role === 'ADMIN' && 
-								<IconButton aria-label="menu" onClick={handleDeleteTranscript}>
-									<Icon>delete</Icon>
-								</IconButton>
-							}
 						</div>
+						:
+						<div className={classes.noText}>No Transcript</div>
 					}
-					{me.role === 'ADMIN' && <ClickUploader onChange={handleChangeTranscript}/>}
+					
 
 					<div className="mb-40"></div>
+					
+					<ListSubheader component="div" className="flex items-center px-0">
+						<Typography>Eligibility</Typography>
+					</ListSubheader>
 
-					<FormControl className={classes.formControl}>
-						<InputLabel id="eligibility-label">Eligibility</InputLabel>
-						<Select
-							labelId="eligibility-label"
-							id="eligibility"
-							value={data.eligibility || ""}
-							onChange={handleChange}
-							inputProps={{ readOnly: me.role !== 'ADMIN' }}
-						>
-							<MenuItem>No Item</MenuItem>
-							<MenuItem value="NCAA_I">NCAA I</MenuItem>
-							<MenuItem value="NCAA_II">NCAA II</MenuItem>
-							<MenuItem value="NCAA_III">NCAA III</MenuItem>
-							<MenuItem value="NAIA">NAIA</MenuItem>
-							<MenuItem value="NJCAA_I">NJCAA I</MenuItem>
-							<MenuItem value="NJCAA_II">NJCAA II</MenuItem>
-							<MenuItem value="NJCAA_III">NJCAA III</MenuItem>
-						</Select>
-					</FormControl>
+					{!!data.eligibility ? 
+						<div >
+							<p>{data.eligibility}</p>
+						</div>
+						:
+						<div className={classes.noText}>No Eligibility</div>
+					}
 				</Grid>
 			</Grid>
 			

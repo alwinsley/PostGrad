@@ -23,27 +23,27 @@ const folders = [
 		translate: 'SENT',
 		icon: 'send'
 	},
-	{
-		id: 2,
-		handle: 'drafts',
-		title: 'Drafts',
-		translate: 'DRAFTS',
-		icon: 'email_open'
-	},
-	{
-		id: 3,
-		handle: 'spam',
-		title: 'Spam',
-		translate: 'SPAM',
-		icon: 'error'
-	},
-	{
-		id: 4,
-		handle: 'trash',
-		title: 'Trash',
-		translate: 'TRASH',
-		icon: 'delete'
-	}
+	// {
+	// 	id: 2,
+	// 	handle: 'drafts',
+	// 	title: 'Drafts',
+	// 	translate: 'DRAFTS',
+	// 	icon: 'email_open'
+	// },
+	// {
+	// 	id: 3,
+	// 	handle: 'spam',
+	// 	title: 'Spam',
+	// 	translate: 'SPAM',
+	// 	icon: 'error'
+	// },
+	// {
+	// 	id: 4,
+	// 	handle: 'trash',
+	// 	title: 'Trash',
+	// 	translate: 'TRASH',
+	// 	icon: 'delete'
+	// }
 ];
 
 const useStyles = makeStyles(theme => ({

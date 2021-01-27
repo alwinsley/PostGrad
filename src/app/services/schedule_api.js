@@ -4,6 +4,10 @@ export const getSchedules = () => {
     return axios.get(`/api/schedules`);
 }
 
+export const getUserSchedules = (id) => {
+    return axios.get(`/api/user_schedules/${id}`);
+}
+
 export const postSchedule = (payload) => {
     return axios.post(`/api/schedule`, payload);
 }

@@ -2,8 +2,11 @@ import React from 'react';
 import {
 	Grid,
 	TextField,
+	MenuItem
 } from '@material-ui/core';
+import { DatePicker } from "@material-ui/pickers";
 
+import { positions } from 'app/helpers/resource';
 
 const AboutTab = ({profile, errors, handleFieldChange}) => {
 
@@ -38,6 +41,16 @@ const AboutTab = ({profile, errors, handleFieldChange}) => {
 						variant="outlined"
 						fullWidth
 					/>
+					{/* <DatePicker
+						fullWidth
+						autoOk
+						variant="inline"
+						inputVariant="outlined"
+						views={["year"]}
+						label="Year"
+						value={profile.year}
+						onChange={date => handleFieldChange({target: {id: 'year', value: date}})}
+					/> */}
 				</Grid>
 				<Grid item sm={12} md={6}>
 					<TextField
@@ -47,11 +60,21 @@ const AboutTab = ({profile, errors, handleFieldChange}) => {
 						label="Position"
 						id="position"
 						name="position"
-						value={profile.position}
+						select
+						value={profile.position || ''}
 						onChange={handleFieldChange}
 						variant="outlined"
 						fullWidth
-					/>
+					>
+						<MenuItem key='empty' value=''>
+							select...
+						</MenuItem>
+						{positions.map((p) => (
+							<MenuItem key={p.value} value={p.value}>
+								{p.value}
+							</MenuItem>
+						))}
+					</TextField>
 				</Grid>
 				<Grid item sm={12} md={6}>
 					<TextField

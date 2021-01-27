@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react';
-
+import moment from 'moment';
 import FusePageSimple from '@fuse/core/FusePageSimple';
 
 import UsersHeader from './component/UsersHeader';
@@ -15,12 +15,13 @@ const PlayerList = () => {
 	const [data, setData] = useState([]);
 	const [ended, setEnded] = useState(false);
 	const [search, setSearch] = useState('');
+	const [filters, setFilters] = useState({});
 	const [openModal, setOpenModal] = useState(false);
 	const [deleteId, setDeleteId] = useState(null);
 
 	useEffect(() => {
 		updatePageContent(0);
-	}, [search]);
+	}, [search, filters]);
 
 	const handleRequestMore = () => {
 		if(ended || loading) return;
@@ -31,10 +32,19 @@ const PlayerList = () => {
 		setSearch(search);
 	}
 
+	const handleFilter = (filters) => {
+		setFilters(filters);
+	}
+
 	const updatePageContent = (pageOffset) => {
 		setLoading(true);
 
-		GetProfiles({role, offset: pageOffset, search}).then(res => {
+		let _filters = {...filters};
+		if(_filters.year) {
+			_filters = {..._filters, year: _filters.year.year().toString()}
+		}
+
+		GetProfiles({role, offset: pageOffset, search, ..._filters}).then(res => {
 			let _profiles = res.data.profiles;
 
 			if(pageOffset === 0) setData(_profiles);
@@ -99,13 +109,21 @@ const PlayerList = () => {
 			<FusePageSimple
 				classes={{
 					contentWrapper: 'p-0 h-full overflow-hidden',
-					content: 'flex flex-col h-full',
+					content: 'flex flex-col h-full pb-32',
 					leftSidebar: 'w-256 border-0',
 					header: 'min-h-72 h-72',
 					wrapper: 'min-h-0'
 				}}
 				header={<UsersHeader title="Players" onChangeSearch={handleSearch} onCreateUser={() => setOpenModal(true)}/>}
-				content={<UsersContent loading={loading} data={data} onReachBottom={handleRequestMore} onChangeStatus={handleChangeUserStatus}/>}
+				content={
+					<UsersContent
+						loading={loading}
+						data={data}
+						filterable
+						onReachBottom={handleRequestMore}
+						onChangeStatus={handleChangeUserStatus}
+						onChangeFilter={handleFilter}
+					/>}
 				sidebarInner
 				innerScroll
 			/>

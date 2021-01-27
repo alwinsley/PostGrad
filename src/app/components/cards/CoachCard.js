@@ -87,15 +87,15 @@ const CoachCard = ({user, control, onTriggeredAction, onChangeRecruit, ...props}
                 <Typography variant="overline">( {user.role} )</Typography>
                 <div className="flex justify-evenly">
                     <Button variant="contained" color="secondary" className="m-12" onClick={() => onTriggeredAction('message')}>Message</Button>
-                    <Button variant="outlined" color="secondary"  className="m-12" onClick={() => onTriggeredAction('detail')}>Detail</Button>
+                    <Button variant="outlined" color="secondary"  className="m-12" onClick={() => onTriggeredAction('detail')}>View</Button>
                 </div>
-                <Divider className={classes.divider}/>
+                {/* <Divider className={classes.divider}/>
                 <div className={classes.detail}>
                     <Typography variant="subtitle1" component="p" className="text-overflow-hidden"><strong>City:</strong>  {user.city}</Typography>
                     <Typography variant="subtitle1" component="p" className="text-overflow-hidden"><strong>State:</strong>  {user.state}</Typography>
                     <Typography variant="subtitle1" component="p"><strong>Position:</strong>  {user.position}</Typography>
                     <Typography variant="subtitle1" component="p"><strong>Height:</strong>  {user.height}&nbsp;&nbsp;<strong>Weight:</strong> {user.weight}</Typography>
-                </div>
+                </div> */}
             </CardContent>
         </Card>
 	);
