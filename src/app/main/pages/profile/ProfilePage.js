@@ -151,8 +151,12 @@ function ProfilePage(props) {
 						<Tab classes={{	root: 'h-64' }}	label="Information"/>
 						<Tab classes={{	root: 'h-64' }}	label="Photos"/>
 						<Tab classes={{	root: 'h-64' }}	label="Videos"/>
-						{me.role !== 'PLAYER' && <Tab classes={{ root: 'h-64' }} label="Schedules"/>}
-						{me.role !== 'PLAYER' && <Tab classes={{ root: 'h-64' }} label="Transcript & Eligibility"/>}
+						{me.role !== 'PLAYER' && 
+							<Tab classes={{	root: 'h-64' }}	label={profile.role === 'PLAYER' ? "Schedules": "Camp Dates/Season Schedule"}/>
+						}
+						{me.role !== 'PLAYER' && profile && profile.role === 'PLAYER' &&
+							<Tab classes={{ root: 'h-64' }} label="Transcript & Eligibility"/>
+						}
 					</Tabs>
 				}
 				content={
@@ -161,7 +165,7 @@ function ProfilePage(props) {
 						{selectedTab === 1 && <PhotosTab resources={resources}/>}
 						{selectedTab === 2 && <VideosTab resources={resources}/>}
 						{selectedTab === 3 && <ScheduleTab profile={profile}/>}
-						{selectedTab === 4 && <TranscriptTab profile={profile}/>}
+						{selectedTab === 4 && profile && profile.role === 'PLAYER' && <TranscriptTab profile={profile}/>}
 					</div>
 				}
 			/>

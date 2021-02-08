@@ -1,34 +1,48 @@
 import React, { useEffect, useState } from 'react';
 
-import AppBar from '@material-ui/core/AppBar';
-import Button from '@material-ui/core/Button';
-import Dialog from '@material-ui/core/Dialog';
-import DialogActions from '@material-ui/core/DialogActions';
-import DialogContent from '@material-ui/core/DialogContent';
-import Icon from '@material-ui/core/Icon';
-import IconButton from '@material-ui/core/IconButton';
-import TextField from '@material-ui/core/TextField';
-import Toolbar from '@material-ui/core/Toolbar';
-import Typography from '@material-ui/core/Typography';
-import { DateTimePicker } from '@material-ui/pickers';
-import moment from 'moment';
+import {
+    AppBar,
+    Button,
+    Dialog,
+    DialogActions,
+    DialogContent,
+    Icon,
+    IconButton,
+    TextField,
+    Toolbar,
+    Typography
+} from '@material-ui/core';
+import { makeStyles } from '@material-ui/core/styles';
 
-import { postSchedule } from 'app/services/schedule_api';
+import { PostArticle } from 'app/services/article_api';
+
+const useStyles = makeStyles((theme) => ({
+    fieldWrapper: {
+        display: 'flex',
+        alignItems: 'center',
+        'label': {
+            color: 'rgba(0, 0, 0, 0.54)',
+            cursor: 'pointer'
+        }
+    }
+}));
 
 const defaultFormState = {
     title: '',
-    location: '',
-	date: moment(new Date(), 'MM/DD/YYYY'),
-	desc: ''
+    content: '',
+    image: null,
+    link: null
 };
 
-const ScheduleDlg = ({event, editable, open, user, onClose, onChanged}) => {
-    const [schedule, setSchedule] = useState(defaultFormState);
+const NewsDlg = ({event, editable, open, user, onClose, onChanged}) => {
+    const classes = useStyles();
+    const [article, setArticle] = useState(defaultFormState);
+    const [selectedFile, setSelectedFile] = useState(null);
     const [isNew, setIsNew] = useState(true);
 
     useEffect(() => {
         if(event) {
-            setSchedule(event);
+            setArticle(event);
             setIsNew(!event.title);
         }
     }, [event]);
@@ -37,26 +51,37 @@ const ScheduleDlg = ({event, editable, open, user, onClose, onChanged}) => {
         if(!editable) return;
         const { id, value } = e.target;
 
-        setSchedule({...schedule, [id]: value});
+        setArticle({...article, [id]: value});
     }
 
-    const handleChangeDate = (id, value) => {
-        setSchedule({...schedule,[id]: value})
+    const handleChangeFile = (e) => {
+        const { files } = e.target;
+
+        if(!files.length) return;
+
+        setSelectedFile({
+            file: files[0],
+            filename: files[0].name
+        });
     }
 
-    const onSubmit = (type) => {
-        postSchedule({
-            ...schedule,
-            user_id: user || 0
-        }).then(res => {
-            onChanged(res.data.schedule);
+    const onSubmit = () => {
+        let formdata = new FormData();
+
+        formdata.append('title', article.title);
+        formdata.append('content', article.content);
+        if(article.link) formdata.append('link', article.link);
+        if(selectedFile) formdata.append('image', selectedFile.file);
+
+        PostArticle(formdata).then(res => {
+            onChanged(res.data.article);
         }).catch(err => {
             console.log(err);
         });
     }
 
     const canBeSubmitted = () => {
-        return schedule.title.length > 0;
+        return article.title && article.content;
     }
 
 	return (
@@ -65,7 +90,7 @@ const ScheduleDlg = ({event, editable, open, user, onClose, onChanged}) => {
 			onClose={onClose}
 			fullWidth
 			maxWidth="xs"
-			component="schedule"
+			component="article"
 			classes={{
 				paper: 'rounded-8'
 			}}
@@ -73,7 +98,7 @@ const ScheduleDlg = ({event, editable, open, user, onClose, onChanged}) => {
 			<AppBar position="static">
 				<Toolbar className="flex w-full">
 					<Typography variant="subtitle1" color="inherit">
-						{!event ? 'New Schedule' : 'Edit Schedule'}
+						{!event ? 'News' : 'Edit News'}
 					</Typography>
 				</Toolbar>
 			</AppBar>
@@ -87,7 +112,7 @@ const ScheduleDlg = ({event, editable, open, user, onClose, onChanged}) => {
                         shrink: true
                     }}
                     name="title"
-                    value={schedule.title}
+                    value={article.title}
                     onChange={handleChangeField}
                     variant="outlined"
                     autoFocus
@@ -99,50 +124,12 @@ const ScheduleDlg = ({event, editable, open, user, onClose, onChanged}) => {
                 />
 
                 <TextField
-                    id="location"
-                    label="location"
                     className="mt-8 mb-16"
-                    InputLabelProps={{
-                        shrink: true
-                    }}
-                    name="location"
-                    value={schedule.location}
-                    onChange={handleChangeField}
-                    variant="outlined"
-                    autoFocus
-                    required
-                    fullWidth
-                    InputProps={{
-                        readOnly: !editable,
-                    }}
-                />
-
-                <DateTimePicker
-                    label="Date"
-                    inputVariant="outlined"
-                    value={schedule.date}
-                    onChange={date => handleChangeDate('date', date)}
-                    className="mt-8 mb-16 w-full"
-                    readOnly={!editable}
-                />
-
-                {/* <DateTimePicker
-                    label="End"
-                    inputVariant="outlined"
-                    value={schedule.end_date}
-                    onChange={date => handleChangeDate('end_date', date)}
-                    className="mt-8 mb-16 w-full"
-                    minDate={schedule.start_date}
-                    readOnly={!editable}
-                /> */}
-
-                <TextField
-                    className="mt-8 mb-16"
-                    id="desc"
-                    label="Description"
+                    id="content"
+                    label="Content"
                     type="text"
-                    name="desc"
-                    value={schedule.desc}
+                    name="content"
+                    value={article.content}
                     onChange={handleChangeField}
                     multiline
                     rows={5}
@@ -152,6 +139,31 @@ const ScheduleDlg = ({event, editable, open, user, onClose, onChanged}) => {
                         readOnly: !editable,
                     }}
                 />
+
+                <TextField
+                    className="mt-8 mb-16"
+                    id="link"
+                    label="Link"
+                    type="text"
+                    name="link"
+                    value={article.link}
+                    onChange={handleChangeField}
+                    variant="outlined"
+                    fullWidth
+                    InputProps={{
+                        readOnly: !editable,
+                    }}
+                />
+
+                <div className={classes.fieldWrapper}>
+                    <Typography>Image</Typography>&nbsp;&nbsp;
+                    <label htmlFor="image_input">
+                        <input type="file" id="image_input" accept="image/*" hidden onChange={handleChangeFile}/>
+                        <Icon>add_photo_alternate</Icon>
+                    </label>
+                </div>
+                {selectedFile && <p>{selectedFile.filename}</p> }
+                <br/>
             </DialogContent>
 
             {!!editable && 
@@ -179,4 +191,4 @@ const ScheduleDlg = ({event, editable, open, user, onClose, onChanged}) => {
 	);
 }
 
-export default ScheduleDlg;
+export default NewsDlg;

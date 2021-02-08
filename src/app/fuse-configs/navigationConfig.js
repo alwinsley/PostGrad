@@ -52,7 +52,26 @@ const navigationConfig = [
 		icon: 'card_membership',
 		url: '/membership',
 		exact: true,
+		auth: authRoles.onlyPlayer,
+	},
+	{
+		id: 'favorites',
+		title: 'Favorites',
+		translate: 'Favorites',
+		type: 'item',
+		icon: 'favorite_border',
+		url: '/favorites',
+		exact: true,
 		auth: authRoles.onlyCoach,
+	},
+	{
+		id: 'News',
+		title: 'News',
+		translate: 'News',
+		type: 'item',
+		icon: 'broken_image',
+		url: '/news',
+		exact: true
 	},
 	{
 		id: 'management',
@@ -61,15 +80,15 @@ const navigationConfig = [
 		icon: 'web',
 		auth: authRoles.onlyAdmin,
 		children: [
-			{
-				id: 'teams',
-				title: 'Teams',
-				translate: 'Teams',
-				type: 'item',
-				icon: 'supervisor_account',
-				url: '/teams',
-				exact: true
-			},
+			// {
+			// 	id: 'teams',
+			// 	title: 'Teams',
+			// 	translate: 'Teams',
+			// 	type: 'item',
+			// 	icon: 'supervisor_account',
+			// 	url: '/teams',
+			// 	exact: true
+			// },
 			{
 				id: 'games',
 				title: 'Games',

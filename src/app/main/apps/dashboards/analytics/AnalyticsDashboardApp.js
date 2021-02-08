@@ -150,7 +150,7 @@ function AnalyticsDashboardApp(props) {
 				<ScheduleWidget data={schedules}/>
 			</FuseAnimateGroup>
 
-			<Typography variant="h6" className={classes.layoutHeader}>Top Programs </Typography>
+			{/* <Typography variant="h6" className={classes.layoutHeader}>Top Programs </Typography>
 			<FuseAnimateGroup
 				enter={{animation: 'transition.slideUpBigIn'}}
 				className="flex flex-wrap p-24"
@@ -160,7 +160,7 @@ function AnalyticsDashboardApp(props) {
 						<TeamCard team={team}/>
 					</div>
 				)}	
-			</FuseAnimateGroup>
+			</FuseAnimateGroup> */}
 
 			{!!selectedUser && <MessageDlg open={!!selectedUser} title="Send Message" to={selectedUser} onClose={() => setSelectedUser(null)} /> }
 		</div>

@@ -42,10 +42,12 @@ const InfoTab = ({profile}) => {
 							<Typography className="font-bold mb-4 text-15">Email</Typography>
 							<Typography>{profile.email}</Typography>
 						</div>
-						<div className="mb-24">
-							<Typography className="font-bold mb-4 text-15">Phone Number</Typography>
-							<Typography>{profile.phone || '---'}</Typography>
-						</div>
+						{profile && profile.role === 'PLAYER' && 
+							<div className="mb-24">
+								<Typography className="font-bold mb-4 text-15">NCAA ID</Typography>
+								<Typography>{profile.ncaa || '---'}</Typography>
+							</div>
+						}
 						<div className="mb-24">
 							<Typography className="font-bold mb-4 text-15">City</Typography>
 							<Typography>{profile.city || '---'}</Typography>
@@ -54,10 +56,12 @@ const InfoTab = ({profile}) => {
 							<Typography className="font-bold mb-4 text-15">State</Typography>
 							<Typography>{profile.state || '---'}</Typography>
 						</div>
-						<div className="mb-24">
-							<Typography className="font-bold mb-4 text-15">Zip Code</Typography>
-							<Typography>{profile.zipcode || '---'}</Typography>
-						</div>
+						{profile && profile.role === 'PLAYER' && 
+							<div className="mb-24">
+								<Typography className="font-bold mb-4 text-15">Zip Code</Typography>
+								<Typography>{profile.zipcode || '---'}</Typography>
+							</div>
+						}
 						<div className="mb-24">
 							<Typography className="font-bold mb-4 text-15">Twitter</Typography>
 							<Typography>{profile.twitter || '---'}</Typography>

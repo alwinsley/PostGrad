@@ -6,7 +6,7 @@ import UsersHeader from './component/UsersHeader';
 import UsersContent from './component/UsersContent';
 import AlertDlg from 'app/components/AlertDlg';
 import UserDlg from 'app/components/UserDlg';
-import { GetProfiles, setRecruitUser, deleteUser } from 'app/services/profileService';
+import { GetProfiles, setRecruitUser, deleteUser, UpdateFavorite, GetFavoriteList } from 'app/services/profileService';
 
 const PlayerList = () => {
 	const role = 'PLAYER';
@@ -18,7 +18,22 @@ const PlayerList = () => {
 	const [filters, setFilters] = useState({});
 	const [openModal, setOpenModal] = useState(false);
 	const [deleteId, setDeleteId] = useState(null);
+	const [favorites, setFavorites] = useState([]);
 
+	useEffect(() => {
+		GetFavoriteList().then(res => {
+			let fav_list = res.data.favorites;
+			if(fav_list.length){
+				fav_list = fav_list.map(fav => {
+					return fav.favorited_id
+				});
+				setFavorites(fav_list);
+			}
+		}).catch(err => {
+			console.log(err);
+		});
+	}, []);
+	
 	useEffect(() => {
 		updatePageContent(0);
 	}, [search, filters]);
@@ -66,6 +81,21 @@ const PlayerList = () => {
 	const handleChangeUserStatus = (userId, type) => {
 		if(type === 'recruit') changeRecruit(userId);
 		else if(type === 'delete') setDeleteId(userId);
+		else if(type === 'favorite') setFavorite(userId, true);
+		else if(type === 'unfavorite') setFavorite(userId, false);
+	}
+
+	const setFavorite = (userId, status) => {
+		UpdateFavorite({favorited_id: userId, status}).then(res => {
+			if(status) setFavorites([...favorites, userId]);
+			else {
+				let favlist = [...favorites];
+				favlist.splice(favlist.indexOf(userId), 1);
+				setFavorites(favlist);
+			}
+		}).catch(err => {
+			console.log(err);
+		})
 	}
 
 	const changeRecruit = (id) => {
@@ -120,6 +150,7 @@ const PlayerList = () => {
 						loading={loading}
 						data={data}
 						filterable
+						favorites={favorites}
 						onReachBottom={handleRequestMore}
 						onChangeStatus={handleChangeUserStatus}
 						onChangeFilter={handleFilter}

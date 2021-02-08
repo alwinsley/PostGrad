@@ -4,7 +4,8 @@ import {
 	GridListTile,
 	Grid,
 	Icon,
-	Fab
+	Fab,
+	Typography
 } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 
@@ -24,6 +25,15 @@ const useStyles = makeStyles((theme) => ({
 		right: 12,
 		bottom: 30,
 		zIndex: 99
+	},
+	instrument: {
+		maxWidth: 640,
+		textAlign: 'center',
+		margin: '0 auto 12px'
+	},
+	uploader: {
+		maxWidth: 250,
+		margin: '0 auto 20px'
 	}
 }));
 
@@ -62,10 +72,14 @@ const PhotosTab = ({resources, onAddRS, onDeleteRS, onEditRS}) => {
 						animation: 'transition.slideUpBigIn'
 					}}
 				>
-					<Grid sm={12} md={6}>
-						<ClickUploader accept="image/*" multiple onChange={handleUploadChange}/>
-					</Grid>
-					<div className="mb-24"></div>
+					<div>
+						<div className={classes.instrument}>
+							<Typography>Please take one picture in a door frame and 1 showing wing span. If available, take door picture next to a tape measure. This wil help coaches verify your height and help with your player ranking.</Typography>
+						</div>
+						<div className={classes.uploader}>
+							<ClickUploader accept="image/*" multiple onChange={handleUploadChange}/>
+						</div>
+					</div>
 					<GridList className="" spacing={8} cols={0}>
 						{!!resources.length && resources.map((rs, index) => {
 							if(rs.type !== 'IMAGE') return null;

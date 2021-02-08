@@ -16,7 +16,7 @@ import {
     FormControlLabel,
     Switch, Icon
 } from '@material-ui/core';
-import { RedIconBtn } from '../ColorBtns';
+import { RedIconBtn, GreyIconBtn } from '../ColorBtns';
 import { makeStyles } from '@material-ui/core/styles';
 import { red, purple } from '@material-ui/core/colors';
 
@@ -67,7 +67,7 @@ const useStyles = makeStyles((theme) => ({
     }
   }));
 
-const PlayerCard = ({user, control, onTriggeredAction, onChangeRecruit, ...props}) => {
+const PlayerCard = ({user, control, favoritable, isFavorite, onTriggeredAction, onChangeRecruit, ...props}) => {
     const classes = useStyles();
     
 	return (
@@ -87,14 +87,14 @@ const PlayerCard = ({user, control, onTriggeredAction, onChangeRecruit, ...props
                         {!control && user.is_top === 1 && <Icon className={classes.topicon}>how_to_reg</Icon>}
                     </div>
 
-                    {control && 
-                        <div className={classes.actions}>
-                            <RedIconBtn onClick={() => onTriggeredAction('delete')}><Icon>delete</Icon></RedIconBtn>
-                        </div>
-                    }
+                    <div className={classes.actions}>
+                        {control && <RedIconBtn onClick={() => onTriggeredAction('delete')}><Icon>delete</Icon></RedIconBtn>}
+                        {favoritable && isFavorite && <RedIconBtn onClick={() => onTriggeredAction('unfavorite')}><Icon>favorite</Icon></RedIconBtn>}
+                        {favoritable && !isFavorite && <GreyIconBtn onClick={() => onTriggeredAction('favorite')}><Icon>favorite_border</Icon></GreyIconBtn>}
+                    </div>
                 </div>
                 <Typography variant="h5">{user.name}</Typography>
-                <Typography variant="overline">( {user.role} )</Typography>
+                <Typography variant="overline">{user.position ? `( ${user.position} )` : <span>&nbsp;</span>}</Typography>
                 <div className="flex justify-evenly">
                     <Button variant="contained" color="secondary" onClick={() => onTriggeredAction('message')}>Message</Button>
                     <Button variant="outlined" color="secondary"  onClick={() => onTriggeredAction('detail')}>View</Button>
@@ -103,7 +103,7 @@ const PlayerCard = ({user, control, onTriggeredAction, onChangeRecruit, ...props
                 <div className={classes.detail}>
                     <Typography variant="subtitle1" component="p" className="text-overflow-hidden"><strong>City:</strong>  {user.city}</Typography>
                     <Typography variant="subtitle1" component="p" className="text-overflow-hidden"><strong>State:</strong>  {user.state}</Typography>
-                    <Typography variant="subtitle1" component="p" className="text-overflow-hidden"><strong>Position:</strong>  {user.position}</Typography>
+                    {/* <Typography variant="subtitle1" component="p" className="text-overflow-hidden"><strong>Position:</strong>  {user.position}</Typography> */}
                     <Typography variant="subtitle1" component="p" className="text-overflow-hidden"><strong>Height:</strong>  {user.height}&nbsp;&nbsp;<strong>Weight:</strong> {user.weight}</Typography>
                 </div>
             </CardContent>

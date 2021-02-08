@@ -61,3 +61,13 @@ export const removeTranscript = (userId) => {
     return axios.delete(`/api/transcript/${userId}`);
 }
 
+export const GetFavorites = (payload) => {
+    let query = buildQuery(payload);
+    return axios.get(`/api/favorited_profiles${query}`);
+}
+export const GetFavoriteList = () => {
+    return axios.get('/api/favorite_list');
+}
+export const UpdateFavorite = (payload) => {
+    return axios.put(`/api/update_favorite`, payload);
+}

@@ -65,7 +65,7 @@ const useStyles = makeStyles((theme) => ({
 	}
 }));
 
-const UsersContent = ({loading, data, filterable, onReachBottom, onChangeStatus, onChangeFilter, ...props}) => {
+const UsersContent = ({loading, data, filterable, favorites, onReachBottom, onChangeStatus, onChangeFilter, ...props}) => {
 	const me = useSelector(({ auth }) => auth.user);
 	const classes = useStyles();
 	const [selectedUser, setSelectedUser] = useState(null);
@@ -167,6 +167,8 @@ const UsersContent = ({loading, data, filterable, onReachBottom, onChangeStatus,
 									<PlayerCard
 										user={user}
 										control={me.role === 'ADMIN'}
+										favoritable={me.role === 'COACH'}
+										isFavorite={favorites.includes(user.id)}
 										onTriggeredAction={(action) => handleAction(user, action)}/>
 								:
 									<CoachCard

@@ -14,6 +14,7 @@ import {
 } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 
+import { showMessage } from 'app/store/fuse/messageSlice';
 import { updateUserAvatar } from '../../../auth/store/userSlice';
 import jwtService from 'app/services/jwtService';
 import { asset_path } from '../../../helpers/resource';
@@ -53,9 +54,13 @@ const SecurityPage = () => {
 
 	const handleSubmit = () => {
 		jwtService.resetUserPassword(profile).then(res => {
+			dispatch(showMessage({variant: 'success', message: 'password reset successfully' }));
 			jwtService.setSession(res.data.access_token);
 		}).catch(err => {
+			dispatch(showMessage({variant: 'error', message: 'password reset failed' }));
 			console.log(err)
+		}).then(() => {
+			setProfile(defaultData);
 		});
 	}
 

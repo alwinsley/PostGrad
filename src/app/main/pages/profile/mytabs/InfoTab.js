@@ -2,8 +2,15 @@ import React from 'react';
 import {
 	Grid,
 	TextField,
-	MenuItem
+	MenuItem,
+	FormControl,
+	InputLabel,
+	Input,
+	InputAdornment,
+	IconButton,
+	Icon
 } from '@material-ui/core';
+import { QuestionAnswer } from '@material-ui/icons'
 
 import { states } from 'app/helpers/resource';
 
@@ -42,20 +49,31 @@ const InfoTab = ({profile, errors, handleFieldChange}) => {
 						fullWidth
 					/>
 				</Grid>
-				<Grid item sm={12} md={6}>
-					<TextField
-						className="mt-8 mb-16"
-						error={!!errors.phone}
-						required
-						label="Phone Number"
-						id="phone"
-						name="phone"
-						value={profile.phone}
-						onChange={handleFieldChange}
-						variant="outlined"
-						fullWidth
-					/>
-				</Grid>
+				{profile && profile.role === 'PLAYER' && 
+					<Grid item sm={12} md={6}>
+						<TextField
+							className="mt-8 mb-16"
+							error={!!errors.ncaa}
+							required
+							label="NCAA ID"
+							id="ncaa"
+							name="ncaa"
+							variant="outlined"
+							fullWidth
+							value={profile.ncaa}
+							onChange={handleFieldChange}
+							InputProps={{
+								endAdornment: (
+									<InputAdornment position="start">
+										<a href="https://web3.ncaa.org/ecwr3/" target="_blank" role="button">
+											<Icon >help_outline</Icon>
+										</a>
+									</InputAdornment>
+								)
+							}}
+						/>
+					</Grid>
+				}
 				<Grid item sm={12} md={6}>
 					<TextField
 						className="mt-8 mb-16"
@@ -94,20 +112,22 @@ const InfoTab = ({profile, errors, handleFieldChange}) => {
 						))}
 					</TextField>
 				</Grid>
-				<Grid item sm={12} md={6}>
-					<TextField
-						className="mt-8 mb-16"
-						error={!!errors.zip}
-						required
-						label="Zip"
-						id="zipcode"
-						name="zipcode"
-						value={profile.zipcode}
-						onChange={handleFieldChange}
-						variant="outlined"
-						fullWidth
-					/>
-				</Grid>
+				{profile && profile.role === 'PLAYER' && 
+					<Grid item sm={12} md={6}>
+						<TextField
+							className="mt-8 mb-16"
+							error={!!errors.zip}
+							required
+							label="Zip"
+							id="zipcode"
+							name="zipcode"
+							value={profile.zipcode}
+							onChange={handleFieldChange}
+							variant="outlined"
+							fullWidth
+						/>
+					</Grid>
+				}
 				<Grid item xs={12}>
 					<TextField
 						className="mt-8 mb-16"

@@ -41,7 +41,7 @@ const useStyles = makeStyles(theme => ({
 const defaultData = {
 	name: "",
 	email: "",
-	phone: "",
+	ncaa: "",
 	city: "",
 	state: "",
 	zip: "",
@@ -221,9 +221,8 @@ const MyProfilePage = () => {
 					<Tab classes={{	root: 'h-64' }}	label="About Me"/>
 					<Tab classes={{	root: 'h-64' }}	label="Photos"/>
 					<Tab classes={{	root: 'h-64' }}	label="Videos"/>
-					<Tab classes={{	root: 'h-64' }}	label="Schedules"/>
-					<Tab classes={{	root: 'h-64' }}	label="Transcript & Eligibility"/>
-					{/* <Tab classes={{	root: 'h-64' }}	label="Workouts"/> */}
+					<Tab classes={{	root: 'h-64' }}	label={profile.role === 'PLAYER' ? "Schedules": "Camp Dates/Season Schedule"}/>
+					{profile && profile.role === 'PLAYER' && <Tab classes={{	root: 'h-64' }}	label="Transcript & Eligibility"/> }
 				</Tabs>
 			}
 			content={
@@ -233,9 +232,7 @@ const MyProfilePage = () => {
 					{selectedTab === 2 && <PhotosTab resources={resources} onAddRS={handleRSAdd} onDeleteRS={handleRSDelete} onEditRS={handleRSEdit}/>}
 					{selectedTab === 3 && <VideosTab resources={resources} onAddRS={handleRSAdd} onDeleteRS={handleRSDelete} onEditRS={handleRSEdit}/>}
 					{selectedTab === 4 && <ScheduleTab profile={profile}/>}
-					{selectedTab === 5 && <TranscriptTab profile={profile}/>}
-					{/* {selectedTab === 4 && <SpecialTab resources={resources} onAddRS={handleRSAdd} onDeleteRS={handleRSDelete} onEditRS={handleRSEdit} tabType="HIGHLIGHT"/>} */}
-					{/* {selectedTab === 5 && <SpecialTab resources={resources} onAddRS={handleRSAdd} onDeleteRS={handleRSDelete} onEditRS={handleRSEdit} tabType="WORKOUT"/>} */}
+					{selectedTab === 5 && profile && profile.role === 'PLAYER' && <TranscriptTab profile={profile}/>}
 				</div>
 			}
 		/>

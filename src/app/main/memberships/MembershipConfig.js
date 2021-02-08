@@ -5,7 +5,7 @@ const MembershipConfig = {
 	settings: {
 		layout: {}
 	},
-	auth: authRoles.notGuest,
+	auth: authRoles.onlyPlayer,
 	routes: [
 		{
 			path: '/membership',

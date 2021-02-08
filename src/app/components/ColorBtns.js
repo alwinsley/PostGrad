@@ -10,3 +10,13 @@ export const RedIconBtn = withStyles({
       },
   },
 })(IconButton);
+
+export const GreyIconBtn = withStyles({
+  root: {
+      color: '#b1b1b1',
+      backgroundColor: 'unset',
+      '&:hover': {
+        backgroundColor: '#b3b3b32e',
+      },
+  },
+})(IconButton);

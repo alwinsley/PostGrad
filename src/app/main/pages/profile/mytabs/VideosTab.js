@@ -6,7 +6,8 @@ import {
 	GridListTile,
 	Grid,
 	Icon,
-	Fab
+	Fab,
+	Typography
 } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 
@@ -26,6 +27,15 @@ const useStyles = makeStyles((theme) => ({
 		right: 12,
 		bottom: 30,
 		zIndex: 99
+	},
+	instrument: {
+		maxWidth: 640,
+		textAlign: 'center',
+		margin: '0 auto 12px'
+	},
+	uploader: {
+		maxWidth: 400,
+		margin: '0 auto 20px'
 	}
 }));
 
@@ -64,8 +74,17 @@ const VideosTab = ({resources, onAddRS, onDeleteRS, onEditRS}) => {
 						animation: 'transition.slideUpBigIn'
 					}}
 				>
+					<div>
+						<div className={classes.instrument}>
+							<Typography>Add 1 highlight film and at least 1 workout training video.</Typography>
+						</div>
+						<div className={classes.uploader}>
+							<LinkUploader accept="video/*" multiple onChangeFile={handleUploadChange} onChangeLink={(link) => onAddRS(link, 'LINK')}/>
+						</div>
+					</div>
+
 					<Grid sm={12} md={6}>
-						<LinkUploader accept="video/*" multiple onChangeFile={handleUploadChange} onChangeLink={(link) => onAddRS(link, 'LINK')}/>
+						
 					</Grid>
 					<div className="mb-24"></div>
 

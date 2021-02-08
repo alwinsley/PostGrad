@@ -102,6 +102,20 @@ const TranscriptTab = ({profile}) => {
 		})
 	}
 
+	const handleDownload = (url, filename) => {
+		fetch(url).then(res => {
+			return res.blob();
+		}).then(blob => {
+			const href = window.URL.createObjectURL(blob);
+			const link = document.createElement('a');
+			link.href = href;
+			link.download = filename;
+			document.body.appendChild(link);
+			link.click();
+			document.body.removeChild(link);
+		}).catch(err => console.error(err));
+	}
+
 	// if(!checkAccess(me, 'TRANSCRIPT')){
 	// 	return (
 	// 		<FuseAnimate delay={100}>
@@ -126,15 +140,21 @@ const TranscriptTab = ({profile}) => {
 							<a href={asset_path(data.transcript)} target="_brank">
 								{data.transcript.split('/').slice(-1)}
 							</a>
-							{me.role === 'ADMIN' && 
-								<IconButton aria-label="menu" onClick={handleDeleteTranscript}>
-									<Icon>delete</Icon>
+							<div>
+								<IconButton aria-label="menu" onClick={() => handleDownload(asset_path(data.transcript), data.transcript.split('/').slice(-1))}>
+									<Icon>get_app</Icon>
 								</IconButton>
-							}
+								{me.role === 'ADMIN' && 
+									<IconButton aria-label="menu" onClick={handleDeleteTranscript}>
+										<Icon>delete</Icon>
+									</IconButton>
+								}
+							</div>
+							
 						</div>
 						:
 						<div className={classes.noText}>
-							{me.role === 'ADMIN' ? <ClickUploader onChange={handleChangeTranscript}/> : 'No Transcript'}
+							{me.role === 'ADMIN' ? <ClickUploader accept="image/*,.pdf" onChange={handleChangeTranscript}/> : 'No Transcript'}
 						</div>
 					}
 					

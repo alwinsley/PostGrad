@@ -84,7 +84,7 @@ const CoachCard = ({user, control, onTriggeredAction, onChangeRecruit, ...props}
                     }
                 </div>
                 <Typography variant="h5">{user.name}</Typography>
-                <Typography variant="overline">( {user.role} )</Typography>
+                <Typography variant="overline">{user.school ? `( ${user.school} )` : <span>&nbsp;</span>}</Typography>
                 <div className="flex justify-evenly">
                     <Button variant="contained" color="secondary" className="m-12" onClick={() => onTriggeredAction('message')}>Message</Button>
                     <Button variant="outlined" color="secondary"  className="m-12" onClick={() => onTriggeredAction('detail')}>View</Button>
