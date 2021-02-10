@@ -9,7 +9,7 @@ const MembershipConfig = {
 	routes: [
 		{
 			path: '/membership',
-			component: React.lazy(() => import('./MembershipList'))
+			component: React.lazy(() => import('./Membership'))
 		}
 	]
 };

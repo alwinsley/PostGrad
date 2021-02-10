@@ -162,7 +162,7 @@ const UsersContent = ({loading, data, filterable, favorites, onReachBottom, onCh
 						className="flex flex-wrap p-24"
 					>
 						{data.map((user, index) => 
-							<div className="w-full pb-24 sm:w-1/2 md:w-1/3 lg:w-1/5 sm:p-16" key={index}>
+							<div className="w-full pb-24 sm:w-1/2 md:w-1/3 lg:w-1/4 xl:w-1/5 sm:p-16" key={index}>
 								{user.role === 'PLAYER' ?
 									<PlayerCard
 										user={user}

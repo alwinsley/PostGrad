@@ -43,7 +43,7 @@ const useStyles = makeStyles((theme) => ({
         height: '40px',
         overflow: 'hidden'
     },
-    member: {
+    aprove: {
         position: 'absolute',
         top: 0,
         left: 0,
@@ -51,6 +51,16 @@ const useStyles = makeStyles((theme) => ({
         padding: '2px 5px',
         borderRadius: '4px',
         color: '#192d3e',
+        fontWeight: 'bold'
+    },
+    disable: {
+        position: 'absolute',
+        top: 0,
+        left: 0,
+        backgroundColor: '#808080',
+        padding: '2px 5px',
+        borderRadius: '4px',
+        color: '#e6e6e6',
         fontWeight: 'bold'
     },
     actions: {
@@ -74,13 +84,19 @@ const CoachCard = ({user, control, onTriggeredAction, onChangeRecruit, ...props}
 	return (
 		<Card className={classes.root}>
             <CardContent>
-                <div className="flex justify-center py-20 relative">
+                <div className="flex justify-center pb-20 pt-32 relative">
                     <Avatar aria-label="recipe" className={classes.avatar} src={asset_path(user.avatar)}>{user.name.slice(0, 1)}</Avatar>
-                    {!!user.member && <div className={classes.member}>MEMBER</div>}
                     {control && 
-                        <div className={classes.actions}>
-                            <RedIconBtn onClick={() => onTriggeredAction('delete')}><Icon>delete</Icon></RedIconBtn>
-                        </div>
+                        <>
+                            {user.status === 'ACTIVE' ? 
+                                <div className={classes.aprove}>APROVED</div>
+                                :
+                                <div className={classes.disable}>DISABLED</div>
+                            }
+                            <div className={classes.actions}>
+                                <RedIconBtn onClick={() => onTriggeredAction('delete')}><Icon>delete</Icon></RedIconBtn>
+                            </div>
+                        </>
                     }
                 </div>
                 <Typography variant="h5">{user.name}</Typography>

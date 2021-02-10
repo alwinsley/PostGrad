@@ -1,5 +1,31 @@
 import React from 'react';
 
+const styles = {
+    container: {
+        width: '100%',
+        display: 'flex',
+        position: 'relative'
+    },
+    ratio: {
+        width: '100%',
+        marginBottom: 'calc(100%*0.5625)'
+    },
+    video: {
+        position: 'absolute',
+        top: 0,
+        left: 0,
+        width: '100%',
+        height: '100%'
+    }
+}
+const checkHudleEmbeded = (url) => {
+    const matches = url.match(/^https?\:\/\/([^\/?#]+)(?:[\/?#]|$)/i);
+    if(!matches) return false;
+
+    if(matches[1] === 'www.hudl.com' || matches[1] === 'hudl.com') return true;
+    return false;
+}
+
 const getYoutubeEmbeded = (url) => {
     let _url = url.replace(/(>|<)/gi,'').split(/(vi\/|v=|\/v\/|youtu\.be\/|\/embed\/)/);
     if(_url[2] !== undefined) {
@@ -10,8 +36,18 @@ const getYoutubeEmbeded = (url) => {
     return null;
 }
 
-const VideoPlayer = ({url, style}) => {
-    
+const Video = ({url, style}) => {
+    if(checkHudleEmbeded(url)){
+        return (
+            <iframe
+                style={style}
+                src={url}
+                frameborder="0"
+                allowFullscreen>
+            </iframe>
+        )
+    }
+
     const youtubeUrl = getYoutubeEmbeded(url);
     if(youtubeUrl){
         return (
@@ -27,6 +63,17 @@ const VideoPlayer = ({url, style}) => {
 
     return (
         <video src={url} controls style={style}></video>
+    )
+}
+
+const VideoPlayer = (props) => {
+    return (
+        <div style={styles.container}>
+            <div style={styles.ratio}></div>
+            <div style={styles.video}>
+                <Video {...props}></Video>
+            </div>
+        </div>
     )
 }
 

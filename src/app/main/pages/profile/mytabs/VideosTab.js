@@ -67,7 +67,7 @@ const VideosTab = ({resources, onAddRS, onDeleteRS, onEditRS}) => {
 	const _videos = resources.filter(re => re.type === 'VIDEO');
 
 	return (
-		<div className="md:flex max-w-2xl">
+		<div className="md:flex w-full">
 			<div className="flex flex-col flex-1 md:ltr:pr-32 md:rtl:pl-32">
 				<FuseAnimateGroup
 					enter={{
@@ -83,16 +83,13 @@ const VideosTab = ({resources, onAddRS, onDeleteRS, onEditRS}) => {
 						</div>
 					</div>
 
-					<Grid sm={12} md={6}>
-						
-					</Grid>
 					<div className="mb-24"></div>
 
 					<GridList className="" spacing={8} cols={0}>
 						{!!resources.length && resources.map((rs, index) => {
 							if(rs.type != 'VIDEO') return null;
 							return	(
-								<GridListTile key={rs.id} classes={{root: 'w-full sm:w-1/2 md:w-1/4', tile: 'rounded-8 shadow'}}>
+								<GridListTile key={rs.id} classes={{root: 'w-full md:w-1/3 lg:w-1/4', tile: 'rounded-8 shadow'}} style={{height: 'auto'}}>
 									<VideoPlayer url={asset_path(rs.url)} style={{height: '100%', width: '100%'}}/>
 									<CardTopBar title={rs.description} onEdit={() => handleOpenModal(index, rs)} onDelete={() => onDeleteRS(rs.id, index)}/>
 								</GridListTile>

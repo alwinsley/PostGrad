@@ -12,6 +12,7 @@ import FuseAnimateGroup from '@fuse/core/FuseAnimateGroup';
 
 import FullScreenView from 'app/components/FullScreenView';
 import CardTopBar from '../component/CardTopBar';
+import RatioImage from 'app/components/RatioImage';
 import { asset_path } from 'app/helpers/resource';
 
 const useStyles = makeStyles((theme) => ({
@@ -30,7 +31,7 @@ const PhotosTab = ({resources}) => {
 	const _photos = resources.filter(re => re.type === 'IMAGE');
 	
 	return (
-		<div className="md:flex max-w-2xl">
+		<div className="md:flex w-full">
 			<div className="flex flex-col flex-1 md:ltr:pr-32 md:rtl:pl-32">
 				<FuseAnimateGroup
 					enter={{
@@ -41,8 +42,8 @@ const PhotosTab = ({resources}) => {
 						{!!_photos.length && _photos.map((rs, index) => {
 							if(rs.type !== 'IMAGE') return null;
 							return (
-								<GridListTile key={index} classes={{ root: 'w-full sm:w-1/2 md:w-1/4', tile: 'rounded-8 shadow'}}>
-									<img src={asset_path(rs.url)}/>
+								<GridListTile key={index} classes={{ root: 'w-full md:w-1/3 lg:w-1/4', tile: 'rounded-8 shadow'}} style={{height: 250}}>
+									<RatioImage src={asset_path(rs.url)}/>
 									<CardTopBar title={rs.description} disabled/>
 								</GridListTile>
 							)

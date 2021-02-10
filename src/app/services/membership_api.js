@@ -1,7 +1,7 @@
 import axios from 'axios';
 
-export const getPermissions = () => {
-    return axios.get(`/api/permissions`);
+export const getMemberships = () => {
+    return axios.get(`/api/memberships`);
 }
 
 export const postSubscription = (payload) => {

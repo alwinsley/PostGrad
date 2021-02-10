@@ -11,6 +11,7 @@ import {
 import { makeStyles } from '@material-ui/core/styles';
 import { asset_path } from 'app/helpers/resource';
 import VideoPlayer from 'app/components/VideoPlayer';
+import RatioImage from 'app/components/RatioImage';
 import Slider from 'react-slick';
 import "slick-carousel/slick/slick.css"; 
 import "slick-carousel/slick/slick-theme.css";
@@ -76,7 +77,9 @@ const useStyles = makeStyles((theme) => ({
         padding: '0 5px'
     },
     itemWrapper: {
-        padding: '0 10px'
+        padding: '0 10px',
+        display: 'flex',
+        margin: '20px 0'
     },
 	item: {
         width: '100%'
@@ -110,7 +113,7 @@ const FullScreenView = ({open, onClose, list}) => {
                         }else if(item.type === 'IMAGE'){
                             return (
                                 <div className={classes.itemWrapper}>
-                                    <img key={index} className={classes.item} src={asset_path(item.url)} />
+                                    <RatioImage key={index} src={asset_path(item.url)} />
                                 </div>
                             )
                         }

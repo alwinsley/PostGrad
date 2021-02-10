@@ -38,7 +38,9 @@ export const setRecruitUser = (id, data) => {
 export const createUser = (payload) => {
     return axios.post('/api/user', payload);
 }
-
+export const updateUser = (id, payload) => {
+    return axios.put(`/api/user/${id}`, payload);
+}
 export const deleteUser = (id) => {
     return axios.delete(`/api/user/${id}`);
 }

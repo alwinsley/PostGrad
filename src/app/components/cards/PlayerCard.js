@@ -44,7 +44,7 @@ const useStyles = makeStyles((theme) => ({
     },
     topten: {
         position: 'absolute',
-        top: -10,
+        top: 0,
         left: 0,
         color: 'gray'
     },
@@ -64,6 +64,14 @@ const useStyles = makeStyles((theme) => ({
     topicon: {
         color: '#ffc800',
         fontSize: 40
+    },
+    disable: {
+        backgroundColor: '#808080',
+        padding: '2px 5px',
+        borderRadius: '4px',
+        color: '#e6e6e6',
+        fontWeight: 'bold',
+        whiteSpace: 'nowrap'
     }
   }));
 
@@ -73,16 +81,22 @@ const PlayerCard = ({user, control, favoritable, isFavorite, onTriggeredAction, 
 	return (
 		<Card className={classes.root}>
             <CardContent>
-                <div className="flex justify-center py-20 relative">
+                <div className="flex justify-center pb-20 pt-32 relative">
                     <Avatar aria-label="recipe" className={classes.avatar} src={asset_path(user.avatar)}>{user.name.slice(0, 1)}</Avatar>
                     <div className={classes.topten}>
                         {control && 
-                            <FormControlLabel
-                                value="end"
-                                control={<Switch color="secondary" checked={user.is_top === 1} onChange={() => onTriggeredAction('recruit')}/>}
-                                label="RECRUIT"
-                                labelPlacement="end"
-                            />
+                            <>
+                                {user.status === 'ACTIVE' ? 
+                                    <FormControlLabel
+                                        value="end"
+                                        control={<Switch color="secondary" checked={user.is_top === 1} onChange={() => onTriggeredAction('recruit')}/>}
+                                        label="RECRUIT"
+                                        labelPlacement="end"
+                                    />
+                                    :
+                                    <div className={classes.disable}>NO MEMBER</div>
+                                }
+                            </>
                         }
                         {!control && user.is_top === 1 && <Icon className={classes.topicon}>how_to_reg</Icon>}
                     </div>

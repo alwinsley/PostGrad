@@ -16,6 +16,7 @@ import FullScreenView from 'app/components/FullScreenView';
 import CardTopBar from '../component/CardTopBar';
 import ResourceDlg from '../component/ResourceDlg';
 import ClickUploader from 'app/components/ClickUploader';
+import RatioImage from 'app/components/RatioImage';
 
 import { asset_path } from '../../../../helpers/resource';
 
@@ -65,7 +66,7 @@ const PhotosTab = ({resources, onAddRS, onDeleteRS, onEditRS}) => {
 	const _photos = resources.filter(re => re.type === 'IMAGE');
 
 	return (
-		<div className="md:flex max-w-2xl">
+		<div className="md:flex w-full">
 			<div className="flex flex-col flex-1 md:ltr:pr-32 md:rtl:pl-32">
 				<FuseAnimateGroup
 					enter={{
@@ -84,8 +85,8 @@ const PhotosTab = ({resources, onAddRS, onDeleteRS, onEditRS}) => {
 						{!!resources.length && resources.map((rs, index) => {
 							if(rs.type !== 'IMAGE') return null;
 							return (
-								<GridListTile key={rs.id} classes={{ root: 'w-full sm:w-1/2 md:w-1/4', tile: 'rounded-8 shadow'}}>
-									<img src={asset_path(rs.url)}/>
+								<GridListTile key={rs.id} classes={{ root: 'w-full md:w-1/3 lg:w-1/4', tile: 'rounded-8 shadow'}} style={{height: 250}}>
+									<RatioImage src={asset_path(rs.url)}/>
 									<CardTopBar title={rs.description} onEdit={() => handleOpenModal(index, rs)} onDelete={() => onDeleteRS(rs.id, index)}/>
 								</GridListTile>
 							)

@@ -85,11 +85,11 @@ const ToolbarLayout1 = (props) => {
 						<FuseSearch />
 
 						
-						<IconButton component={Link} to="/messages">
+						{/* <IconButton component={Link} to="/messages">
 							<Badge badgeContent={notification} color="error">
 								<Icon color="action">notifications</Icon>
 							</Badge>
-						</IconButton>
+						</IconButton> */}
 						
 						{/* <Hidden lgUp> */}
 							{/* <ChatPanelToggleButton /> */}

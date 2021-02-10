@@ -84,7 +84,7 @@ const ScheduleTab = ({profile}) => {
 				<ScheduleDlg
 					open={openModal}
 					user={profile.id}
-					editable={me.role === 'ADMIN'}
+					editable={true}
 					onClose={() => setOpenModal(false)}
 					onChanged={handleCreatedSchedule}/>
 			}

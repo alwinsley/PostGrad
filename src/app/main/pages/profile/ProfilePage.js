@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 
 import FuseAnimate from '@fuse/core/FuseAnimate';
 import FusePageSimple from '@fuse/core/FusePageSimple';
@@ -20,7 +20,8 @@ import TranscriptTab from './tabs/TranscriptTab';
 
 import MessageDlg from 'app/components/MessageDlg';
 
-import { getProfile } from '../../../services/profileService';
+import { getProfile, updateUser } from '../../../services/profileService';
+import { showMessage } from 'app/store/fuse/messageSlice';
 import { asset_path } from '../../../helpers/resource';
 
 const useStyles = makeStyles(theme => ({
@@ -55,6 +56,7 @@ const defaultData = {
 
 function ProfilePage(props) {
 	const classes = useStyles();
+	const dispatch = useDispatch();
 	const me = useSelector(({ auth }) => auth.user);
 	const [profile, setProfile] = useState(defaultData);
 	const [resources, setResources] = useState([]);
@@ -82,6 +84,15 @@ function ProfilePage(props) {
 		if(profile.role === 'PLAYER') props.history.push('/players');
 		else props.history.push('/coaches');
 
+	}
+
+	const handleUpdateUserStatus = (status) => {
+		updateUser(profile.id, {status}).then(res => {
+			dispatch(showMessage({variant: 'success', message: "User's status updated successfully" }));
+			setProfile({...profile, status});
+		}).catch(err => {
+			dispatch(showMessage({variant: 'error', message: "User's status can't update" }));
+		});
 	}
 
 	return (
@@ -115,6 +126,29 @@ function ProfilePage(props) {
 						<div className="flex items-center justify-end">
 							<FuseAnimate animation="transition.slideRightIn" delay={300}>
 								<div>
+									{me.role === 'ADMIN' && profile.role === 'COACH' && (
+										<>
+											{profile.status === 'ACTIVE' ? 
+												<Button
+													className="whitespace-nowrap normal-case"
+													variant="contained"
+													color="secondary"
+													onClick={() => handleUpdateUserStatus('DISABLE')}
+												>
+													Disable
+												</Button>
+												:
+												<Button
+													className="whitespace-nowrap normal-case"
+													variant="contained"
+													color="secondary"
+													onClick={() => handleUpdateUserStatus('ACTIVE')}
+												>
+													Aprove
+												</Button>
+											}
+										</>
+									)}&nbsp;&nbsp;
 									<Button
 										className="whitespace-nowrap normal-case"
 										variant="outlined"
