@@ -16,7 +16,7 @@ import CalendarHeader from './CalendarHeader';
 import reducer from './store';
 import {updateEvent} from './store/eventsSlice';
 
-import ScheduleDlg from 'app/components/ScheduleDlg';
+import ScheduleDlg from 'app/components/Dialogs/ScheduleDlg';
 
 import { postSchedule, updateSchedule, deleteSchedule, getSchedules } from 'app/services/schedule_api';
 

@@ -28,10 +28,10 @@ const useStyles = makeStyles((theme) => ({
         paddingBottom: 46,
         height: '100%',
         borderRadius: 12,
-        boxShadow: '0px 3px 8px 0px #192d3eb8'
+        boxShadow: '0px 3px 8px 0px #121212b8'
     },
     header: {
-        backgroundColor: '#192d3e',
+        backgroundColor: '#121212',
         color: 'white',
         '& .MuiCardHeader-title': {
             fontSize: '1.6rem',

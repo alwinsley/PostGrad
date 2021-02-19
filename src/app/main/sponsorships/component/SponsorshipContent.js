@@ -5,12 +5,10 @@ import _ from '@lodash';
 
 import FuseAnimate from '@fuse/core/FuseAnimate/FuseAnimate';
 import FuseAnimateGroup from '@fuse/core/FuseAnimateGroup';
-import { 
-	Typography,
-} from '@material-ui/core';
+import { Typography } from '@material-ui/core';
 
 
-import ImageCard from 'app/components/cards/ImageCard';
+import SponsorshipCard from 'app/components/cards/SponsorshipCard';
 import { CircleFullSpinner } from 'app/components/Spinner';
 
 const SponsorshipContent = ({loading, data, onChangeStatus, ...props}) => {
@@ -42,15 +40,13 @@ const SponsorshipContent = ({loading, data, onChangeStatus, ...props}) => {
 		<div className="w-full h-full relative">
 			<FuseAnimateGroup
 				enter={{animation: 'transition.slideUpBigIn'}}
-				className="flex flex-wrap p-24"
+				className="flex flex-wrap p-14"
 			>
 				{data.map((sponsorship, index) => 
-					<div className="w-full pb-24 sm:w-1/2 md:w-1/3 lg:w-1/4 sm:p-5" key={index}>
-						<ImageCard
-							data={sponsorship}
-							control={me.role === 'ADMIN'}
-							onTriggeredAction={(action) => handleAction(sponsorship.id, action)}/>
-					</div>
+					<SponsorshipCard
+						data={sponsorship}
+						control={me.role === 'ADMIN'}
+						onTriggeredAction={(action) => handleAction(sponsorship.id, action)}/>
 				)}	
 			</FuseAnimateGroup>
 

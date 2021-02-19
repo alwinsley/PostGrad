@@ -5,7 +5,7 @@ import FusePageSimple from '@fuse/core/FusePageSimple';
 import SchedulesHeader from './component/SchedulesHeader';
 import SchedulesContent from './component/SchedulesContent';
 import AlertDlg from 'app/components/AlertDlg';
-import ScheduleDlg from 'app/components/ScheduleDlg';
+import ScheduleDlg from 'app/components/Dialogs/ScheduleDlg';
 import { getSchedules, deleteSchedule } from 'app/services/schedule_api';
 
 const ScheduleList = () => {
@@ -14,6 +14,7 @@ const ScheduleList = () => {
 	const [search, setSearch] = useState('');
 	const [openModal, setOpenModal] = useState(false);
 	const [deleteId, setDeleteId] = useState(null);
+	const [selected, setSelected] = useState(null);
 
 	useEffect(() => {
 		updatePageContent();
@@ -37,13 +38,14 @@ const ScheduleList = () => {
 		});
 	}
 
-	const handleChangeScheduleStatus = (scheduleId, type) => {
-		if(type === 'edit') editSchedule(scheduleId);
-		else if(type === 'Delete') setDeleteId(scheduleId);
+	const handleChangeScheduleStatus = (schedule, type) => {
+		if(type === 'Edit') editSchedule(schedule);
+		else if(type === 'Delete') setDeleteId(schedule.id);
 	}
 
-	const editSchedule = (id) => {
-		console.log(id);
+	const editSchedule = (schedule) => {
+		setSelected(schedule);
+		setOpenModal(true);
 	}
 
 	const removeSchedule = () => {
@@ -61,16 +63,22 @@ const ScheduleList = () => {
 		});
 	}
 
-	const handleCreatedSchedule = (schedule) => {
+	const handleSuccessAction = (schedule) => {
 		setOpenModal(false);
+		setSelected(null);
 		updatePageContent();
+	}
+
+	const handleCloseModal = () => {
+		setOpenModal(false);
+		setSelected(null);
 	}
 
 	return (
 		<>
 			<FusePageSimple
 				classes={{
-					contentWrapper: 'p-0 h-full overflow-hidden',
+					contentWrapper: 'p-0 h-full',
 					content: 'flex flex-col h-full',
 					leftSidebar: 'w-256 border-0',
 					header: 'min-h-72 h-72',
@@ -92,7 +100,11 @@ const ScheduleList = () => {
 				onConfirm={removeSchedule}/>
 
 			{openModal && 
-				<ScheduleDlg open={openModal} editable={true} onClose={() => setOpenModal(false)} onChanged={handleCreatedSchedule}/>
+				<ScheduleDlg
+					open={openModal}
+					event={selected}
+					onClose={handleCloseModal}
+					onChanged={handleSuccessAction}/>
 			}
 		</>
 	);

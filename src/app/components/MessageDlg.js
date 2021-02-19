@@ -29,7 +29,7 @@ const useStyles = makeStyles((theme) => ({
       }),
     },
     header: {
-        backgroundColor: '#192d3e',
+        backgroundColor: '#121212',
         color: 'white'
     },
     expandOpen: {

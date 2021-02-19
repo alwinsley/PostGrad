@@ -32,7 +32,7 @@
     margin: 0 auto;
     width: 15%;
     height: 15%;
-    background-color:#29d1de;
+    background-color:#e79b00;
     border-radius: 100%;
     -webkit-animation: sk-circleFadeDelay 1.2s infinite ease-in-out both;
             animation: sk-circleFadeDelay 1.2s infinite ease-in-out both;
@@ -155,7 +155,7 @@
   .spinner > div {
     width: 18px;
     height: 18px;
-    background-color: #29d1de;
+    background-color: #e79b00;
   
     border-radius: 100%;
     display: inline-block;

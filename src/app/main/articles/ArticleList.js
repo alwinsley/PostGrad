@@ -6,7 +6,7 @@ import FusePageSimple from '@fuse/core/FusePageSimple';
 import ArticleHeader from './component/ArticleHeader';
 import ArticleContent from './component/ArticleContent';
 import AlertDlg from 'app/components/AlertDlg';
-import NewsDlg from 'app/components/NewsDlg';
+import NewsDlg from 'app/components/Dialogs/NewsDlg';
 import { GetArticles, DeleteArticle } from 'app/services/article_api';
 
 const ArticleList = () => {
@@ -16,6 +16,7 @@ const ArticleList = () => {
 	const [search, setSearch] = useState('');
 	const [openModal, setOpenModal] = useState(false);
 	const [deleteId, setDeleteId] = useState(null);
+	const [selected, setSelected] = useState(null);
 
 	useEffect(() => {
 		updatePageContent();
@@ -39,51 +40,66 @@ const ArticleList = () => {
 		});
 	}
 
-	const editArticle = (id) => {
-		console.log(id);
+	const handleRemoveArticle = (article) => {
+		setDeleteId(article.id)
 	}
 
-	const handleRemoveArticle = (data) => {
-
-		DeleteArticle(data.id).then(res => {
+	const removeArticle = () => {
+		DeleteArticle(deleteId).then(res => {
+			setDeleteId(null);
 			updatePageContent();
 		}).catch(err => {
 			console.log(err);
 		});
 	}
 
-	const handleCreatedArticle = (article) => {
+	const handleEditArticle = (article) => {
+		setSelected(article);
+		setOpenModal(true);
+	}
+
+	const handleSuccessAction = (article) => {
 		setOpenModal(false);
+		setSelected(null);
 		updatePageContent();
+	}
+
+	const handleCloseModal = () => {
+		setOpenModal(false);
+		setSelected(null);
 	}
 
 	return (
 		<>
 			<FusePageSimple
 				classes={{
-					contentWrapper: 'p-0 h-full overflow-auto',
+					contentWrapper: 'p-0 h-full',
 					content: 'flex flex-col h-full',
 					leftSidebar: 'w-256 border-0',
 					header: 'min-h-72 h-72',
 					wrapper: 'min-h-0'
 				}}
 				header={<ArticleHeader title="News" onChangeSearch={handleSearch} onCreateArticle={() => setOpenModal(true)}/>}
-				content={<ArticleContent loading={loading} data={data} onDelete={handleRemoveArticle}/>}
+				content={<ArticleContent loading={loading} data={data} onDelete={handleRemoveArticle} onEdit={handleEditArticle}/>}
 				sidebarInner
 				innerScroll
 			/>
 			
-			{/* <AlertDlg
+			<AlertDlg
 				open={!!deleteId}
 				type="warning"
 				text="Are you sure to delete?"
 				subtext="you can't recover it"
 				confirmText="Yes, Delete"
 				onClose={() => setDeleteId(null)}
-				onConfirm={removeArticle}/> */}
+				onConfirm={removeArticle}/>
 
 			{openModal && 
-				<NewsDlg open={openModal} editable={true} onClose={() => setOpenModal(false)} onChanged={handleCreatedArticle}/>
+				<NewsDlg
+					open={openModal}
+					data={selected}
+					onClose={handleCloseModal}
+					onChanged={handleSuccessAction}/>
 			}
 		</>
 	);

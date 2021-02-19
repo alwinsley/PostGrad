@@ -1,8 +1,5 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { 
-	GridList,
-	GridListTile,
-	Grid,
 	Icon,
 	Fab,
 	Typography
@@ -13,12 +10,9 @@ import FuseAnimate from '@fuse/core/FuseAnimate/FuseAnimate';
 import FuseAnimateGroup from '@fuse/core/FuseAnimateGroup';
 
 import FullScreenView from 'app/components/FullScreenView';
-import CardTopBar from '../component/CardTopBar';
 import ResourceDlg from '../component/ResourceDlg';
 import ClickUploader from 'app/components/ClickUploader';
-import RatioImage from 'app/components/RatioImage';
-
-import { asset_path } from '../../../../helpers/resource';
+import ImageCard from 'app/components/cards/ImageCard';
 
 const useStyles = makeStyles((theme) => ({
 	button: {
@@ -32,10 +26,6 @@ const useStyles = makeStyles((theme) => ({
 		textAlign: 'center',
 		margin: '0 auto 12px'
 	},
-	uploader: {
-		maxWidth: 250,
-		margin: '0 auto 20px'
-	}
 }));
 
 const PhotosTab = ({resources, onAddRS, onDeleteRS, onEditRS}) => {
@@ -77,21 +67,21 @@ const PhotosTab = ({resources, onAddRS, onDeleteRS, onEditRS}) => {
 						<div className={classes.instrument}>
 							<Typography>Please take one picture in a door frame and 1 showing wing span. If available, take door picture next to a tape measure. This wil help coaches verify your height and help with your player ranking.</Typography>
 						</div>
-						<div className={classes.uploader}>
-							<ClickUploader accept="image/*" multiple onChange={handleUploadChange}/>
+						<div className="w-full mx-auto mb-16 sm:w-320">
+							<ClickUploader accept="image/*" allows="( jpg, png, svg, gif )" multiple onChange={handleUploadChange}/>
 						</div>
 					</div>
-					<GridList className="" spacing={8} cols={0}>
-						{!!resources.length && resources.map((rs, index) => {
-							if(rs.type !== 'IMAGE') return null;
-							return (
-								<GridListTile key={rs.id} classes={{ root: 'w-full md:w-1/3 lg:w-1/4', tile: 'rounded-8 shadow'}} style={{height: 250}}>
-									<RatioImage src={asset_path(rs.url)}/>
-									<CardTopBar title={rs.description} onEdit={() => handleOpenModal(index, rs)} onDelete={() => onDeleteRS(rs.id, index)}/>
-								</GridListTile>
-							)
-						})}
-					</GridList>
+					<div className="flex flex-wrap">
+						{!!_photos.length && _photos.map((rs, index) => 
+							<ImageCard
+								key={index}
+								src={rs.url}
+								description={rs.description}
+								onEdit={() => handleOpenModal(index, rs)}
+								onDelete={() => onDeleteRS(rs.id, index)}
+							/>
+						)}
+					</div>
 				</FuseAnimateGroup>
 			</div>
 

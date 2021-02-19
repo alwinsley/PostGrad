@@ -3,11 +3,7 @@ import {
 	Grid,
 	TextField,
 	MenuItem,
-	FormControl,
-	InputLabel,
-	Input,
 	InputAdornment,
-	IconButton,
 	Icon
 } from '@material-ui/core';
 import { QuestionAnswer } from '@material-ui/icons'
@@ -139,6 +135,15 @@ const InfoTab = ({profile, errors, handleFieldChange}) => {
 						onChange={handleFieldChange}
 						variant="outlined"
 						fullWidth
+						InputProps={{
+							endAdornment: (
+								<InputAdornment position="start">
+									<a href="https://twitter.com/" target="_blank" role="button">
+										<Icon >help_outline</Icon>
+									</a>
+								</InputAdornment>
+							)
+						}}
 					/>
 				</Grid>
 				<Grid item xs={12}>

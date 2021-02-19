@@ -10,10 +10,10 @@ import { makeStyles } from '@material-ui/core/styles';
 
 import FuseAnimate from '@fuse/core/FuseAnimate/FuseAnimate';
 import ScheduleWidget from 'app/components/ScheduleWidget';
-import ScheduleDlg from 'app/components/ScheduleDlg';
+import ScheduleDlg from 'app/components/Dialogs/ScheduleDlg';
+import AlertDlg from 'app/components/AlertDlg';
 
-import { checkAccess } from 'app/auth/authAcess';
-import { getUserSchedules, deleteSchedule } from 'app/services/schedule_api';
+import { getUserSchedules, deleteAdminSchedule } from 'app/services/schedule_api';
 
 const useStyles = makeStyles((theme) => ({
 	addButton: {
@@ -30,6 +30,8 @@ const ScheduleTab = ({profile}) => {
 	const [loading, setLoading] = useState(false);
 	const [openModal, setOpenModal] = useState(false);
 	const [data, setData] = useState([]);
+	const [deleteId, setDeleteId] = useState(null);
+	const [selected, setSelected] = useState(null);
 
 	useEffect(() => {
 		refreshData();
@@ -48,26 +50,36 @@ const ScheduleTab = ({profile}) => {
 		})
 	}
 
-	const onChangeStatus = (status) => {
-		console.log(status)
+	const onChangeStatus = (schedule, type) => {
+		if(type === 'Edit') editSchedule(schedule);
+		else if(type === 'Delete') setDeleteId(schedule.id);
 	}
 
-	const handleCreatedSchedule = () => {
+	const editSchedule = (schedule) => {
+		setSelected(schedule);
+		setOpenModal(true);
+	}
+
+	const removeSchedule = () => {
+		let _data = [...data];
+		let _schedule = _data.find(d => d.id === deleteId);
+		
+		setDeleteId(null);
+
+		deleteAdminSchedule(_schedule.id).then(res => {
+			let _index = _data.indexOf(_schedule);
+			_data.splice(_index, 1);
+			setData(_data);
+		}).catch(err => {
+			console.log(err);
+		});
+	}
+
+	const handleSuccessAction = () => {
 		setOpenModal(false);
+		setSelected(null);
 		refreshData();
 	}
-
-	// if(!checkAccess(me, 'SCHEDULE')){
-	// 	return (
-	// 		<FuseAnimate delay={100}>
-	// 			<div className="text-center py-32">
-	// 				<Typography color="textSecondary" variant="h5" className="mb-24">You have not access to here.</Typography>
-	// 				<Typography color="textSecondary" className="mb-12">Please click this button to get access.</Typography>
-	// 				<Button variant="contained" color="primary" href="/membership">Get Access</Button>
-	// 			</div>
-	// 		</FuseAnimate>
-	// 	);
-	// }
 
 	return (
 		<div className="md:flex max-w-2xl pb-36">
@@ -82,25 +94,36 @@ const ScheduleTab = ({profile}) => {
 					</div>
 				}
 			</FuseAnimate>
-
-			<FuseAnimate animation="transition.expandIn" delay={500}>
-				<Fab
-					color="secondary"
-					aria-label="add"
-					className={classes.addButton}
-					onClick={() => setOpenModal(true)}
-				>
-					<Icon>add</Icon>
-				</Fab>
-			</FuseAnimate>
+			
+			{me.role === 'ADMIN' && 
+				<FuseAnimate animation="transition.expandIn" delay={500}>
+					<Fab
+						color="secondary"
+						aria-label="add"
+						className={classes.addButton}
+						onClick={() => setOpenModal(true)}
+					>
+						<Icon>add</Icon>
+					</Fab>
+				</FuseAnimate>
+			}
+			
+			<AlertDlg
+				open={!!deleteId}
+				type="warning"
+				text="Are you sure to delete?"
+				subtext="you can't recover it"
+				confirmText="Yes, Delete"
+				onClose={() => setDeleteId(null)}
+				onConfirm={removeSchedule}/>
 
 			{openModal && 
 				<ScheduleDlg
 					open={openModal}
 					user={profile.id}
-					editable={me.role === 'ADMIN'}
+					event={selected}
 					onClose={() => setOpenModal(false)}
-					onChanged={handleCreatedSchedule}/>
+					onChanged={handleSuccessAction}/>
 			}
 		</div>
 	);

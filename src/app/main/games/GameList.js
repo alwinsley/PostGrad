@@ -5,7 +5,7 @@ import FusePageSimple from '@fuse/core/FusePageSimple';
 import GamesHeader from './component/GamesHeader';
 import GamesContent from './component/GamesContent';
 import AlertDlg from 'app/components/AlertDlg';
-import GameDlg from 'app/components/GameDlg';
+import GameDlg from 'app/components/Dialogs/GameDlg';
 import { getAllGames, deleteGame } from 'app/services/game_api';
 
 const GameList = () => {
@@ -14,6 +14,7 @@ const GameList = () => {
 	const [search, setSearch] = useState('');
 	const [openModal, setOpenModal] = useState(false);
 	const [deleteId, setDeleteId] = useState(null);
+	const [selected, setSelected] = useState(null);
 
 	useEffect(() => {
 		updatePageContent();
@@ -37,13 +38,14 @@ const GameList = () => {
 		});
 	}
 
-	const handleChangeGameStatus = (gameId, type) => {
-		if(type === 'edit') editGame(gameId);
-		else if(type === 'delete') setDeleteId(gameId);
+	const handleChangeGameStatus = (game, type) => {
+		if(type === 'Edit') editGame(game);
+		else if(type === 'Delete') setDeleteId(game.id);
 	}
 
-	const editGame = (id) => {
-		console.log(id);
+	const editGame = (game) => {
+		setSelected(game);
+		setOpenModal(true);
 	}
 
 	const removeGame = () => {
@@ -61,16 +63,22 @@ const GameList = () => {
 		});
 	}
 
-	const handleCreatedGame = (game) => {
+	const handleSuccessAction = () => {
 		setOpenModal(false);
+		setSelected(null);
 		updatePageContent();
+	}
+
+	const handleCloseModal = () => {
+		setOpenModal(false);
+		setSelected(null);
 	}
 
 	return (
 		<>
 			<FusePageSimple
 				classes={{
-					contentWrapper: 'p-0 h-full overflow-hidden',
+					contentWrapper: 'p-0 h-full',
 					content: 'flex flex-col h-full',
 					leftSidebar: 'w-256 border-0',
 					header: 'min-h-72 h-72',
@@ -92,7 +100,11 @@ const GameList = () => {
 				onConfirm={removeGame}/>
 
 			{openModal && 
-				<GameDlg open={openModal} onClose={() => setOpenModal(false)} onCreatedGame={handleCreatedGame}/>
+				<GameDlg
+					open={openModal}
+					data={selected}
+					onClose={handleCloseModal}
+					onSuccess={handleSuccessAction}/>
 			}
 		</>
 	);

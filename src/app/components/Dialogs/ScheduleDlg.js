@@ -1,42 +1,49 @@
 import React, { useEffect, useState } from 'react';
+import { useSelector } from 'react-redux';
 
-import AppBar from '@material-ui/core/AppBar';
-import Button from '@material-ui/core/Button';
-import Dialog from '@material-ui/core/Dialog';
-import DialogActions from '@material-ui/core/DialogActions';
-import DialogContent from '@material-ui/core/DialogContent';
-import Icon from '@material-ui/core/Icon';
-import IconButton from '@material-ui/core/IconButton';
-import TextField from '@material-ui/core/TextField';
-import Toolbar from '@material-ui/core/Toolbar';
-import Typography from '@material-ui/core/Typography';
+import {
+    AppBar,
+    Button,
+    Dialog,
+    DialogActions,
+    DialogContent,
+    TextField,
+    Toolbar,
+    Typography
+} from '@material-ui/core';
 import { DateTimePicker } from '@material-ui/pickers';
 import moment from 'moment';
 
-import { postSchedule } from 'app/services/schedule_api';
+import { isValidURL } from 'app/helpers/functions';
+import { postSchedule, postAminSchedule } from 'app/services/schedule_api';
 
 const defaultFormState = {
     title: '',
     location: '',
-	date: moment(new Date(), 'MM/DD/YYYY'),
+    date: moment(new Date(), 'MM/DD/YYYY'),
+    link: '',
 	desc: ''
 };
 
-const ScheduleDlg = ({event, editable, open, user, onClose, onChanged}) => {
-    const [schedule, setSchedule] = useState(defaultFormState);
+const ScheduleDlg = ({event, open, user, onClose, onChanged}) => {
+    const me = useSelector(({ auth }) => auth.user);
     const [isNew, setIsNew] = useState(true);
+    const [schedule, setSchedule] = useState(defaultFormState);
+    const [errors, setErrors] = useState({});
 
     useEffect(() => {
         if(event) {
             setSchedule(event);
-            setIsNew(!event.title);
+            setIsNew(!event.id);
         }
     }, [event]);
 
     const handleChangeField = (e) => {
-        if(!editable) return;
         const { id, value } = e.target;
 
+        if(id === 'link'){
+            setErrors({...errors, link: value && !isValidURL(value) ? 'invalid link' : ''})
+        }
         setSchedule({...schedule, [id]: value});
     }
 
@@ -45,7 +52,8 @@ const ScheduleDlg = ({event, editable, open, user, onClose, onChanged}) => {
     }
 
     const onSubmit = (type) => {
-        postSchedule({
+        const PostAPI = me.role === 'ADMIN' ? postAminSchedule : postSchedule;
+        PostAPI({
             ...schedule,
             user_id: user || 0
         }).then(res => {
@@ -56,7 +64,8 @@ const ScheduleDlg = ({event, editable, open, user, onClose, onChanged}) => {
     }
 
     const canBeSubmitted = () => {
-        return schedule.title.length > 0;
+        if(!schedule.title || !schedule.location || !!errors.link) return false;
+        return true;
     }
 
 	return (
@@ -73,7 +82,7 @@ const ScheduleDlg = ({event, editable, open, user, onClose, onChanged}) => {
 			<AppBar position="static">
 				<Toolbar className="flex w-full">
 					<Typography variant="subtitle1" color="inherit">
-						{!event ? 'New Schedule' : 'Edit Schedule'}
+						{isNew ? 'New Schedule' : 'Edit Schedule'}
 					</Typography>
 				</Toolbar>
 			</AppBar>
@@ -93,9 +102,6 @@ const ScheduleDlg = ({event, editable, open, user, onClose, onChanged}) => {
                     autoFocus
                     required
                     fullWidth
-                    InputProps={{
-                        readOnly: !editable,
-                    }}
                 />
 
                 <TextField
@@ -109,12 +115,8 @@ const ScheduleDlg = ({event, editable, open, user, onClose, onChanged}) => {
                     value={schedule.location}
                     onChange={handleChangeField}
                     variant="outlined"
-                    autoFocus
                     required
                     fullWidth
-                    InputProps={{
-                        readOnly: !editable,
-                    }}
                 />
 
                 <DateTimePicker
@@ -123,18 +125,23 @@ const ScheduleDlg = ({event, editable, open, user, onClose, onChanged}) => {
                     value={schedule.date}
                     onChange={date => handleChangeDate('date', date)}
                     className="mt-8 mb-16 w-full"
-                    readOnly={!editable}
                 />
 
-                {/* <DateTimePicker
-                    label="End"
-                    inputVariant="outlined"
-                    value={schedule.end_date}
-                    onChange={date => handleChangeDate('end_date', date)}
-                    className="mt-8 mb-16 w-full"
-                    minDate={schedule.start_date}
-                    readOnly={!editable}
-                /> */}
+                <TextField
+                    id="link"
+                    label="Link"
+                    className="mt-8 mb-16"
+                    InputLabelProps={{
+                        shrink: true
+                    }}
+                    name="link"
+                    value={schedule.link}
+                    onChange={handleChangeField}
+                    variant="outlined"
+                    fullWidth
+                    error={!!errors.link}
+                    helperText={errors.link || ''}
+                />
 
                 <TextField
                     className="mt-8 mb-16"
@@ -148,33 +155,17 @@ const ScheduleDlg = ({event, editable, open, user, onClose, onChanged}) => {
                     rows={5}
                     variant="outlined"
                     fullWidth
-                    InputProps={{
-                        readOnly: !editable,
-                    }}
                 />
             </DialogContent>
 
-            {!!editable && 
-                <>
-                    {isNew ? (
-                        <DialogActions className="justify-between px-8 sm:px-16">
-                            <Button variant="contained" color="primary" disabled={!canBeSubmitted()} onClick={() => onSubmit('ADD', )}>
-                                Add
-                            </Button>
-                        </DialogActions>
-                    ) : (
-                        <DialogActions className="justify-between px-8 sm:px-16">
-                            <Button variant="contained" color="primary" disabled={!canBeSubmitted()} onClick={() => onSubmit('SAVE')}>
-                                Save
-                            </Button>
-                            <IconButton onClick={() => onSubmit('DELETE')}>
-                                <Icon>delete</Icon>
-                            </IconButton>
-                        </DialogActions>
-                    )}
-                </>
-            }
-            
+            <DialogActions className="justify-evenly px-8 sm:px-16">
+                <Button variant="contained" color="primary" disabled={!canBeSubmitted()} onClick={() => onSubmit()}>
+                    Save
+                </Button>
+                <Button variant="outlined" color="primary" onClick={onClose}>
+                    Cancel
+                </Button>
+            </DialogActions>
 		</Dialog>
 	);
 }

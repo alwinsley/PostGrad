@@ -130,6 +130,26 @@ input:-webkit-autofill {
     background: linear-gradient(to right, rgba(255, 255, 255, 0), rgba(255, 255, 255, 1) 50%);
 }
 
+.hover .hover-show {
+    display: none;
+}
+.hover:hover .hover-show {
+    display: block;
+}
+.hover:hover .hover-hidden {
+    display: none;
+}
+.text-overflow-hidden {
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+}
+.hover-show-all:hover {
+    white-space: normal;
+    height: 100%;
+}
+
+
 @import 'print.css';
 
 @import 'tables.css';

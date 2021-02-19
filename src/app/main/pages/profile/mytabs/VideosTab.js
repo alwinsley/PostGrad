@@ -89,7 +89,7 @@ const VideosTab = ({resources, onAddRS, onDeleteRS, onEditRS}) => {
 						{!!resources.length && resources.map((rs, index) => {
 							if(rs.type != 'VIDEO') return null;
 							return	(
-								<GridListTile key={rs.id} classes={{root: 'w-full md:w-1/3 lg:w-1/4', tile: 'rounded-8 shadow'}} style={{height: 'auto'}}>
+								<GridListTile key={rs.id} classes={{root: 'w-full sm:w-1/2 md:w-1/3 xl:w-1/4', tile: 'rounded-8 shadow'}} style={{height: 'auto'}}>
 									<VideoPlayer url={asset_path(rs.url)} style={{height: '100%', width: '100%'}}/>
 									<CardTopBar title={rs.description} onEdit={() => handleOpenModal(index, rs)} onDelete={() => onDeleteRS(rs.id, index)}/>
 								</GridListTile>

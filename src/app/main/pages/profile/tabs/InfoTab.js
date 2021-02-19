@@ -64,7 +64,14 @@ const InfoTab = ({profile}) => {
 						}
 						<div className="mb-24">
 							<Typography className="font-bold mb-4 text-15">Twitter</Typography>
-							<Typography>{profile.twitter || '---'}</Typography>
+							{profile.twitter ? 
+								<a href={profile.twitter} target="_blank">
+									<Typography className="text-blue-700" >{profile.twitter}</Typography>
+								</a>
+								:
+								<Typography>---</Typography>
+							}
+							
 						</div>
 
 						<div className="mb-24">

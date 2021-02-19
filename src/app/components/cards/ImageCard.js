@@ -1,64 +1,29 @@
-import React, {useState} from 'react';
-import _ from '@lodash';
-
-import { 
-	Card,
-    CardHeader,
-    CardMedia,
-    CardContent,
-    CardActions,
-    Avatar,
-    IconButton,
-    Typography,
-    Popover,
-    MenuItem,
-    ListItemText,
-    Button,
-    Divider,
-    FormControlLabel,
-    Switch,
-    Icon
-} from '@material-ui/core';
+import React from 'react';
+import { IconButton, Icon } from '@material-ui/core';
 import { RedIconBtn } from '../ColorBtns';
-import { makeStyles } from '@material-ui/core/styles';
-import { red, purple } from '@material-ui/core/colors';
 
 import { asset_path } from 'app/helpers/resource';
 
-const useStyles = makeStyles((theme) => ({
-    root: {
-        position: 'relative',
-        height: 0,
-        paddingBottom: '60%'
-    },
-    image: {
-        width: '100%',
-        height: '100%',
-        backgroundSize: 'cover',
-        backgroundPosition: 'center',
-        backgroundRepeat: 'no-repeat',
-    },
-    actions: {
-        position: 'absolute',
-        top: 0,
-        right: 0
-    },
-  }));
-
-const ImageCard = ({data, control, onTriggeredAction, ...props}) => {
-    const classes = useStyles();
-    
+const ImageCard = ({src, description, link = null, onEdit, onDelete}) => {
 	return (
-        <div className={classes.root}>
-            <div style={{position: 'absolute', top: 0, left: 0, width: '100%', height: '100%'}}>
-                <div className={classes.image} style={{backgroundImage: `url(${asset_path(data.image)})`}}></div>
-            </div>
-            
-            {control && 
-                <div className={classes.actions}>
-                    <RedIconBtn onClick={() => onTriggeredAction('delete')}><Icon>delete</Icon></RedIconBtn>
+        <div className="m-10 w-full sm:w-auto">
+            <div className="relative sm:h-200 shadow">
+                <a href={link} target="_blank">
+                    {description && 
+                        <>
+                            <div className="w-full p-12 sm:hidden">{description}</div>
+                            <div className="w-full p-12 bg-black bg-opacity-60 text-white absolute hidden sm:block text-overflow-hidden hover-show-all">
+                                {description}
+                            </div>
+                        </>
+                    }
+                    <img className="w-full h-auto sm:h-full sm:w-auto" src={asset_path(src)}/>
+                </a>
+                <div className="absolute bottom-0 right-0">
+                    {onEdit && <IconButton color="info" onClick={onEdit}><Icon>edit</Icon></IconButton>}
+                    {onDelete && <RedIconBtn onClick={onDelete}><Icon>delete</Icon></RedIconBtn>}
                 </div>
-            }
+            </div>
         </div>
 	);
 }

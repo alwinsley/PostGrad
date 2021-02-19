@@ -2,8 +2,6 @@ import React, { useState } from 'react';
 import {
 	Fab,
 	Icon,
-	GridList,
-	GridListTile
 } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 
@@ -11,9 +9,7 @@ import FuseAnimate from '@fuse/core/FuseAnimate/FuseAnimate';
 import FuseAnimateGroup from '@fuse/core/FuseAnimateGroup';
 
 import FullScreenView from 'app/components/FullScreenView';
-import CardTopBar from '../component/CardTopBar';
-import RatioImage from 'app/components/RatioImage';
-import { asset_path } from 'app/helpers/resource';
+import ImageCard from 'app/components/cards/ImageCard';
 
 const useStyles = makeStyles((theme) => ({
 	button: {
@@ -38,17 +34,15 @@ const PhotosTab = ({resources}) => {
 						animation: 'transition.slideUpBigIn'
 					}}
 				>
-					<GridList className="" spacing={8} cols={0}>
-						{!!_photos.length && _photos.map((rs, index) => {
-							if(rs.type !== 'IMAGE') return null;
-							return (
-								<GridListTile key={index} classes={{ root: 'w-full md:w-1/3 lg:w-1/4', tile: 'rounded-8 shadow'}} style={{height: 250}}>
-									<RatioImage src={asset_path(rs.url)}/>
-									<CardTopBar title={rs.description} disabled/>
-								</GridListTile>
-							)
-						})}
-					</GridList>
+					<div className="flex flex-wrap">
+						{!!_photos.length && _photos.map((rs, index) => 
+							<ImageCard
+								key={index}
+								src={rs.url}
+								description={rs.description}
+							/>
+						)}
+					</div>
 				</FuseAnimateGroup>
 			</div>
 			

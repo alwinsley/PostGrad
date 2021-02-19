@@ -19,7 +19,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import PlayerCard from 'app/components/cards/PlayerCard';
 import TeamCard from 'app/components/cards/TeamCard';
 import GameCard from 'app/components/cards/GameCard';
-import ImageCard from 'app/components/cards/ImageCard';
+import SponsorshipCard from 'app/components/cards/SponsorshipCard';
 import MessageDlg from 'app/components/MessageDlg';
 
 import ScheduleWidget from 'app/components/ScheduleWidget';
@@ -30,7 +30,7 @@ const DateRange = [ 'Today', 'Tommorrow', 'Week', 'Month',  'All'];
 
 const useStyles = makeStyles(theme => ({
 	layoutHeader: {
-		backgroundColor: '#192d3e',
+		backgroundColor: '#121212',
 		padding: '12px 16px',
 		color: 'white',
 		display: 'flex',
@@ -94,15 +94,14 @@ function AnalyticsDashboardApp(props) {
 		<div className="w-full">
 			<FuseAnimateGroup
 				enter={{animation: 'transition.fadeIn'}}
-				className="flex flex-wrap p-24 justify-center"
+				className="flex flex-wrap p-14 justify-center"
 			>
 				{ads.map((sponsorship, index) => 
-					<div className="w-full pb-24 sm:w-1/2 md:w-1/3 lg:w-1/4 sm:p-10" key={index}>
-						<ImageCard
-							data={sponsorship}
-							control={false}
-						/>
-					</div>
+					<SponsorshipCard
+						key={index}
+						data={sponsorship}
+						control={false}
+					/>
 				)}
 			</FuseAnimateGroup>
 
@@ -112,7 +111,7 @@ function AnalyticsDashboardApp(props) {
 				className="flex flex-wrap p-24"
 			>
 				{recruits.map((user, index) => 
-					<div className="w-full pb-24 sm:w-1/2 md:w-1/3 lg:w-1/5 sm:p-16" key={index}>
+					<div className="w-full pb-24 sm:w-1/2 md:w-1/3 lg:w-1/4 xl:w-1/5 sm:p-16" key={index}>
 						<PlayerCard user={user}	onTriggeredAction={(action) => handleAction(user, action)}/>
 					</div>
 				)}	
@@ -124,7 +123,7 @@ function AnalyticsDashboardApp(props) {
 				className="flex flex-wrap p-24"
 			>
 				{games.map((game, index) => 
-					<div className="w-full pb-24 sm:w-1/2 md:w-1/3 lg:w-1/5 sm:p-16" key={index}>
+					<div className="w-full pb-24 sm:w-1/2 md:w-1/3 lg:w-1/4 xl:w-1/5 sm:p-16" key={index}>
 						<GameCard game={game}/>
 					</div>
 				)}

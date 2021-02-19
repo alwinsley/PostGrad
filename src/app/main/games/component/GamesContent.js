@@ -18,14 +18,8 @@ import { CircleFullSpinner } from 'app/components/Spinner';
 const GamesContent = ({loading, data, onChangeStatus, ...props}) => {
 	const me = useSelector(({ auth }) => auth.user);
 	
-	const handleAction = (gameId, action) => {
-		switch(action){
-			case 'edit':
-				break;
-			default:
-				onChangeStatus && onChangeStatus(gameId, action);
-				break;
-		}
+	const handleAction = (game, action) => {
+		onChangeStatus && onChangeStatus(game, action);
 	}
 
 	if (data.length === 0) {
@@ -47,11 +41,11 @@ const GamesContent = ({loading, data, onChangeStatus, ...props}) => {
 				className="flex flex-wrap p-24"
 			>
 				{data.map((game, index) => 
-					<div className="w-full pb-24 sm:w-1/2 md:w-1/3 lg:w-1/5 sm:p-16" key={index}>
+					<div className="w-full pb-24 sm:w-1/2 md:w-1/3 xl:w-1/5 sm:p-16" key={index}>
 						<GameCard
 							game={game}
 							control={me.role === 'ADMIN'}
-							onTriggeredAction={(action) => handleAction(game.id, action)}/>
+							onTriggeredAction={(action) => handleAction(game, action)}/>
 					</div>
 				)}	
 			</FuseAnimateGroup>

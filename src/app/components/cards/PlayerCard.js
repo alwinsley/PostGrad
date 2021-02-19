@@ -24,12 +24,16 @@ import { asset_path } from 'app/helpers/resource';
 
 const useStyles = makeStyles((theme) => ({
 	root: {
-      maxWidth: 340,
-      backgroundColor: '#192d3e',
+      maxWidth: 500,
+      backgroundColor: '#121212',
       color: 'white',
       borderRadius: 12,
       textAlign: 'center',
-      boxShadow: '0px 3px 8px 0px #192d3eb8'
+      boxShadow: '0px 3px 8px 0px #121212b8',
+
+      '& .MuiSwitch-track' : {
+          backgroundColor: '#b9b9b9'
+      }
 	},
 	avatar: {
         backgroundColor: red[500],
@@ -108,7 +112,7 @@ const PlayerCard = ({user, control, favoritable, isFavorite, onTriggeredAction, 
                     </div>
                 </div>
                 <Typography variant="h5">{user.name}</Typography>
-                <Typography variant="overline">{user.position ? `( ${user.position} )` : <span>&nbsp;</span>}</Typography>
+                <Typography variant="subtitle2">{user.position ? `( ${user.position} )` : <span>&nbsp;</span>}</Typography>
                 <div className="flex justify-evenly">
                     <Button variant="contained" color="secondary" onClick={() => onTriggeredAction('message')}>Message</Button>
                     <Button variant="outlined" color="secondary"  onClick={() => onTriggeredAction('detail')}>View</Button>

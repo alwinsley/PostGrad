@@ -86,18 +86,25 @@ const initialState = {
 	avatar: 'assets/images/avatars/Velazquez.jpg',
 	email: 'johndoe@withinpixels.com',
 	shortcuts: ['myprofile', 'calendar', 'mail'],
+	noti: 0
 };
 
 const userSlice = createSlice({
 	name: 'auth/user',
 	initialState,
 	reducers: {
-		setUser: (state, action) => action.payload,
-		userLoggedOut: (state, action) => initialState
+		setUser: (state, action) => {
+			return {...state, ...action.payload}
+		},
+		userLoggedOut: (state, action) => initialState,
+		setUnReadMessage: (state, action) => {
+			console.log(action, state.noti);
+			return {...state, noti: action.payload}
+		}
 	},
 	extraReducers: {}
 });
 
-export const { setUser, userLoggedOut } = userSlice.actions;
+export const { setUser, userLoggedOut, setUnReadMessage } = userSlice.actions;
 
 export default userSlice.reducer;

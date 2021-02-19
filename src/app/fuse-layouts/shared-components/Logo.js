@@ -31,7 +31,7 @@ function Logo() {
 
 	return (
 		<div className={clsx(classes.root, 'flex items-center')}>
-			<img className="logo-icon" width="50" src="logo.png" alt="logo" />
+			<img className="logo-icon" width="50" src="logo_light.png" alt="logo" />
 			<Typography className="text-16 mx-12 font-light logo-text" color="inherit">
 				PostGrad
 			</Typography>

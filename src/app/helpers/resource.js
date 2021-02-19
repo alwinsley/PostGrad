@@ -26,6 +26,16 @@ export const asset_path = (path) => {
     return API_URL + path;
 }
 
+export const eligibilities = [
+    { name: 'NCAA I', value: 'NCAA_I'},
+    { name: 'NCAA II', value: 'NCAA_II'},
+    { name: 'NCAA III', value: 'NCAA_III'},
+    { name: 'NAIA', value: 'NAIA'},
+    { name: 'NJCAA I', value: 'NJCAA_I'},
+    { name: 'NJCAA II', value: 'NJCAA_II'},
+    { name: 'NJCAA III', value: 'NJCAA_III'}
+]
+
 export const positions = [
     {value: 'QB'},
     {value: 'RB'},

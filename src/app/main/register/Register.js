@@ -7,7 +7,12 @@ import {
 	CardContent,
 	Typography,
 	Tabs,
-	Tab
+	Tab,
+	List,
+	ListItem,
+	ListItemIcon,
+	ListItemText,
+	Icon
 } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import { darken } from '@material-ui/core/styles/colorManipulator';
@@ -29,6 +34,13 @@ const useStyles = makeStyles(theme => ({
 			0.5
 		)} 100%)`,
 		color: theme.palette.primary.contrastText
+	},
+	list: {
+		padding: 0,
+		'& .MuiListItemIcon-root': {
+			color: 'white',
+			minWidth: 36
+		}
 	}
 }));
 
@@ -100,18 +112,41 @@ function Register() {
 						className={clsx(classes.rightSection, 'hidden md:flex flex-1 items-center justify-center p-64')}
 					>
 						<div className="max-w-320">
-							<FuseAnimate animation="transition.slideUpIn" delay={400}>
+						<FuseAnimate animation="transition.slideUpIn" delay={400}>
 								<Typography variant="h3" color="inherit" className="font-800 leading-tight">
-									Welcome <br />
-									to the <br /> POSTGRAD!
+									Welcome to <br/>Post Grad Recruits
 								</Typography>
 							</FuseAnimate>
 
 							<FuseAnimate delay={500}>
-								<Typography variant="subtitle1" color="inherit" className="mt-32">
-									Powerful and professional admin template for Web Applications, CRM, CMS, Admin
-									Panels and more.
-								</Typography>
+								<div>
+									<Typography variant="h6" color="inherit" className="mt-20">
+										The ultimate portal for post grad athletes!<br/>
+										Here you get :
+									</Typography>
+									<List dense>
+										<ListItem className={classes.list}>
+											<ListItemIcon><Icon>remove</Icon></ListItemIcon>
+											<ListItemText primary="Access to college coaches looking exclusively for post grad transfers"/>
+										</ListItem>
+										<ListItem className={classes.list}>
+											<ListItemIcon><Icon>remove</Icon></ListItemIcon>
+											<ListItemText primary="promo codes / discounts to athletic apparel"/>
+										</ListItem>
+										<ListItem className={classes.list}>
+											<ListItemIcon><Icon>remove</Icon></ListItemIcon>
+											<ListItemText primary="transcript evaluation to understand what  division you're eligible for"/>
+										</ListItem>
+										<ListItem className={classes.list}>
+											<ListItemIcon><Icon>remove</Icon></ListItemIcon>
+											<ListItemText primary="post grad player ratings"/>
+										</ListItem>
+										<ListItem className={classes.list}>
+											<ListItemIcon><Icon>remove</Icon></ListItemIcon>
+											<ListItemText primary="and much more!"/>
+										</ListItem>
+									</List>
+								</div>
 							</FuseAnimate>
 						</div>
 					</div>

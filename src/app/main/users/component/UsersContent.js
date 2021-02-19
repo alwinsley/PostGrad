@@ -5,69 +5,19 @@ import _ from '@lodash';
 
 import FuseAnimate from '@fuse/core/FuseAnimate/FuseAnimate';
 import FuseAnimateGroup from '@fuse/core/FuseAnimateGroup';
-import { 
-	Typography,
-	TextField,
-	MenuItem,
-	IconButton,
-	Icon
-} from '@material-ui/core';
-import { makeStyles } from '@material-ui/core/styles';
+import { Typography } from '@material-ui/core';
 
-import { DatePicker } from "@material-ui/pickers";
 import PerfectScrollbar from 'react-perfect-scrollbar';
 import 'react-perfect-scrollbar/dist/css/styles.css';
 
 import CoachCard from 'app/components/cards/CoachCard';
 import PlayerCard from 'app/components/cards/PlayerCard';
 import MessageDlg from 'app/components/MessageDlg';
+import Filters from './Filters';
 import { CircleFullSpinner } from 'app/components/Spinner';
-import { positions, states } from 'app/helpers/resource';
-
-const useStyles = makeStyles((theme) => ({
-	filter: {
-		backgroundColor: '#121212',
-		color: 'white',
-		padding: '1rem',
-		display: 'flex',
-		alignItems: 'flex-end',
-		position: 'relative',
-		'& .MuiFormLabel-root': {
-			color: '#afafaf'
-		},
-		'& .MuiSelect-icon': {
-			color: '#afafaf'
-		},
-		'& .MuiInput-underline:before': {
-			borderColor: '#afafaf'
-		},
-		'& .MuiInputBase-input': {
-			color: 'white'
-		}
-	},
-	formcontrol: {
-		minWidth: 100,
-		maxWidth: 300,
-		marginRight: 10,
-		flex: '1 1 300px'
-	},
-	datePicker: {
-		minWidth: 50,
-		maxWidth: 300,
-		marginRight: 10,
-		flex: '1 1 100px'
-	},
-	clear: {
-		position: 'absolute',
-		right: '-8px',
-		top: '-8px',
-		color: '#afafaf'
-	}
-}));
 
 const UsersContent = ({loading, data, filterable, favorites, onReachBottom, onChangeStatus, onChangeFilter, ...props}) => {
 	const me = useSelector(({ auth }) => auth.user);
-	const classes = useStyles();
 	const [selectedUser, setSelectedUser] = useState(null);
 	const [filters, setFilters] = useState({});
 
@@ -106,51 +56,11 @@ const UsersContent = ({loading, data, filterable, favorites, onReachBottom, onCh
 
 	return (
 		<div className="w-full h-full relative">
-			{filterable && 
-				<div className={classes.filter}>
-					<TextField
-						id="position"
-						name="position"
-						select
-						label="Position"
-						value={filters.position || ''}
-						className={classes.formcontrol}
-						onChange={handleFilter}
-					>
-						{positions.map(p => (
-							<MenuItem key={p.value} value={p.value}>
-								{p.value}
-							</MenuItem>
-						))}
-					</TextField>
-					<TextField
-						id="state"
-						name="state"
-						select
-						label="State"
-						value={filters.state || ''}
-						className={classes.formcontrol}
-						onChange={handleFilter}
-					>
-						{states.map(s => (
-							<MenuItem key={s.value} value={s.label}>
-								{s.label}
-							</MenuItem>
-						))}
-					</TextField>
-					<DatePicker
-						className={classes.datePicker}
-						autoOk
-						variant="inline"
-						views={["year"]}
-						label="Year"
-						value={filters.year || null}
-						onChange={date => handleFilter({target: {name: 'year', value: date}})}
-					/>
-					<IconButton aria-label="delete" className={classes.clear} onClick={handleClearfilters}>
-						<Icon>close</Icon>
-					</IconButton>
-				</div>
+			{filterable &&
+				<Filters
+					filters={filters}
+					onChange={handleFilter}
+					onClearAll={handleClearfilters}/>
 			}
 			
 			{data && !!data.length ? 

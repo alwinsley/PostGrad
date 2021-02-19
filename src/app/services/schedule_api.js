@@ -19,3 +19,15 @@ export const updateSchedule = (id, payload) => {
 export const deleteSchedule = (id) => {
     return axios.delete(`/api/schedule/${id}`);
 }
+
+export const postAminSchedule = (payload) => {
+    return axios.post(`/api/admin_schedule`, payload);
+}
+
+export const updateAdminSchedule = (id, payload) => {
+    return axios.put(`/api/admin_schedule/${id}`, payload);
+}
+
+export const deleteAdminSchedule = (id) => {
+    return axios.delete(`/api/admin_schedule/${id}`);
+}

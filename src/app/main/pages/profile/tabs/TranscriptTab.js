@@ -14,12 +14,10 @@ import {
 } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 
-import FuseAnimate from '@fuse/core/FuseAnimate/FuseAnimate';
-
 import { asset_path } from 'app/helpers/resource';
 import ClickUploader from 'app/components/ClickUploader';
-import { checkAccess } from 'app/auth/authAcess';
-import { getTranscript, postTranscript, updateTranscript } from 'app/services/profileService';
+import { getTranscript, postAdminTranscript, updateAdminTranscript } from 'app/services/profileService';
+import { eligibilities } from 'app/helpers/resource'
 
 const defaultData = {
 	transcript: '',
@@ -66,7 +64,7 @@ const TranscriptTab = ({profile}) => {
 	const handleChange = (e) => {
 		const { value } = e.target;
 
-		updateTranscript(profile.user_id, {'eligibility': value}).then(res => {
+		updateAdminTranscript(profile.user_id, {'eligibility': value}).then(res => {
 			refreshData();
 		}).catch(err => {
 			console.log(err);
@@ -79,7 +77,7 @@ const TranscriptTab = ({profile}) => {
 		let formdata = new FormData();
 		formdata.append('file', files[0]);
 
-		postTranscript(profile.user_id, formdata).then(res => {
+		postAdminTranscript(profile.user_id, formdata).then(res => {
 			refreshData();
 		}).catch(err => {
 			console.log(err);
@@ -87,7 +85,7 @@ const TranscriptTab = ({profile}) => {
 	}
 
 	const handleDeleteTranscript = () => {
-		updateTranscript(profile.user_id, {transcript: null}).then(res => {
+		updateAdminTranscript(profile.user_id, {transcript: null}).then(res => {
 			refreshData();
 		}).catch(err => {
 			console.log(err);
@@ -95,7 +93,7 @@ const TranscriptTab = ({profile}) => {
 	}
 
 	const handleDeleteEligibility = () => {
-		updateTranscript(profile.user_id, {'eligibility': ''}).then(res => {
+		updateAdminTranscript(profile.user_id, {'eligibility': ''}).then(res => {
 			refreshData();
 		}).catch(err => {
 			console.log(err);
@@ -115,18 +113,6 @@ const TranscriptTab = ({profile}) => {
 			document.body.removeChild(link);
 		}).catch(err => console.error(err));
 	}
-
-	// if(!checkAccess(me, 'TRANSCRIPT')){
-	// 	return (
-	// 		<FuseAnimate delay={100}>
-	// 			<div className="text-center py-32">
-	// 				<Typography color="textSecondary" variant="h5" className="mb-24">You have not access to here.</Typography>
-	// 				<Typography color="textSecondary" className="mb-12">Please click this button to get access.</Typography>
-	// 				<Button variant="contained" color="primary">Get Access</Button>
-	// 			</div>
-	// 		</FuseAnimate>
-	// 	);
-	// }
 
 	return (
 		<div className="md:flex max-w-2xl">
@@ -154,7 +140,7 @@ const TranscriptTab = ({profile}) => {
 						</div>
 						:
 						<div className={classes.noText}>
-							{me.role === 'ADMIN' ? <ClickUploader accept="image/*,.pdf" onChange={handleChangeTranscript}/> : 'No Transcript'}
+							{me.role === 'ADMIN' ? <ClickUploader accept="image/*,.pdf" allows="( pdf, jpg, png, svg)" onChange={handleChangeTranscript}/> : 'No Transcript'}
 						</div>
 					}
 					
@@ -187,13 +173,9 @@ const TranscriptTab = ({profile}) => {
 										inputProps={{ readOnly: me.role !== 'ADMIN' }}
 									>
 										<MenuItem>No Item</MenuItem>
-										<MenuItem value="NCAA_I">NCAA I</MenuItem>
-										<MenuItem value="NCAA_II">NCAA II</MenuItem>
-										<MenuItem value="NCAA_III">NCAA III</MenuItem>
-										<MenuItem value="NAIA">NAIA</MenuItem>
-										<MenuItem value="NJCAA_I">NJCAA I</MenuItem>
-										<MenuItem value="NJCAA_II">NJCAA II</MenuItem>
-										<MenuItem value="NJCAA_III">NJCAA III</MenuItem>
+										{eligibilities.map((eli, index) => 
+											<MenuItem key={index} value={eli.value}>{eli.name}</MenuItem>
+										)}
 									</Select>
 								</FormControl>
 								:

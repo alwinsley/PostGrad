@@ -19,7 +19,7 @@ import { dateString } from 'app/helpers/functions';
 import { CircleFullSpinner } from 'app/components/Spinner';
 import { RedIconBtn } from 'app/components/ColorBtns'
 
-const ArticleContent = ({loading, data, onDelete, ...props}) => {
+const ArticleContent = ({loading, data, onEdit, onDelete, ...props}) => {
 	const me = useSelector(({ auth }) => auth.user);
 	
 	if (data.length === 0) {
@@ -34,6 +34,13 @@ const ArticleContent = ({loading, data, onDelete, ...props}) => {
 		);
 	}
 
+	const handleAction = (e, item, type) => {
+		e.preventDefault();
+		
+		if(type === 'Edit') onEdit && onEdit(item);
+		else onDelete && onDelete(item);
+	}
+
 	return (
 		<div className="w-full h-full relative max-w-lg">
 			<FuseAnimateGroup
@@ -42,19 +49,31 @@ const ArticleContent = ({loading, data, onDelete, ...props}) => {
 			>
 				{data.map(post => (
 					<Card key={post.id} className="mb-32 overflow-hidden rounded-8 shadow">
-						<CardHeader
-							action={
-								me.role === 'ADMIN' ? <RedIconBtn onClick={() => onDelete(post)}><Icon>delete</Icon></RedIconBtn> : null
-							}
-							title={
-								<span className="flex">
-									<Typography variant="h6" className="font-medium" color="primary" paragraph={false}>
-										{post.title}
-									</Typography>
-								</span>
-							}
-							subheader={dateString(post.created_at)}
-						/>
+						<a href={post.link || ''} target="_blank">
+							<CardHeader
+								action={
+									me.role === 'ADMIN' ? (
+										<>
+											<IconButton color="secondary" onClick={(e) => handleAction(e, post, 'Edit')}><Icon>edit</Icon></IconButton>
+											<RedIconBtn onClick={(e) => handleAction(e, post, 'Delete')}><Icon>delete</Icon></RedIconBtn>
+										</>
+									) : null
+								}
+								title={
+									<span className="flex">
+										<Typography variant="h6" className="font-medium" color="primary" paragraph={false}>
+											{post.title}
+										</Typography>
+									</span>
+								}
+								subheader={
+									<div className="text-xs text-blue-700">
+										{dateString(post.created_at)}
+									</div>
+								}
+							/>
+						</a>
+						
 
 						<CardContent className="py-0">
 							{post.content && (

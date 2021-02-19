@@ -63,6 +63,18 @@ export const removeTranscript = (userId) => {
     return axios.delete(`/api/transcript/${userId}`);
 }
 
+export const postAdminTranscript = (userId, payload) => {
+    return axios.post(`/api/admin_transcript/${userId}`, payload);
+}
+
+export const updateAdminTranscript = (userId, payload) => {
+    return axios.put(`/api/admin_transcript/${userId}`, payload);
+}
+
+export const removeAdminTranscript = (userId) => {
+    return axios.delete(`/api/admin_transcript/${userId}`);
+}
+
 export const GetFavorites = (payload) => {
     let query = buildQuery(payload);
     return axios.get(`/api/favorited_profiles${query}`);

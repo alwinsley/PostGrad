@@ -1,63 +1,73 @@
-import Icon from '@material-ui/core/Icon';
-import IconButton from '@material-ui/core/IconButton';
-import List from '@material-ui/core/List';
-import ListItem from '@material-ui/core/ListItem';
-import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction';
-import ListItemText from '@material-ui/core/ListItemText';
-import Paper from '@material-ui/core/Paper';
-import Select from '@material-ui/core/Select';
-import Typography from '@material-ui/core/Typography';
 import React, { useState } from 'react';
-import moment from 'moment';
+
+import {
+	Icon,
+	IconButton,
+	List,
+	ListItem,
+	ListItemSecondaryAction,
+	ListItemText,
+	Paper,
+	Typography
+} from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
+
+import moment from 'moment';
 
 import { dateString } from 'app/helpers/functions';
 import { RedIconBtn } from 'app/components/ColorBtns';
 
 const useStyles = makeStyles((theme) => ({
-	root: {
-		maxWidth: 800
-	},
 	list: {
-		'& .MuiListItem-secondaryAction' : {
-			paddingRight: 72
+		padding: 0,
+		'& > li': {
+			borderBottom: '1px solid #8080805e',
+			display: 'block',
+			padding: 0
 		},
-		'& .MuiListItem-root': {
-			flexWrap: 'wrap',
-			borderBottom: '1px solid #80808021'
-		},
-		'& .MuiListItem-root:last-child': {
+		'& > li:last-child': {
 			border: 0
 		},
 		'& .MuiListItemText-root': {
 			minWidth: 300,
 			marginRight: 15
+		},
+		'& .MuiListItemSecondaryAction-root': {
+			right: 0
 		}
-	},
-	date: {
-		whiteSpace: 'nowrap',
-		fontSize: 11
 	}
 }));
 
 function ScheduleWidget({ data, editable, onTriggerAction }) {
 	const classes = useStyles();
 
-	function handleDeleteSchedule(item) {
-		onTriggerAction(item.id, 'Delete');
+	const handleAction = (e, item, type) => {
+		e.preventDefault();
+		
+		onTriggerAction(item, type);
 	}
 
 	return (
-		<Paper className={`w-full rounded-8 shadow ${classes.root}`}>
+		<Paper className="w-full rounded-8 shadow-md max-w-lg">
 			<List className={classes.list}>
 				{data.map(item => (
 					<ListItem key={item.id}>
-						<ListItemText primary={(<h2>{item.title}</h2>)} secondary={item.location} />
-						<Typography className={classes.date}>{moment(dateString(item.date), "YYYY-MM-DD hh:mm:ss").format('lll') }</Typography>
-						{editable && 
-							<ListItemSecondaryAction>
-								<RedIconBtn onClick={() => handleDeleteSchedule(item)}><Icon>delete</Icon></RedIconBtn>
-							</ListItemSecondaryAction>
+						<a href={item.link || ''}
+							target="_blank"
+							role="button"
+							className={`w-full relative items-center p-12 flex flex-wrap bg-gray-100 no-underline ${editable ? 'pr-96' : ''}`}
+						>
+							<ListItemText primary={(<h2>{item.title}</h2>)} secondary={item.location} />
+							<Typography className="whitespace-nowrap text-xs text-blue-700">{moment(dateString(item.date), "YYYY-MM-DD hh:mm:ss").format('lll') }</Typography>
+							{editable && 
+								<ListItemSecondaryAction>
+									<IconButton color="secondary" onClick={(e) => handleAction(e, item, 'Edit')}><Icon>edit</Icon></IconButton>
+									<RedIconBtn onClick={(e) => handleAction(e, item, 'Delete')}><Icon>delete</Icon></RedIconBtn>
+								</ListItemSecondaryAction>
+							}
+						</a>
+						{item.desc &&
+							<div className="p-12">{item.desc}</div>
 						}
 					</ListItem>
 				))}

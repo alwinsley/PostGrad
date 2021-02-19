@@ -5,7 +5,7 @@ import FusePageSimple from '@fuse/core/FusePageSimple';
 import SponsorshipHeader from './component/SponsorshipHeader';
 import SponsorshipContent from './component/SponsorshipContent';
 import AlertDlg from 'app/components/AlertDlg';
-import ImageDlg from 'app/components/ImageDlg';
+import SponsorshipDlg from 'app/components/Dialogs/SponsorshipDlg';
 import { getAllSponsorships, deleteSponsorship } from 'app/services/sponsorship_api';
 
 const SponsorshipList = () => {
@@ -62,11 +62,15 @@ const SponsorshipList = () => {
 		updatePageContent();
 	}
 
+	const handleCloseModal = () => {
+		setOpenModal(false);
+	}
+
 	return (
 		<>
 			<FusePageSimple
 				classes={{
-					contentWrapper: 'p-0 h-full overflow-hidden',
+					contentWrapper: 'p-0 h-full',
 					content: 'flex flex-col h-full',
 					leftSidebar: 'w-256 border-0',
 					header: 'min-h-72 h-72',
@@ -88,7 +92,11 @@ const SponsorshipList = () => {
 				onConfirm={removeSponsorship}/>
 
 			{openModal && 
-				<ImageDlg open={openModal} title="Create New Sponsorship" onClose={() => setOpenModal(false)} onCreatedSponsorship={handleCreatedSponsorship}/>
+				<SponsorshipDlg
+					open={openModal}
+					title="Create New Sponsorship"
+					onClose={handleCloseModal}
+					onCreatedSponsorship={handleCreatedSponsorship}/>
 			}
 		</>
 	);

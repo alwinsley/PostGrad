@@ -38,7 +38,7 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
- const ClickUploader = ({accept, multiple, onChange, preview}) => {
+ const ClickUploader = ({accept, multiple, text, allows,  onChange, preview}) => {
   const classes = useStyles();
   
   const handleChangeFile = (e) => {
@@ -63,7 +63,7 @@ const useStyles = makeStyles((theme) => ({
           <IconButton className={classes.iconButton} aria-label="menu">
             <Icon color="primary">cloud_upload</Icon>
           </IconButton>
-          <Typography>Click and Upload</Typography>    
+          <Typography className="font-bold">{text || 'Click and Upload'}<span className="font-normal">{allows || ''}</span></Typography>    
         </Paper>
       </label>
         

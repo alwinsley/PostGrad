@@ -11,6 +11,7 @@ import MailListItem from './MailListItem';
 import PerfectScrollbar from 'react-perfect-scrollbar';
 import 'react-perfect-scrollbar/dist/css/styles.css';
 import MessageDlg from 'app/components/MessageDlg';
+import { useSelector, useDispatch } from 'react-redux';
 
 import { getMessages, deleteMessages } from 'app/services/messageService';
 
@@ -24,6 +25,18 @@ const MailList = ({ checkstatus, searchText, onChangeCheckStatus, isDeleting, ..
 	const [loading, setLoading] = useState(false);
 	const [selectedMessage, setSelectedMessage] = useState(null);
 	const [checkedIds, setCheckedIds] = useState([]);
+	const [unreadNoti, setUnreadNoti] = useState(0);
+	const me = useSelector(({ auth }) => auth.user);
+
+	useEffect(() => {
+		if(type !== 'inbox') return;
+		
+		const _noti = me.noti || 0;
+		if(_noti !== unreadNoti){
+			updateMessages(0);
+		}
+		setUnreadNoti(_noti);
+	}, [me])
 
 	useDeepCompareEffect(() => {
 		setType(routeParams.type);

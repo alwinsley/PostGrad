@@ -30,11 +30,11 @@ const useStyles = makeStyles((theme) => ({
       maxWidth: 340,
       color: 'white',
       borderRadius: 12,
-      boxShadow: '0px 3px 8px 0px #192d3eb8'
+      boxShadow: '0px 3px 8px 0px #121212b8'
     },
     footer: {
         display: 'block',
-        backgroundColor: '#192d3e',
+        backgroundColor: '#121212',
         textAlign: 'center'
     },
 	logo: {

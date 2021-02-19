@@ -39,13 +39,13 @@ const ResourceDlg = ({resource, open, onClose, onSave}) => {
 
     return (
         <Dialog open={open} onClose={onClose} aria-labelledby="form-dialog-title" fullWidth maxWidth="sm">
-            <DialogTitle id="form-dialog-title" style={{backgroundColor: '#192d3e', color: 'white'}}>Edit Attribute</DialogTitle>
+            <DialogTitle id="form-dialog-title" style={{backgroundColor: '#121212', color: 'white'}}>Edit Attribute</DialogTitle>
             <DialogContent>
                 <TextField
                     autoFocus
                     margin="dense"
                     id="description"
-                    label="Title"
+                    label="Description"
                     value={attribute.description}
                     onChange={handleChange}
                     fullWidth
