@@ -9,7 +9,6 @@ import {
 	Fab,
 	Typography
 } from '@material-ui/core';
-import { makeStyles } from '@material-ui/core/styles';
 
 import FuseAnimate from '@fuse/core/FuseAnimate/FuseAnimate';
 import FuseAnimateGroup from '@fuse/core/FuseAnimateGroup';
@@ -21,26 +20,7 @@ import VideoPlayer from 'app/components/VideoPlayer';
 import FullScreenView from 'app/components/FullScreenView';
 import { asset_path } from '../../../../helpers/resource';
 
-const useStyles = makeStyles((theme) => ({
-	button: {
-		position: 'absolute',
-		right: 12,
-		bottom: 30,
-		zIndex: 99
-	},
-	instrument: {
-		maxWidth: 640,
-		textAlign: 'center',
-		margin: '0 auto 12px'
-	},
-	uploader: {
-		maxWidth: 400,
-		margin: '0 auto 20px'
-	}
-}));
-
 const VideosTab = ({resources, onAddRS, onDeleteRS, onEditRS}) => {
-	const classes = useStyles();
 	const [fullScreen, setFullScreen] = useState(false);
 	const [isModal, setIsModal] = useState(false);
 	const [selected, setSelected] = useState(null);
@@ -75,10 +55,10 @@ const VideosTab = ({resources, onAddRS, onDeleteRS, onEditRS}) => {
 					}}
 				>
 					<div>
-						<div className={classes.instrument}>
+						<div className="max-w-md text-center mx-auto mb-12">
 							<Typography>Add 1 highlight film and at least 1 workout training video.</Typography>
 						</div>
-						<div className={classes.uploader}>
+						<div className="w-full mx-auto mb-16 sm:w-320">
 							<LinkUploader accept="video/*" multiple onChangeFile={handleUploadChange} onChangeLink={(link) => onAddRS(link, 'LINK')}/>
 						</div>
 					</div>
@@ -113,7 +93,7 @@ const VideosTab = ({resources, onAddRS, onDeleteRS, onEditRS}) => {
 					<Fab
 						color="secondary"
 						aria-label="add"
-						className={classes.button}
+						className="fixed bottom-56 right-12 sm:bottom-76 sm:right-24"
 						onClick={() => setFullScreen(true)}
 					>
 						<Icon>fullscreen</Icon>

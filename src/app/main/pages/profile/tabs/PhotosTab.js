@@ -3,7 +3,6 @@ import {
 	Fab,
 	Icon,
 } from '@material-ui/core';
-import { makeStyles } from '@material-ui/core/styles';
 
 import FuseAnimate from '@fuse/core/FuseAnimate/FuseAnimate';
 import FuseAnimateGroup from '@fuse/core/FuseAnimateGroup';
@@ -11,17 +10,7 @@ import FuseAnimateGroup from '@fuse/core/FuseAnimateGroup';
 import FullScreenView from 'app/components/FullScreenView';
 import ImageCard from 'app/components/cards/ImageCard';
 
-const useStyles = makeStyles((theme) => ({
-	button: {
-		position: 'absolute',
-		right: 12,
-		bottom: 30,
-		zIndex: 99
-	}
-}));
-
 const PhotosTab = ({resources}) => {
-	const classes = useStyles();
 	const [fullScreen, setFullScreen] = useState(false);
 
 	const _photos = resources.filter(re => re.type === 'IMAGE');
@@ -51,7 +40,7 @@ const PhotosTab = ({resources}) => {
 					<Fab
 						color="secondary"
 						aria-label="add"
-						className={classes.button}
+						className="fixed bottom-56 right-12 sm:bottom-76 sm:right-24"
 						onClick={() => setFullScreen(true)}
 					>
 						<Icon>fullscreen</Icon>

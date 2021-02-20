@@ -28,7 +28,7 @@ const AboutTab = ({profile, errors, handleFieldChange}) => {
 						fullWidth
 					/>
 				</Grid>
-				<Grid item sm={12} md={6}>
+				<Grid item xs={12} md={6}>
 					<TextField
 						className="mt-8 mb-16"
 						error={!!errors.year}
@@ -52,7 +52,7 @@ const AboutTab = ({profile, errors, handleFieldChange}) => {
 						onChange={date => handleFieldChange({target: {id: 'year', value: date}})}
 					/> */}
 				</Grid>
-				<Grid item sm={12} md={6}>
+				<Grid item xs={12} md={6}>
 					<TextField
 						className="mt-8 mb-16"
 						error={!!errors.position}
@@ -76,7 +76,7 @@ const AboutTab = ({profile, errors, handleFieldChange}) => {
 						))}
 					</TextField>
 				</Grid>
-				<Grid item sm={12} md={6}>
+				<Grid item xs={12} md={6}>
 					<TextField
 						className="mt-8 mb-16"
 						error={!!errors.height}
@@ -90,7 +90,7 @@ const AboutTab = ({profile, errors, handleFieldChange}) => {
 						fullWidth
 					/>
 				</Grid>
-				<Grid item sm={12} md={6}>
+				<Grid item xs={12} md={6}>
 					<TextField
 						className="mt-8 mb-16"
 						error={!!errors.weight}
@@ -118,7 +118,7 @@ const AboutTab = ({profile, errors, handleFieldChange}) => {
 						fullWidth
 					/>
 				</Grid>
-				<Grid item sm={12} md={6}>
+				<Grid item xs={12} md={6}>
 					<TextField
 						className="mt-8 mb-16"
 						error={!!errors.act}
@@ -131,7 +131,7 @@ const AboutTab = ({profile, errors, handleFieldChange}) => {
 						fullWidth
 					/>
 				</Grid>
-				<Grid item sm={12} md={6}>
+				<Grid item xs={12} md={6}>
 					<TextField
 						className="mt-8 mb-16"
 						error={!!errors.sat}

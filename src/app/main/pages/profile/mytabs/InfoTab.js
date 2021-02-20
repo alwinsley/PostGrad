@@ -16,7 +16,7 @@ const InfoTab = ({profile, errors, handleFieldChange}) => {
 	return (
 		<div className="md:flex max-w-2xl">
 			<Grid container spacing={3}>
-				<Grid item sm={12} md={6}>
+				<Grid item xs={12} md={6}>
 					<TextField
 						className="mt-8 mb-16"
 						error={!!errors.name}
@@ -31,7 +31,7 @@ const InfoTab = ({profile, errors, handleFieldChange}) => {
 						fullWidth
 					/>
 				</Grid>
-				<Grid item sm={12} md={6}>
+				<Grid item xs={12} md={6}>
 					<TextField
 						className="mt-8 mb-16"
 						error={!!errors.email}
@@ -46,7 +46,7 @@ const InfoTab = ({profile, errors, handleFieldChange}) => {
 					/>
 				</Grid>
 				{profile && profile.role === 'PLAYER' && 
-					<Grid item sm={12} md={6}>
+					<Grid item xs={12} md={6}>
 						<TextField
 							className="mt-8 mb-16"
 							error={!!errors.ncaa}
@@ -70,7 +70,7 @@ const InfoTab = ({profile, errors, handleFieldChange}) => {
 						/>
 					</Grid>
 				}
-				<Grid item sm={12} md={6}>
+				<Grid item xs={12} md={6}>
 					<TextField
 						className="mt-8 mb-16"
 						error={!!errors.city}
@@ -84,7 +84,7 @@ const InfoTab = ({profile, errors, handleFieldChange}) => {
 						fullWidth
 					/>
 				</Grid>
-				<Grid item sm={12} md={6}>
+				<Grid item xs={12} md={6}>
 					<TextField
 						className="mt-8 mb-16"
 						error={!!errors.state}
@@ -109,7 +109,7 @@ const InfoTab = ({profile, errors, handleFieldChange}) => {
 					</TextField>
 				</Grid>
 				{profile && profile.role === 'PLAYER' && 
-					<Grid item sm={12} md={6}>
+					<Grid item xs={12} md={6}>
 						<TextField
 							className="mt-8 mb-16"
 							error={!!errors.zip}

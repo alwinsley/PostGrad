@@ -148,6 +148,9 @@ input:-webkit-autofill {
     white-space: normal;
     height: 100%;
 }
+.h-screen--60 {
+    height: calc(100vh - 60px);
+}
 
 
 @import 'print.css';

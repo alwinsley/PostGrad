@@ -23,7 +23,7 @@ const AboutTab = ({profile}) => {
 						fullWidth
 					/>
 				</Grid>
-				<Grid item sm={12} md={6}>
+				<Grid item xs={12} md={6}>
 					<TextField
 						className="mt-8 mb-16"
 						disabled
@@ -35,7 +35,7 @@ const AboutTab = ({profile}) => {
 						fullWidth
 					/>
 				</Grid>
-				<Grid item sm={12} md={6}>
+				<Grid item xs={12} md={6}>
 					<TextField
 						className="mt-8 mb-16"
 						disabled
@@ -47,7 +47,7 @@ const AboutTab = ({profile}) => {
 						fullWidth
 					/>
 				</Grid>
-				<Grid item sm={12} md={6}>
+				<Grid item xs={12} md={6}>
 					<TextField
 						className="mt-8 mb-16"
 						disabled
@@ -59,7 +59,7 @@ const AboutTab = ({profile}) => {
 						fullWidth
 					/>
 				</Grid>
-				<Grid item sm={12} md={6}>
+				<Grid item xs={12} md={6}>
 					<TextField
 						className="mt-8 mb-16"
 						disabled
@@ -83,7 +83,7 @@ const AboutTab = ({profile}) => {
 						fullWidth
 					/>
 				</Grid>
-				<Grid item sm={12} md={6}>
+				<Grid item xs={12} md={6}>
 					<TextField
 						className="mt-8 mb-16"
 						disabled
@@ -95,7 +95,7 @@ const AboutTab = ({profile}) => {
 						fullWidth
 					/>
 				</Grid>
-				<Grid item sm={12} md={6}>
+				<Grid item xs={12} md={6}>
 					<TextField
 						className="mt-8 mb-16"
 						disabled

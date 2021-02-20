@@ -6,7 +6,6 @@ import {
 	Button,
 	Typography
 } from '@material-ui/core';
-import { makeStyles } from '@material-ui/core/styles';
 
 import FuseAnimate from '@fuse/core/FuseAnimate/FuseAnimate';
 import ScheduleWidget from 'app/components/ScheduleWidget';
@@ -15,17 +14,7 @@ import AlertDlg from 'app/components/AlertDlg';
 
 import { getUserSchedules, deleteAdminSchedule } from 'app/services/schedule_api';
 
-const useStyles = makeStyles((theme) => ({
-	addButton: {
-		position: 'absolute',
-		right: 12,
-		bottom: 30,
-		zIndex: 99
-	}
-}));
-
 const ScheduleTab = ({profile}) => {
-	const classes = useStyles();
 	const me = useSelector(({ auth }) => auth.user);
 	const [loading, setLoading] = useState(false);
 	const [openModal, setOpenModal] = useState(false);
@@ -100,7 +89,7 @@ const ScheduleTab = ({profile}) => {
 					<Fab
 						color="secondary"
 						aria-label="add"
-						className={classes.addButton}
+						className="fixed bottom-56 right-12 sm:bottom-76 sm:right-24"
 						onClick={() => setOpenModal(true)}
 					>
 						<Icon>add</Icon>

@@ -4,7 +4,6 @@ import {
 	Fab,
 	Typography
 } from '@material-ui/core';
-import { makeStyles } from '@material-ui/core/styles';
 
 import FuseAnimate from '@fuse/core/FuseAnimate/FuseAnimate';
 import FuseAnimateGroup from '@fuse/core/FuseAnimateGroup';
@@ -14,22 +13,7 @@ import ResourceDlg from '../component/ResourceDlg';
 import ClickUploader from 'app/components/ClickUploader';
 import ImageCard from 'app/components/cards/ImageCard';
 
-const useStyles = makeStyles((theme) => ({
-	button: {
-		position: 'absolute',
-		right: 12,
-		bottom: 30,
-		zIndex: 99
-	},
-	instrument: {
-		maxWidth: 640,
-		textAlign: 'center',
-		margin: '0 auto 12px'
-	},
-}));
-
 const PhotosTab = ({resources, onAddRS, onDeleteRS, onEditRS}) => {
-	const classes = useStyles();
 	const [isModal, setIsModal] = useState(false);
 	const [selected, setSelected] = useState(null);
 	const [fullScreen, setFullScreen] = useState(false);
@@ -64,7 +48,7 @@ const PhotosTab = ({resources, onAddRS, onDeleteRS, onEditRS}) => {
 					}}
 				>
 					<div>
-						<div className={classes.instrument}>
+						<div className="max-w-md text-center mx-auto mb-12">
 							<Typography>Please take one picture in a door frame and 1 showing wing span. If available, take door picture next to a tape measure. This wil help coaches verify your height and help with your player ranking.</Typography>
 						</div>
 						<div className="w-full mx-auto mb-16 sm:w-320">
@@ -99,7 +83,7 @@ const PhotosTab = ({resources, onAddRS, onDeleteRS, onEditRS}) => {
 					<Fab
 						color="secondary"
 						aria-label="add"
-						className={classes.button}
+						className="fixed bottom-56 right-12 sm:bottom-76 sm:right-24"
 						onClick={() => setFullScreen(true)}
 					>
 						<Icon>fullscreen</Icon>
