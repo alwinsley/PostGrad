@@ -54,7 +54,9 @@ const defaultData = {
 	weight: "",
 	hs_college: "",
 	act: "",
-	sat: ""
+	sat: "",
+	hs_gpa: "",
+	college_gpa:""
 }
 
 const MyProfilePage = () => {

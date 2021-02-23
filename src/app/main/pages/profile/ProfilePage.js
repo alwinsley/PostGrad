@@ -51,7 +51,9 @@ const defaultData = {
 	weight: " ",
 	hs_college: " ",
 	act: " ",
-	sat: " "
+	sat: " ",
+	hs_gpa: "",
+	college_gpa:""
 }
 
 function ProfilePage(props) {
@@ -144,7 +146,7 @@ function ProfilePage(props) {
 													color="secondary"
 													onClick={() => handleUpdateUserStatus('ACTIVE')}
 												>
-													Aprove
+													Approve
 												</Button>
 											}
 										</>

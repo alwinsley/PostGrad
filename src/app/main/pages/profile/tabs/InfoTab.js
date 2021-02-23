@@ -125,6 +125,15 @@ const InfoTab = ({profile}) => {
 								<Typography className="font-bold mb-4 text-15">SAT</Typography>
 								<Typography>{profile.sat || '---'}</Typography>
 							</div>
+					
+							<div className="mb-24">
+								<Typography className="font-bold mb-4 text-15">H.S. GPA</Typography>
+								<Typography>{profile.hs_gpa || '---'}</Typography>
+							</div>
+							<div className="mb-24">
+								<Typography className="font-bold mb-4 text-15">College GPA</Typography>
+								<Typography>{profile.college_gpa || '---'}</Typography>
+							</div>
 						</CardContent>
 					</Card>
 				}
