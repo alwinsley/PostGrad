@@ -8,7 +8,7 @@ const FavoritesPageConfig = {
 	auth: authRoles.onlyCoach,
 	routes: [
 		{
-			path: '/favorites',
+			path: '/recruiting_board',
 			component: React.lazy(() => import('./Favorites'))
 		}
 	]

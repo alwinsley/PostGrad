@@ -75,7 +75,7 @@ const Favorites = () => {
 					header: 'min-h-72 h-72',
 					wrapper: 'min-h-0'
 				}}
-				header={<FavoritesHeader title="Favorites" onChangeSearch={handleSearch} onCreateUser={() => setOpenModal(true)}/>}
+				header={<FavoritesHeader title="Recruiting Board" onChangeSearch={handleSearch} onCreateUser={() => setOpenModal(true)}/>}
 				content={
 					<FavoritesContent
 						loading={loading}

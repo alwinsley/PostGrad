@@ -231,7 +231,7 @@ const MyProfilePage = () => {
 				<div className="p-16 sm:p-24">
 					{selectedTab === 0 && <InfoTab profile={profile} errors={errors} handleFieldChange={handleFieldChange}/>}
 					{selectedTab === 1 && <AboutTab profile={profile} errors={errors} handleFieldChange={handleFieldChange}/>}
-					{selectedTab === 2 && <PhotosTab resources={resources} onAddRS={handleRSAdd} onDeleteRS={handleRSDelete} onEditRS={handleRSEdit}/>}
+					{selectedTab === 2 && <PhotosTab role={user.role} resources={resources} onAddRS={handleRSAdd} onDeleteRS={handleRSDelete} onEditRS={handleRSEdit}/>}
 					{selectedTab === 3 && <VideosTab resources={resources} onAddRS={handleRSAdd} onDeleteRS={handleRSDelete} onEditRS={handleRSEdit}/>}
 					{selectedTab === 4 && <ScheduleTab profile={profile}/>}
 					{selectedTab === 5 && profile && profile.role === 'PLAYER' && <TranscriptTab profile={profile}/>}
