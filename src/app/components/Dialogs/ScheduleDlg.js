@@ -15,7 +15,7 @@ import { DateTimePicker } from '@material-ui/pickers';
 import moment from 'moment';
 
 import { isValidURL } from 'app/helpers/functions';
-import { postSchedule, postAminSchedule } from 'app/services/schedule_api';
+import { postSchedule } from 'app/services/schedule_api';
 
 const defaultFormState = {
     title: '',
@@ -52,8 +52,7 @@ const ScheduleDlg = ({event, open, user, onClose, onChanged}) => {
     }
 
     const onSubmit = (type) => {
-        const PostAPI = me.role === 'ADMIN' ? postAminSchedule : postSchedule;
-        PostAPI({
+        postSchedule({
             ...schedule,
             user_id: user || 0
         }).then(res => {

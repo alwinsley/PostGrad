@@ -42,6 +42,12 @@ const InfoTab = ({profile}) => {
 							<Typography className="font-bold mb-4 text-15">Email</Typography>
 							<Typography>{profile.email}</Typography>
 						</div>
+						{profile && profile.role === 'COACH' && 
+							<div className="mb-24">
+								<Typography className="font-bold mb-4 text-15">Current School</Typography>
+								<Typography>{profile.current_school || '---'}</Typography>
+							</div>
+						}
 						{profile && profile.role === 'PLAYER' && 
 							<div className="mb-24">
 								<Typography className="font-bold mb-4 text-15">NCAA ID</Typography>
@@ -65,8 +71,8 @@ const InfoTab = ({profile}) => {
 						<div className="mb-24">
 							<Typography className="font-bold mb-4 text-15">Twitter</Typography>
 							{profile.twitter ? 
-								<a href={profile.twitter} target="_blank">
-									<Typography className="text-blue-700" >{profile.twitter}</Typography>
+								<a href={profile.twitter.slice(0, 20) === 'https://twitter.com/' ? profile.twitter : 'https://twitter.com/' + profile.twitter} target="_blank">
+									<Typography className="text-blue-700" >{profile.twitter.slice(0, 20) === 'https://twitter.com/' ? profile.twitter : 'https://twitter.com/' + profile.twitter}</Typography>
 								</a>
 								:
 								<Typography>---</Typography>

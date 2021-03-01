@@ -13,7 +13,7 @@ const AboutTab = ({profile, errors, handleFieldChange}) => {
 	return (
 		<div className="md:flex max-w-2xl">
 			<Grid container spacing={3}>
-				<Grid item xs={12}>
+				{/* <Grid item xs={12}>
 					<TextField
 						className="mt-8 mb-16"
 						error={!!errors.current_school}
@@ -27,7 +27,7 @@ const AboutTab = ({profile, errors, handleFieldChange}) => {
 						variant="outlined"
 						fullWidth
 					/>
-				</Grid>
+				</Grid> */}
 				{profile.role === 'PLAYER' && 
 					<>
 						<Grid item xs={12} md={6}>

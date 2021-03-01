@@ -12,7 +12,7 @@ import ScheduleWidget from 'app/components/ScheduleWidget';
 import ScheduleDlg from 'app/components/Dialogs/ScheduleDlg';
 import AlertDlg from 'app/components/AlertDlg';
 
-import { getUserSchedules, deleteAdminSchedule } from 'app/services/schedule_api';
+import { getUserSchedules, deleteSchedule } from 'app/services/schedule_api';
 
 const ScheduleTab = ({profile}) => {
 	const me = useSelector(({ auth }) => auth.user);
@@ -55,7 +55,7 @@ const ScheduleTab = ({profile}) => {
 		
 		setDeleteId(null);
 
-		deleteAdminSchedule(_schedule.id).then(res => {
+		deleteSchedule(_schedule.id).then(res => {
 			let _index = _data.indexOf(_schedule);
 			_data.splice(_index, 1);
 			setData(_data);

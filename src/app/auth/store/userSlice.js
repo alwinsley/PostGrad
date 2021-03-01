@@ -98,7 +98,6 @@ const userSlice = createSlice({
 		},
 		userLoggedOut: (state, action) => initialState,
 		setUnReadMessage: (state, action) => {
-			console.log(action, state.noti);
 			return {...state, noti: action.payload}
 		}
 	},

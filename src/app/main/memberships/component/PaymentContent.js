@@ -7,8 +7,12 @@ import {
 	Typography,
 	IconButton,
 	Icon,
-	Button
+	Button,
+	Grid,
+	FormControlLabel,
+	Checkbox
 } from '@material-ui/core';
+import CheckIcon from '@material-ui/icons/Check';
 import { makeStyles } from '@material-ui/core/styles';
 import { darken } from '@material-ui/core/styles/colorManipulator';
 
@@ -19,17 +23,12 @@ import { STRIPE_PUBLIC_KEY } from 'app/services/config';
 import clsx from 'clsx';
 
 import { showMessage } from 'app/store/fuse/messageSlice';
-import { postSubscription } from 'app/services/membership_api';
+import { postSubscription, checkPromoCode } from 'app/services/membership_api';
 
 
 const useStyles = makeStyles(theme => ({
 	root: {
 		background: `radial-gradient(${darken(theme.palette.primary.dark, 0.5)} 0%, ${theme.palette.primary.dark} 80%)`
-	},
-	cardContainer: {
-		width: "100%",
-		maxWidth: '460px',
-		margin: 'auto'
 	},
 	cardfield: {
 		border: '1px solid #cecece',
@@ -52,6 +51,12 @@ const PaymentContent = ({ membership, onChanged, onClose }) => {
 	const [stripe, setStripe] = useState(null);
 	const [elements, setElements] = useState(null);
 	const [submitting, setSubmitting] = useState(false);
+
+	const [isPromoCode, setIsPromoCode] = useState(false);
+	const [checking, setChecking] = useState(false);
+	const [promoCode, setPromoCode] = useState('');
+	const [promoChecked, setPromoChecked] = useState(false);
+	const [promoError, setPromoError] = useState(false);
 
 	useEffect(() => {
 		initStripe();
@@ -117,14 +122,57 @@ const PaymentContent = ({ membership, onChanged, onClose }) => {
 	}
 
 	const handleSubscription = (token) => {
-		
-		postSubscription({token: token.id, membership: membership.id}).then(res => {
+		let data = {
+			token: token.id,
+			membership: membership.id
+		}
+
+		if(isPromoCode){
+			if(promoCode && promoChecked) data = {...data, promo_code: promoCode}
+			else {
+				setPromoError('invalid code');
+				setSubmitting(false);
+				return;
+			};
+		}
+
+		postSubscription(data).then(res => {
 			dispatch(showMessage({variant: 'success', message: "subscription created successfully" }));
 			onChanged(res.data.membership);
 		}).catch(err => {
-			dispatch(showMessage({variant: 'error', message: "subscription failed" }));
+			dispatch(showMessage({variant: 'error', message: err.response.data.message || "subscription failed" }));
+		}).then(() => {
 			setSubmitting(false);
 		})
+	}
+
+	const handleChangePromoCode = (e) => {
+		const { value } = e.target;
+		setPromoError(false);
+		setPromoChecked(false);
+		setPromoCode(value);
+	}
+
+	const handleCheckPromoCode = () => {
+		if(checking) return;
+		setChecking(true);
+
+		if(!promoCode) {
+			setPromoError('invalid code');
+			return;
+		}
+
+		checkPromoCode({promo_code: promoCode}).then(res => {
+			if(res.data && res.data.status === 'success'){
+				setPromoChecked(true);
+			}else{
+				setPromoError('invalid code');
+			}
+		}).catch(err => {
+			setPromoError('invalid code');
+		}).then(() => {
+			setChecking(false);
+		});
 	}
 
 	return (
@@ -139,21 +187,74 @@ const PaymentContent = ({ membership, onChanged, onClose }) => {
 						}
 					/>
 					<CardContent className="p-24 py-56">
-						<div className={classes.cardContainer}>
+						<div className="w-full max-w-sm m-auto">
 							<div className={classes.membership}>
 								<Typography variant="h5">{membership.title}</Typography>
 								<Typography variant="h6">${membership.price} / {membership.month === 1 ? 'month' : membership.month + ' months'}</Typography>
 							</div>
 
-							<div className={classes.cardfield}>
+							<div className="border border-gray-400 rounded-md py-5 px-16 mb-24">
 								<div id="card-number" label="Standard" ></div>
 							</div>
-							<div className={classes.cardfield}>
+							<div className="border border-gray-400 rounded-md py-5 px-16 mb-24">
 								<div id="expire" label="Standard" ></div>
 							</div>
-							<div className={classes.cardfield}>
+							<div className="border border-gray-400 rounded-md py-5 px-16 mb-24">
 								<div id="cvv" label="Standard" ></div>
 							</div>
+
+							<Grid container spacing={3} className="mb-24 items-center">
+								<Grid item xs={12}>
+									<FormControlLabel
+										control={
+										<Checkbox
+											checked={isPromoCode}
+											onChange={() => setIsPromoCode(!isPromoCode)}
+											name="checkedB"
+											color="primary"
+										/>
+										}
+										label="use promo code"
+									/>
+								</Grid>
+								{isPromoCode && 
+									<>
+									<Grid item xs={8}>
+										<div className={`border ${promoError ? 'border-red-400' : 'border-gray-400'} rounded-md py-5 px-16`}>
+											<input type="text" 
+												id="promo_code"
+												name="promo_code"
+												style={{
+													color: !!promoError ? '#e23225' : "#32325d",
+													lineHeight: 40,
+													fontFamily: '"Helvetica Neue", Helvetica, sans-serif',
+													fontSize: 16,
+													height: 40
+												}}
+												placeholder="Promo Code"
+												onChange={handleChangePromoCode}/>
+										</div>
+									</Grid>
+									
+									<Grid item xs={4}>
+										{promoChecked ? 
+											<CheckIcon style={{ color: 'green' }}/>
+											:
+											<Button
+												fullWidth
+												color="primary"
+												variant="contained"
+												size="large"
+												onClick={handleCheckPromoCode}
+											>
+												Apply
+											</Button>	
+										}
+									</Grid>
+									</>
+								}
+								
+							</Grid>
 
 							<Button
 								fullWidth

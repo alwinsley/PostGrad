@@ -19,7 +19,6 @@ const InfoTab = ({profile, errors, handleFieldChange}) => {
 				<Grid item xs={12} md={6}>
 					<TextField
 						className="mt-8 mb-16"
-						error={!!errors.name}
 						required
 						label="Name"
 						autoFocus
@@ -29,12 +28,13 @@ const InfoTab = ({profile, errors, handleFieldChange}) => {
 						onChange={handleFieldChange}
 						variant="outlined"
 						fullWidth
+						error={!!errors.name}
+						helperText={errors.name}
 					/>
 				</Grid>
 				<Grid item xs={12} md={6}>
 					<TextField
 						className="mt-8 mb-16"
-						error={!!errors.email}
 						required
 						label="Email"
 						id="email"
@@ -43,14 +43,32 @@ const InfoTab = ({profile, errors, handleFieldChange}) => {
 						onChange={handleFieldChange}
 						variant="outlined"
 						fullWidth
+						error={!!errors.email}
+						helperText={errors.email}
 					/>
 				</Grid>
+				{profile && profile.role === 'COACH' && 
+					<Grid item xs={12}>
+						<TextField
+							className="mt-8 mb-16"
+							required
+							label="Current School"
+							id="current_school"
+							name="current_school"
+							value={profile.current_school}
+							onChange={handleFieldChange}
+							variant="outlined"
+							fullWidth
+							error={!!errors.current_school}
+							helperText={errors.current_school}
+						/>
+					</Grid>
+				}
 				{profile && profile.role === 'PLAYER' && 
 					<Grid item xs={12} md={6}>
 						<TextField
 							className="mt-8 mb-16"
 							error={!!errors.ncaa}
-							required
 							label="NCAA ID"
 							id="ncaa"
 							name="ncaa"
@@ -74,7 +92,6 @@ const InfoTab = ({profile, errors, handleFieldChange}) => {
 					<TextField
 						className="mt-8 mb-16"
 						error={!!errors.city}
-						required
 						label="City"
 						id="city"
 						name="city"
@@ -88,7 +105,6 @@ const InfoTab = ({profile, errors, handleFieldChange}) => {
 					<TextField
 						className="mt-8 mb-16"
 						error={!!errors.state}
-						required
 						label="State"
 						id="state"
 						name="state"
@@ -131,11 +147,12 @@ const InfoTab = ({profile, errors, handleFieldChange}) => {
 						label="Twitter"
 						id="twitter"
 						name="twitter"
-						value={profile.twitter}
+						value={profile.twitter && profile.twitter.slice(0, 20) === 'https://twitter.com/' ? profile.twitter.slice(20) : profile.twitter}
 						onChange={handleFieldChange}
 						variant="outlined"
 						fullWidth
 						InputProps={{
+							startAdornment: (<InputAdornment position="start">https://twitter.com/</InputAdornment>),
 							endAdornment: (
 								<InputAdornment position="start">
 									<a href="https://twitter.com/" target="_blank" role="button">

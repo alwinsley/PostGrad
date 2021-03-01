@@ -66,7 +66,7 @@ const MyProfilePage = () => {
 	const [profile, setProfile] = useState(defaultData);
 	const [resources, setResources] = useState([]);
 	const [errors, setErrors] = useState({});
-	const [selectedTab, setSelectedTab] = useState(0);
+	const [selectedTab, setSelectedTab] = useState('');
 
 	useEffect(() => {
 		getMyProfile().then(res => {
@@ -86,7 +86,11 @@ const MyProfilePage = () => {
 	const handleFieldChange = (e) => {
 		const {id, name, value} = e.target;
 		const key = id || name;
-		setProfile({...profile, [key]: value});
+		if(errors[key]) setErrors({...errors, [key]: ''});
+
+		let _value = value;
+		if(key === 'twitter' && value) _value = 'https://twitter.com/' + value;
+		setProfile({...profile, [key]: _value});
 	}
 
 	const handleRSAdd = (files, type) => {
@@ -138,6 +142,8 @@ const MyProfilePage = () => {
 	}
 
 	const handleSubmit = () => {
+		if(!isValidProfile()) return;
+
 		postProfile(profile).then(res => {
 			let _profile = res.data.profile;
 			delete _profile.avatar;
@@ -147,6 +153,20 @@ const MyProfilePage = () => {
 			console.log(err)
 			dispatch(showMessage({variant: 'error', message: 'Invalid data' }));
 		});
+	}
+
+	const isValidProfile = () => {
+		let _errors = {};
+		if(!profile.name) _errors = {..._errors, name: 'The field is required'};
+		if(!profile.email) _errors = {..._errors, email: 'The field is required'};
+		if(profile.role === 'COACH' && !profile.current_school) _errors = {..._errors, current_school: 'The field is required'};
+
+		setErrors(_errors);
+		if(Object.keys(_errors).length) {
+			setSelectedTab(0);
+			return false;
+		}
+		return true;
 	}
 
 	const handleUploadAvatar = (e) => {
@@ -219,22 +239,22 @@ const MyProfilePage = () => {
 						root: 'h-64 w-full'
 					}}
 				>
-					<Tab classes={{	root: 'h-64' }}	label="Personal Info"/>
-					<Tab classes={{	root: 'h-64' }}	label="About Me"/>
-					<Tab classes={{	root: 'h-64' }}	label="Photos"/>
-					<Tab classes={{	root: 'h-64' }}	label="Videos"/>
-					<Tab classes={{	root: 'h-64' }}	label={profile.role === 'PLAYER' ? "Schedules": "Camp Dates/Season Schedule"}/>
-					{profile && profile.role === 'PLAYER' && <Tab classes={{	root: 'h-64' }}	label="Transcript & Eligibility"/> }
+					<Tab classes={{	root: 'h-64' }}	label="Personal Info" value="info"/>
+					{profile && profile.role === 'PLAYER' && <Tab classes={{	root: 'h-64' }}	label="About Me" value="about"/>}
+					<Tab classes={{	root: 'h-64' }}	label="Photos" value="photo"/>
+					<Tab classes={{	root: 'h-64' }}	label="Videos" value="video"/>
+					<Tab classes={{	root: 'h-64' }}	label={profile.role === 'PLAYER' ? "Schedules": "Camp Dates/Season Schedule"} value="schedule"/>
+					{profile && profile.role === 'PLAYER' && <Tab classes={{	root: 'h-64' }}	label="Transcript & Eligibility" value="transcript"/> }
 				</Tabs>
 			}
 			content={
 				<div className="p-16 sm:p-24">
-					{selectedTab === 0 && <InfoTab profile={profile} errors={errors} handleFieldChange={handleFieldChange}/>}
-					{selectedTab === 1 && <AboutTab profile={profile} errors={errors} handleFieldChange={handleFieldChange}/>}
-					{selectedTab === 2 && <PhotosTab role={user.role} resources={resources} onAddRS={handleRSAdd} onDeleteRS={handleRSDelete} onEditRS={handleRSEdit}/>}
-					{selectedTab === 3 && <VideosTab resources={resources} onAddRS={handleRSAdd} onDeleteRS={handleRSDelete} onEditRS={handleRSEdit}/>}
-					{selectedTab === 4 && <ScheduleTab profile={profile}/>}
-					{selectedTab === 5 && profile && profile.role === 'PLAYER' && <TranscriptTab profile={profile}/>}
+					{(!selectedTab || selectedTab === 'info') && <InfoTab profile={profile} errors={errors} handleFieldChange={handleFieldChange}/>}
+					{selectedTab === 'about' && <AboutTab profile={profile} errors={errors} handleFieldChange={handleFieldChange}/>}
+					{selectedTab === 'photo' && <PhotosTab role={user.role} resources={resources} onAddRS={handleRSAdd} onDeleteRS={handleRSDelete} onEditRS={handleRSEdit}/>}
+					{selectedTab === 'video' && <VideosTab resources={resources} onAddRS={handleRSAdd} onDeleteRS={handleRSDelete} onEditRS={handleRSEdit}/>}
+					{selectedTab === 'schedule' && <ScheduleTab profile={profile}/>}
+					{selectedTab === 'transcript' && profile && profile.role === 'PLAYER' && <TranscriptTab profile={profile}/>}
 				</div>
 			}
 		/>
