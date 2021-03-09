@@ -19,7 +19,7 @@ export const checkMessage = () => {
 }
 
 export const changeMessageStatus = (id) => {
-    return axios.put('/api/message' + id);
+    return axios.put('/api/message/' + id);
 }
 
 export const deleteMessages = (payload) => {

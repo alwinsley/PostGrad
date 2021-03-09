@@ -20,7 +20,7 @@ import TranscriptTab from './tabs/TranscriptTab';
 
 import MessageDlg from 'app/components/MessageDlg';
 
-import { getProfile, updateUser } from '../../../services/profileService';
+import { getProfile, updateUserStatus } from '../../../services/profileService';
 import { showMessage } from 'app/store/fuse/messageSlice';
 import { asset_path } from '../../../helpers/resource';
 
@@ -89,7 +89,7 @@ function ProfilePage(props) {
 	}
 
 	const handleUpdateUserStatus = (status) => {
-		updateUser(profile.id, {status}).then(res => {
+		updateUserStatus(profile.id, {status}).then(res => {
 			dispatch(showMessage({variant: 'success', message: "User's status updated successfully" }));
 			setProfile({...profile, status});
 		}).catch(err => {

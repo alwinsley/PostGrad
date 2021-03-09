@@ -4,7 +4,7 @@ import { RedIconBtn } from '../ColorBtns';
 
 import { asset_path } from 'app/helpers/resource';
 
-const ImageCard = ({src, description, link = null, onEdit, onDelete}) => {
+const ImageCard = ({src, description, link = null, onEdit, onDelete, onClickImage}) => {
 	return (
         <div className="m-10 w-full sm:w-auto">
             <div className="relative sm:h-200 shadow">
@@ -17,7 +17,7 @@ const ImageCard = ({src, description, link = null, onEdit, onDelete}) => {
                             </div>
                         </>
                     }
-                    <img className="w-full h-auto sm:h-full sm:w-auto" src={asset_path(src)}/>
+                    <img className="w-full h-auto sm:h-full sm:w-auto" src={asset_path(src)} onClick={onClickImage}/>
                 </a>
                 <div className="absolute bottom-0 right-0">
                     {onEdit && <IconButton color="info" onClick={onEdit}><Icon>edit</Icon></IconButton>}

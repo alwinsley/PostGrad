@@ -6,8 +6,6 @@ import {
 	Card,
 	CardContent,
 	Typography,
-	Tabs,
-	Tab,
 	List,
 	ListItem,
 	ListItemIcon,
@@ -47,11 +45,11 @@ const useStyles = makeStyles(theme => ({
 function Register() {
 	const classes = useStyles();
 	const [selectedTab, setSelectedTab] = useState(0);
-	const [userType, setUserType] = useState('COACH');
+	const [userType, setUserType] = useState('PLAYER');
 
 	function handleTabChange(event, value) {
 		setSelectedTab(value);
-		setUserType(value === 0 ? 'COACH' : 'PLAYER');
+		setUserType(value === 0 ? 'PLAYER' : 'COACH');
 	}
 
 	return (
@@ -79,21 +77,25 @@ function Register() {
 
 							{/* <Typography className="text-24 font-800 logo-text mb-32" color="inherit">Welcome to PostGrad</Typography> */}
 
-							<Tabs
-								value={selectedTab}
-								onChange={handleTabChange}
-								variant="fullWidth"
-								className="w-full mb-32"
-							>
-								<Tab
-									className="min-w-0"
-									label="Coach"
-								/>
-								<Tab
-									className="min-w-0"
-									label="Player"
-								/>
-							</Tabs>
+							<div className="flex items-center w-full mb-20">
+								<div className="mr-16 select-none">I am a : </div>
+								<div className="flex flex-1 ">
+									<div className="w-1/2 text-center cursor-pointer select-none py-12"
+										style={{
+											backgroundColor: userType === 'PLAYER' ? '#fba800' : '#efefef',
+											color: userType === 'PLAYER' ? 'black' : 'grey'
+										}}
+										onClick={() => setUserType('PLAYER')}
+									>PLAYER</div>
+									<div className="w-1/2 text-center cursor-pointer select-none py-12"
+										style={{
+											backgroundColor: userType === 'COACH' ? '#fba800' : '#efefef',
+											color: userType === 'COACH' ? 'black' : 'grey'
+										}}
+										onClick={() => setUserType('COACH')}
+									>COACH</div>
+								</div>
+							</div>
 
 							<JWTRegisterTab type={userType}/>
 						</CardContent>

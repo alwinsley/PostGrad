@@ -34,6 +34,9 @@ export const updateResource = (id, data) => {
 export const setRecruitUser = (id, data) => {
     return axios.post(`/api/set_recruit/${id}`, data);
 }
+export const updateUserStatus = (id, payload) => {
+    return axios.post(`/api/user_status/${id}`, payload);
+}
 
 export const createUser = (payload) => {
     return axios.post('/api/user', payload);

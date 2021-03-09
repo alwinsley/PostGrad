@@ -40,10 +40,11 @@ const useStyles = makeStyles((theme) => ({
  const LinkUploader = ({accept, multiple, onChangeFile, onChangeLink, preview}) => {
   const classes = useStyles();
   const [link, setLink] = useState(null);
+  const [error, setError] = useState('');
 
   const handleChangeLink = (e) => {
     const { value } = e.target;
-
+    setError('');
     setLink(value);
   }
 
@@ -55,11 +56,25 @@ const useStyles = makeStyles((theme) => ({
     onChangeFile(files);
   }
 
+  const convertValidUrl = (url) => {
+    if(url.includes('hudl.com/') && !url.includes('/embed/')){
+      return '';
+    }
+
+    return url.replace('http://', 'https://');
+  }
+
   const handleSetLink = () => {
     if(!link) return;
 
-    onChangeLink([link]);
-    setLink(null);
+    const url = convertValidUrl(link);
+
+    if(url){
+      onChangeLink([url]);
+      setLink(null);
+    }else{
+      setError('Invalid URL: please refer ');
+    }
   }
 
   return (
@@ -90,6 +105,16 @@ const useStyles = makeStyles((theme) => ({
           <Icon>library_add_check</Icon>
         </IconButton>
       </Paper>
+
+      {error && 
+        <div className="flex mt-5">
+          <div style={{color: '#ff2424'}}>{error}</div>&nbsp;&nbsp;
+          <a href="https://www.hudl.com/support/classic/highlights-recruiting/coaches-guide-highlights/embed-your-highlight-reel"
+            target="_blank"
+            style={{backgroundColor: 'transparent', color: '#2196f3', border: 0}}
+            >here</a>
+        </div>
+      }
     </>
   );
 }

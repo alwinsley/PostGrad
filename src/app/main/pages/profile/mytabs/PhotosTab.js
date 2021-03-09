@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { 
 	Icon,
 	Fab,
@@ -16,8 +16,22 @@ import ImageCard from 'app/components/cards/ImageCard';
 const PhotosTab = ({role, resources, onAddRS, onDeleteRS, onEditRS}) => {
 	const [isModal, setIsModal] = useState(false);
 	const [selected, setSelected] = useState(null);
-	const [fullScreen, setFullScreen] = useState(false);
+	const [photos, setPhotos] = useState([]);
+	const [fullScreenPhotos, setFullScreenPhotos] = useState([]);
+
+	useEffect(() => {
+		const _photos = resources.filter(re => re.type === 'IMAGE');
+		setPhotos(_photos);
+	}, [resources]);
 	
+	const handleFullScreen = (index) => {
+		let _photos = photos.slice(index);
+		if(index > 0){
+			_photos = [..._photos, ...photos.slice(0, index)]
+		}
+		setFullScreenPhotos(_photos);
+	}
+
 	const handleUploadChange = (files) => {
 		onAddRS(files, "IMAGE");
 	}
@@ -36,8 +50,6 @@ const PhotosTab = ({role, resources, onAddRS, onDeleteRS, onEditRS}) => {
 		setIsModal(false);
 		onEditRS(resource);
 	}
-
-	const _photos = resources.filter(re => re.type === 'IMAGE');
 
 	return (
 		<div className="md:flex w-full">
@@ -58,13 +70,14 @@ const PhotosTab = ({role, resources, onAddRS, onDeleteRS, onEditRS}) => {
 						</div>
 					</div>
 					<div className="flex flex-wrap">
-						{!!_photos.length && _photos.map((rs, index) => 
+						{!!photos.length && photos.map((rs, index) => 
 							<ImageCard
 								key={index}
 								src={rs.url}
 								description={rs.description}
 								onEdit={() => handleOpenModal(index, rs)}
 								onDelete={() => onDeleteRS(rs.id, index)}
+								onClickImage={() => handleFullScreen(index)}
 							/>
 						)}
 					</div>
@@ -80,13 +93,13 @@ const PhotosTab = ({role, resources, onAddRS, onDeleteRS, onEditRS}) => {
 				/>
 			}
 
-			{!!_photos.length && 
+			{!!photos.length && 
 				<FuseAnimate animation="transition.expandIn" delay={500}>
 					<Fab
 						color="secondary"
 						aria-label="add"
 						className="fixed bottom-56 right-12 sm:bottom-76 sm:right-24"
-						onClick={() => setFullScreen(true)}
+						onClick={() => handleFullScreen(0)}
 					>
 						<Icon>fullscreen</Icon>
 					</Fab>
@@ -94,11 +107,10 @@ const PhotosTab = ({role, resources, onAddRS, onDeleteRS, onEditRS}) => {
 			}
 
 			<FullScreenView
-				open={fullScreen}
-				onClose={() => setFullScreen(false)}
-				list={_photos}
+				open={!!fullScreenPhotos.length}
+				onClose={() => setFullScreenPhotos([])}
+				list={fullScreenPhotos}
 			/>
-			
 		</div>
 	);
 }

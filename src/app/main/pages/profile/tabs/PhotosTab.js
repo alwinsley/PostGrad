@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
 	Fab,
 	Icon,
@@ -11,9 +11,21 @@ import FullScreenView from 'app/components/FullScreenView';
 import ImageCard from 'app/components/cards/ImageCard';
 
 const PhotosTab = ({resources}) => {
-	const [fullScreen, setFullScreen] = useState(false);
+	const [photos, setPhotos] = useState([]);
+	const [fullScreenPhotos, setFullScreenPhotos] = useState([]);
 
-	const _photos = resources.filter(re => re.type === 'IMAGE');
+	useEffect(() => {
+		const _photos = resources.filter(re => re.type === 'IMAGE');
+		setPhotos(_photos);
+	}, [resources]);
+	
+	const handleFullScreen = (index) => {
+		let _photos = photos.slice(index);
+		if(index > 0){
+			_photos = [..._photos, ...photos.slice(0, index)]
+		}
+		setFullScreenPhotos(_photos);
+	}
 	
 	return (
 		<div className="md:flex w-full">
@@ -24,24 +36,25 @@ const PhotosTab = ({resources}) => {
 					}}
 				>
 					<div className="flex flex-wrap">
-						{!!_photos.length && _photos.map((rs, index) => 
+						{!!photos.length && photos.map((rs, index) => 
 							<ImageCard
 								key={index}
 								src={rs.url}
 								description={rs.description}
+								onClickImage={() => handleFullScreen(index)}
 							/>
 						)}
 					</div>
 				</FuseAnimateGroup>
 			</div>
 			
-			{!!_photos.length && 
+			{!!photos.length && 
 				<FuseAnimate animation="transition.expandIn" delay={500}>
 					<Fab
 						color="secondary"
 						aria-label="add"
 						className="fixed bottom-56 right-12 sm:bottom-76 sm:right-24"
-						onClick={() => setFullScreen(true)}
+						onClick={() => handleFullScreen(0)}
 					>
 						<Icon>fullscreen</Icon>
 					</Fab>
@@ -49,9 +62,9 @@ const PhotosTab = ({resources}) => {
 			}
 
 			<FullScreenView
-				open={fullScreen}
-				onClose={() => setFullScreen(false)}
-				list={_photos}
+				open={!!fullScreenPhotos.length}
+				onClose={() => setFullScreenPhotos([])}
+				list={fullScreenPhotos}
 			/>
 		</div>
 	);

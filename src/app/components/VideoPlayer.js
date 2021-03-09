@@ -16,6 +16,15 @@ const styles = {
         left: 0,
         width: '100%',
         height: '100%'
+    },
+    overlay: {
+        position: 'absolute',
+        top: 0,
+        left: 0,
+        width: '100%',
+        height: '100%',
+        cursor: 'pointer',
+        background: 'transparent'
     }
 }
 const checkHudleEmbeded = (url) => {
@@ -66,13 +75,16 @@ const Video = ({url, style}) => {
     )
 }
 
-const VideoPlayer = (props) => {
+const VideoPlayer = ({ fullScreen, onClick, ...props}) => {
     return (
         <div style={styles.container}>
             <div style={styles.ratio}></div>
             <div style={styles.video}>
                 <Video {...props}></Video>
             </div>
+            {!fullScreen && 
+                <div style={styles.overlay} onClick={onClick}></div>
+            }
         </div>
     )
 }

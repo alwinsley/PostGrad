@@ -34,7 +34,7 @@ const FullScreenView = ({open, onClose, list}) => {
                             {item.type === 'VIDEO' ? 
                                 <div className="h-full flex items-center justify-center">
                                     <div style={{width: '100%', maxWidth: 'calc(177vh - 106.2px)'}}>
-                                        <VideoPlayer url={asset_path(item.url)} style={{height: '100%', width: '100%'}}/>
+                                        <VideoPlayer fullScreen url={asset_path(item.url)} style={{height: '100%', width: '100%'}}/>
                                     </div>
                                 </div>
                                 :
