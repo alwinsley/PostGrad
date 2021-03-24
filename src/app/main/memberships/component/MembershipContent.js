@@ -35,11 +35,11 @@ function MembershipContent({ current, memberships, onSelectItem, ...props}) {
 					<div className="text-center my-128 mx-24">
 						<FuseAnimate animation="transition.slideUpIn" duration={400} delay={100}>
 							<Typography variant="h2" color="inherit" className="font-light">
-								Simple Pricing!
+								Membership Access
 							</Typography>
 						</FuseAnimate>
 
-						<FuseAnimate duration={400} delay={600}>
+						{/* <FuseAnimate duration={400} delay={600}>
 							<Typography
 								variant="subtitle1"
 								color="inherit"
@@ -48,7 +48,7 @@ function MembershipContent({ current, memberships, onSelectItem, ...props}) {
 								The most advanced customer support tools with a simple and affordable pricing. And you
 								can always try for 30 days, free!
 							</Typography>
-						</FuseAnimate>
+						</FuseAnimate> */}
 					</div>
 				</div>
 			</div>
